@@ -32,7 +32,6 @@ type Dict = {
     title: string
     stamp: string
     para1: string
-    para2: string
     philosophyQuote: string
     philosophyAuthor: string
   }
@@ -123,8 +122,6 @@ export const translations: Record<Lang, Dict> = {
       stamp: '紹介',
       para1:
         'Hola, soy Patricio García — mis amigos me dicen Pato. Soy ingeniero en sistemas computacionales y hoy en día estoy enfocado en el desarrollo de software. Me apasiona construir herramientas, entender cómo funcionan por dentro y simplificar flujos de trabajo complejos. Últimamente, la inteligencia artificial se ha convertido en un gran compañero de desarrollo: la veo como una herramienta extraordinaria que potencia enormemente lo que podemos crear en este ámbito.',
-      para2:
-        'Fuera del código, los videojuegos son una de mis grandes pasiones, especialmente el ámbito competitivo.',
       philosophyQuote: '«Tengo que dar un paso a la vez, solo uno a la vez.»',
       philosophyAuthor: '— Garou',
     },
@@ -244,8 +241,6 @@ export const translations: Record<Lang, Dict> = {
       stamp: '紹介',
       para1:
         "Hi, I'm Patricio García — friends call me Pato. I'm a Computer Systems Engineer currently focused on software development. I'm passionate about building tools, understanding how things work under the hood, and simplifying complex workflows. Lately, artificial intelligence has become a great development companion: I see it as an extraordinary tool that tremendously amplifies what we can create in this field.",
-      para2:
-        'Outside of code, video games are one of my greatest passions, especially the competitive scene.',
       philosophyQuote: '"I have to take one step at a time, just one at a time."',
       philosophyAuthor: '— Garou',
     },

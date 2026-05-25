@@ -1,4 +1,4 @@
-# Portafolio Sakura
+# Portafolio
 
 > Portafolio personal con estética japonesa **Sumi-e** (tinta sobre papel washi).
 
@@ -42,39 +42,39 @@ Single-page application con navegación por secciones, animaciones de pétalos d
 
 ```bash
 # Clonar
-$ git clone https://github.com/p5Patricio/Portafolio-Sakura.git
-$ cd Portafolio-Sakura
+$ git clone https://github.com/p5Patricio/portafolio.git
+$ cd portafolio
 
 # Instalar dependencias
-$ npm install
+$ pnpm install
 
 # Desarrollo
-$ npm run dev
+$ pnpm dev
 
 # Build de producción
-$ npm run build
+$ pnpm build
 
 # Preview local
-$ npm run preview
+$ pnpm preview
 
 # Tests
-$ npm run test
+$ pnpm test
 
 # Lint
-$ npm run lint
+$ pnpm lint
 ```
 
 ## 🧪 Testing
 
 ```bash
 # Unit + integration tests
-$ npm run test
+$ pnpm test
 
 # Con UI interactiva
-$ npm run test:ui
+$ pnpm test:ui
 
 # Cobertura
-$ npm run coverage
+$ pnpm coverage
 ```
 
 ## 📁 Estructura de carpetas

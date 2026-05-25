@@ -2,21 +2,12 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { GraduationCap, Briefcase, ImageIcon, Award, type LucideIcon } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
-import SakuraIcon from '../components/SakuraIcon'
 import SectionHeader from '../components/SectionHeader'
 import ImageModal from '../components/ImageModal'
-
-// ---------- Data shape ----------
-//
-// User will fill in the actual image paths later. The `image` field is left as
-// `null` for both entries so the slot renders an empty placeholder window.
-// When ready, swap `image: null` for `image: '/path/to/img.jpg'` and the slot
-// will pick up the photo automatically.
 
 type TimelineEntry = {
   id: string
   icon: LucideIcon
-  /** Path to image inside /public — leave null until the user supplies it. */
   image: string | null
 }
 
@@ -29,15 +20,13 @@ const ENTRIES: TimelineEntry[] = [
   {
     id: 'mazda',
     icon: Briefcase,
-    image: '/mazda.png',
+    image: '/mazda-new-logo.jpg',
   },
 ]
 
 const CERTIFICACIONES = [
   { id: 'ia', image: '/certificacion-ia.webp' }
 ]
-
-// ---------- Sub-components ----------
 
 type ImageSlotProps = {
   src: string | null
@@ -47,52 +36,53 @@ type ImageSlotProps = {
   onClick?: () => void
 }
 
-/** Empty / filled image window styled like a sumi-e paper frame. */
 function ImageSlot({ src, alt, placeholderLabel, position = 'center', onClick }: ImageSlotProps) {
   return (
     <div 
-      className={`relative w-full aspect-[4/3] rounded-sm overflow-hidden bg-color-papel border border-color-tinta/15 shadow-[0_8px_24px_-12px_rgba(26,26,26,0.4)] ${onClick && src ? 'cursor-zoom-in hover:shadow-xl transition-shadow duration-300 group' : ''}`}
+      className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden glass-card shadow-2xl ${onClick && src ? 'cursor-zoom-in hover:glow-cyan transition-all duration-300 group' : ''}`}
       onClick={() => { if (onClick && src) onClick() }}
     >
       {/* Hover overlay for zoom icon */}
       {onClick && src && (
-        <div className="absolute inset-0 bg-color-tinta/0 group-hover:bg-color-tinta/10 transition-colors duration-300 z-20 flex items-center justify-center">
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110 bg-color-papel/80 p-2 rounded-full backdrop-blur-sm">
-            <SakuraIcon className="w-5 h-5 text-color-sakura animate-[spin_4s_linear_infinite]" />
-          </div>
+        <div className="absolute inset-0 bg-color-accent/0 group-hover:bg-color-accent/5 transition-colors duration-300 z-20 flex items-center justify-center">
+          <motion.div 
+            initial={false}
+            animate={{ scale: 1 }}
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-color-accent/80 p-3 rounded-xl backdrop-blur-md shadow-lg"
+          >
+            <ImageIcon className="w-6 h-6 text-color-papel" />
+          </motion.div>
         </div>
       )}
 
-      {/* Inner washi-paper border */}
-      <div className="absolute inset-1.5 border border-color-tinta/10 rounded-[1px] pointer-events-none z-10" />
+      {/* Decorative accent lines */}
+      <div className="absolute inset-4 border border-color-accent/10 rounded-xl pointer-events-none z-10" />
 
       {src ? (
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-contain p-3"
+          className="w-full h-full object-contain p-6"
           style={{ objectPosition: position }}
           loading="lazy"
         />
       ) : (
-        // Placeholder — washi gradient + camera icon + label
-        <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-[radial-gradient(ellipse_at_center,rgba(201,91,100,0.06),transparent_70%)]">
+        // Placeholder
+        <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-color-accent/5">
           <ImageIcon
             aria-hidden="true"
-            className="w-8 h-8 text-color-tinta/30"
+            className="w-10 h-10 text-color-accent/30"
             strokeWidth={1.5}
           />
-          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-color-tinta/40">
+          <span className="text-[0.65rem] uppercase tracking-widest text-color-accent/40 font-bold">
             {placeholderLabel}
           </span>
         </div>
       )}
 
-      {/* Subtle sakura petal in the corner for warmth */}
-      <SakuraIcon
-        aria-hidden="true"
-        className="absolute top-2 right-2 w-3 h-3 text-color-sakura/60 z-10"
-      />
+      {/* Modern accent in corner */}
+      <div className="absolute top-4 right-4 w-2 h-2 bg-color-accent glow-cyan rounded-full z-10" />
     </div>
   )
 }
@@ -126,7 +116,6 @@ function TimelineCard({
   imagePosition,
   onImageClick,
 }: TimelineCardProps) {
-  // Mobile: card always on the right of the spine. Desktop: alternates.
   const desktopOrder =
     align === 'left'
       ? 'lg:flex-row-reverse'
@@ -137,42 +126,36 @@ function TimelineCard({
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.7, delay: index * 0.15, ease: 'easeOut' }}
-      className={`relative flex flex-col gap-6 ${desktopOrder} lg:flex-row lg:items-stretch lg:gap-8`}
+      transition={{ duration: 0.7, delay: index * 0.15, ease: [0.33, 1, 0.68, 1] }}
+      className={`relative flex flex-col gap-8 ${desktopOrder} lg:flex-row lg:items-stretch lg:gap-12`}
     >
-      {/* ---------- Card content ---------- */}
       <div
         className={`relative w-full lg:w-[46%] pl-16 lg:pl-0 ${
-          align === 'left' ? 'lg:pr-10 lg:text-right' : 'lg:pl-10 lg:text-left'
+          align === 'left' ? 'lg:pr-12 lg:text-right' : 'lg:pl-12 lg:text-left'
         }`}
       >
-        <div className="bg-color-papel/40 backdrop-blur-sm border border-color-tinta/10 rounded-xl px-6 py-5 h-full flex flex-col justify-center">
-          {/* Period brush label */}
-          <span className="inline-block text-sm md:text-base uppercase tracking-[0.4em] text-color-sakura font-semibold mb-3">
+        <div className={`glass-card rounded-2xl px-8 py-7 h-full flex flex-col justify-center shadow-xl ${index % 3 === 0 ? 'hover:glow-cyan' : index % 3 === 1 ? 'hover:shadow-[0_0_25px_rgba(255,220,60,0.15)] hover:border-color-accent-alt/40' : 'hover:shadow-[0_0_25px_rgba(255,76,76,0.15)] hover:border-color-danger/40'} transition-all duration-300`}>
+          <span className={`inline-block text-xs md:text-sm uppercase tracking-[0.4em] ${index % 3 === 0 ? 'text-color-accent' : index % 3 === 1 ? 'text-color-accent-alt' : 'text-color-danger'} font-black mb-4`}>
             {period}
           </span>
 
-          {/* Title */}
-          <h3 className="font-brush text-2xl md:text-3xl lg:text-4xl text-color-tinta uppercase leading-tight tracking-wide">
+          <h3 className="font-bold text-2xl md:text-3xl lg:text-4xl text-color-tinta uppercase leading-tight tracking-tight">
             {title}
           </h3>
 
-          {/* Institution */}
-          <p className="mt-2 text-sm text-color-tinta/70 italic">
+          <p className={`mt-3 text-sm ${index % 3 === 1 ? 'text-color-accent' : index % 3 === 2 ? 'text-color-accent-alt' : 'text-color-accent'} font-bold uppercase tracking-widest opacity-80 italic`}>
             {institution}
           </p>
 
-          {/* Description */}
-          <p className="mt-4 text-color-tinta/80 text-fluid-body">
+          <p className="mt-6 text-color-tinta text-fluid-body leading-relaxed">
             {description}
           </p>
         </div>
       </div>
 
-      {/* ---------- Image slot ---------- */}
       <div
         className={`w-full lg:w-[46%] pl-16 lg:pl-0 ${
-          align === 'left' ? 'lg:pl-10' : 'lg:pr-10'
+          align === 'left' ? 'lg:pl-12' : 'lg:pr-12'
         }`}
       >
         <ImageSlot
@@ -184,15 +167,13 @@ function TimelineCard({
         />
       </div>
 
-      {/* ---------- Center node (sakura medallion with icon) ---------- */}
       <div
         aria-hidden="true"
         className="absolute left-0 top-0 lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-10"
       >
-        <div className="relative w-10 h-10 rounded-full bg-color-papel border border-color-tinta/25 shadow-[0_4px_12px_-4px_rgba(26,26,26,0.4)] flex items-center justify-center">
-          <Icon className="w-4 h-4 text-color-tinta" strokeWidth={1.8} />
-          {/* Sakura accent floating on the node */}
-          <SakuraIcon className="absolute -top-1.5 -right-1.5 w-3 h-3 text-color-sakura drop-shadow-sm" />
+        <div className="relative w-11 h-11 rounded-xl glass-card flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-110 hover:glow-cyan">
+          <Icon className="w-5 h-5 text-color-accent" strokeWidth={2} />
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-color-accent glow-cyan border border-color-papel" />
         </div>
       </div>
     </motion.div>
@@ -226,49 +207,44 @@ function MinimalTimelineCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7, delay: index * 0.15, ease: 'easeOut' }}
-      className={`relative flex flex-col gap-6 ${desktopOrder} lg:flex-row lg:items-center lg:gap-8`}
+      className={`relative flex flex-col gap-6 ${desktopOrder} lg:flex-row lg:items-center lg:gap-10`}
     >
-      {/* ---------- Card content ---------- */}
       <div
         className={`relative w-full lg:w-[46%] pl-16 lg:pl-0 ${
-          align === 'left' ? 'lg:pr-10 lg:text-right' : 'lg:pl-10 lg:text-left'
+          align === 'left' ? 'lg:pr-12 lg:text-right' : 'lg:pl-12 lg:text-left'
         }`}
       >
-        <div className="bg-color-papel/40 backdrop-blur-sm rounded-xl px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-color-tinta/10 w-full hover:border-color-sakura/30 transition-colors">
+        <div className="glass-card rounded-xl px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-6 border border-white/5 w-full hover:glow-cyan transition-all duration-300 shadow-lg">
           <div className={`${align === 'left' ? 'sm:text-right' : 'sm:text-left'} text-left flex-1`}>
-            <span className="block text-xs uppercase tracking-[0.4em] text-color-sakura font-semibold mb-1">
+            <span className="block text-[0.65rem] uppercase tracking-[0.4em] text-color-accent font-black mb-2">
               {period}
             </span>
-            <h3 className="font-brush text-xl text-color-tinta">{title}</h3>
-            <p className="text-xs text-color-tinta/70 italic mt-1">{institution}</p>
+            <h3 className="font-bold text-xl text-color-tinta uppercase tracking-tight">{title}</h3>
+            <p className="text-xs text-color-accent font-bold uppercase tracking-widest opacity-70 italic mt-1">{institution}</p>
           </div>
           <button
             onClick={onButtonClick}
-            className="text-xs uppercase tracking-[0.2em] text-color-tinta/60 hover:text-color-sakura transition-colors whitespace-nowrap border border-color-tinta/20 hover:border-color-sakura/50 rounded-full px-4 py-2 shrink-0"
+            className="text-[0.65rem] uppercase tracking-[0.25em] font-black text-color-papel bg-color-accent hover:glow-cyan transition-all rounded-lg px-5 py-2.5 shrink-0"
           >
             {buttonLabel}
           </button>
         </div>
       </div>
 
-      {/* ---------- Empty opposite side ---------- */}
       <div className="hidden lg:block lg:w-[46%]" />
 
-      {/* ---------- Center node ---------- */}
       <div
         aria-hidden="true"
         className="absolute left-0 top-1/2 -translate-y-1/2 lg:left-1/2 lg:-translate-x-1/2 z-10"
       >
-        <div className="relative w-8 h-8 rounded-full bg-color-papel border border-color-tinta/25 shadow-sm flex items-center justify-center">
-          <Icon className="w-4 h-4 text-color-tinta" strokeWidth={1.8} />
-          <SakuraIcon className="absolute -top-1 -right-1 w-2.5 h-2.5 text-color-sakura drop-shadow-sm" />
+        <div className="relative w-9 h-9 rounded-xl glass-card flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110 hover:glow-cyan">
+          <Icon className="w-4 h-4 text-color-accent" strokeWidth={2} />
+          <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-color-accent glow-cyan border border-color-papel" />
         </div>
       </div>
     </motion.div>
   )
 }
-
-// ---------- Section ----------
 
 function Experiencia() {
   const { t } = useLanguage()
@@ -278,27 +254,22 @@ function Experiencia() {
   return (
     <section
       id="experiencia"
-      className="relative z-10 min-h-screen px-6 py-28 md:py-32 lg:py-36 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden"
+      className="relative z-10 min-h-screen px-6 py-12 md:py-16 lg:py-20 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden"
     >
-      {/* Background image */}
-      {/* Background handled by ScrollBackground component */}
-
-      {/* Content wrapper */}
       <div className="relative z-10 w-full flex flex-col items-center">
-        <SectionHeader title={e.title} stamp={e.stamp} intro={e.intro} />
+        <SectionHeader title={e.title} intro={e.intro} />
 
-      {/* Timeline */}
-      <div className="relative w-full max-w-5xl mt-20">
-        {/* Vertical spine — left on mobile, centered on lg */}
+      <div className="relative w-full max-w-5xl mt-24">
         <div
           aria-hidden="true"
-          className="absolute top-0 bottom-0 left-5 lg:left-1/2 lg:-translate-x-1/2 w-px bg-gradient-to-b from-transparent via-color-tinta/20 to-transparent"
+          className="absolute top-0 bottom-0 left-5 lg:left-1/2 lg:-translate-x-1/2 w-0.5 tricolor-separator-y rounded-full"
         />
 
         <div className="flex flex-col gap-24 lg:gap-32">
           {ENTRIES.map((entry, i) => {
             const item = e.items[i]
             if (!item) return null
+            const canExpandImage = entry.id !== 'mazda'
             return (
               <TimelineCard
                 key={entry.id}
@@ -313,12 +284,11 @@ function Experiencia() {
                 imageAlt={item.title}
                 placeholderLabel={e.placeholderImage}
                 imagePosition={entry.id === 'universidad' ? 'top' : 'center'}
-                onImageClick={() => setSelectedImg(entry.image)}
+                onImageClick={canExpandImage ? () => setSelectedImg(entry.image) : undefined}
               />
             )
           })}
           
-          {/* Certificaciones (Minimal on timeline) */}
           {e.certificaciones.map((cert, j) => (
             <MinimalTimelineCard
               key={`cert-${j}`}
@@ -335,13 +305,12 @@ function Experiencia() {
         </div>
       </div>
 
-      {/* Bottom sakura ornament */}
-      <div className="flex items-center gap-3 mt-20">
-        <span className="h-px w-10 bg-color-sakura/60" />
-        <SakuraIcon className="w-3 h-3 text-color-sakura" />
-        <span className="h-px w-10 bg-color-sakura/60" />
+      <div className="flex items-center gap-4 mt-28">
+        <span className="h-0.5 w-12 tricolor-separator rounded-full" />
+        <div className="w-2 h-2 rounded-full tricolor-dot" />
+        <span className="h-0.5 w-12 tricolor-separator rounded-full" />
       </div>
-      </div>{/* end content wrapper */}
+      </div>
 
       <ImageModal src={selectedImg} onClose={() => setSelectedImg(null)} />
     </section>

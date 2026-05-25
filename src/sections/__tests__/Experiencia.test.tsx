@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test-utils'
 import Experiencia from '../Experiencia'
 
@@ -30,8 +31,28 @@ describe('Experiencia', () => {
     renderWithProviders(<Experiencia />)
     const images = screen.getAllByRole('img')
     const ugto = images.find((img) => img.getAttribute('src') === '/titulo.webp')
-    const mazda = images.find((img) => img.getAttribute('src') === '/mazda.png')
+    const mazda = images.find((img) => img.getAttribute('src') === '/mazda-new-logo.jpg')
     expect(ugto).toBeDefined()
     expect(mazda).toBeDefined()
+  })
+
+  it('opens the university image in a modal above fixed navigation', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Experiencia />)
+
+    await user.click(screen.getByRole('img', { name: 'Graduación Universitaria' }))
+
+    expect(screen.getByTestId('image-modal')).toHaveClass('z-[9999]')
+    expect(screen.getByRole('button', { name: /cerrar imagen/i })).toBeInTheDocument()
+  })
+
+  it('does not open the Mazda logo image in a modal', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Experiencia />)
+
+    await user.click(screen.getByRole('img', { name: 'Prácticas Profesionales' }))
+
+    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /cerrar imagen/i })).not.toBeInTheDocument()
   })
 })

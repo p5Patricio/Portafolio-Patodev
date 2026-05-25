@@ -3,7 +3,6 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import MobileNavbar from './components/MobileNavbar'
-import SakuraPetals from './components/SakuraPetals'
 import HomePage from './pages/HomePage'
 
 const GaleriaPage = lazy(() => import('./pages/GaleriaPage'))
@@ -26,10 +25,7 @@ function App() {
       </a>
 
       <main id="main-content" className="pb-24 lg:pb-0">
-        {/* Sakura petals are mounted only on Home — Gallery has its own instance
-            inside the page so it can position above its own background. */}
-        {isHome && <SakuraPetals />}
-
+        {/* Navbar and MobileNavbar mounted at the top */}
         {isHome && <Navbar />}
         {isHome && <MobileNavbar />}
 

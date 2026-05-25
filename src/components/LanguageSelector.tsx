@@ -7,9 +7,11 @@ import type { Lang } from '../data/translations'
 const OPTIONS: Lang[] = ['es', 'en']
 
 type Size = 'md' | 'lg'
+type Accent = 'cyan' | 'yellow'
 
 type Props = {
   size?: Size
+  accent?: Accent
   /** Show a small "Languages" icon at the left for extra presence. Defaults to true on lg. */
   showIcon?: boolean
   /** Unique key for the layoutId so multiple selectors don't share the same pill. */
@@ -37,13 +39,38 @@ const SIZE_STYLES: Record<Size, {
   },
 }
 
+const ACCENT_STYLES: Record<Accent, {
+  container: string
+  icon: string
+  pill: string
+  divider: string
+  hoverText: string
+}> = {
+  cyan: {
+    container: 'bg-black/65 border-white/15 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)]',
+    icon: 'text-color-accent/60',
+    pill: 'bg-color-accent shadow-[0_0_15px_rgba(34,213,224,0.4)]',
+    divider: 'tricolor-separator-y',
+    hoverText: 'hover:text-color-accent',
+  },
+  yellow: {
+    container: 'bg-black/65 border-white/15 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)]',
+    icon: 'text-color-tinta/75',
+    pill: 'bg-color-accent-alt shadow-[0_0_16px_rgba(255,220,60,0.34)]',
+    divider: 'bg-white/10',
+    hoverText: 'hover:text-color-tinta',
+  },
+}
+
 function LanguageSelector({
   size = 'md',
+  accent = 'cyan',
   showIcon,
   layoutKey = 'lang-pill',
 }: Props) {
   const { lang, setLang } = useLanguage()
   const styles = SIZE_STYLES[size]
+  const accentStyles = ACCENT_STYLES[accent]
   const showIconResolved = showIcon ?? true
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -78,20 +105,20 @@ function LanguageSelector({
       ref={containerRef}
       role="group"
       aria-label="Language selector"
-      className={`relative flex items-center rounded-full bg-color-papel/40 backdrop-blur-xl border border-color-tinta/20 shadow-[0_8px_24px_-10px_rgba(26,26,26,0.4)] ${styles.container}`}
+      className={`relative flex items-center rounded-full backdrop-blur-xl border ${accentStyles.container} ${styles.container}`}
     >
       {showIconResolved && (
         <Languages
           aria-hidden="true"
-          className={`text-color-tinta/55 flex-shrink-0 ${styles.icon}`}
-          strokeWidth={1.7}
+          className={`${accentStyles.icon} flex-shrink-0 ${styles.icon}`}
+          strokeWidth={2}
         />
       )}
 
       {/* Single animated pill — positioned absolutely inside the container */}
       <motion.div
         key={layoutKey}
-        className="absolute top-1 bottom-1 rounded-full bg-color-tinta shadow-[0_4px_12px_-4px_rgba(26,26,26,0.5)] pointer-events-none"
+        className={`absolute top-1 bottom-1 rounded-full pointer-events-none ${accentStyles.pill}`}
         initial={false}
         animate={{
           left: pillRect.left,
@@ -107,7 +134,7 @@ function LanguageSelector({
             {i > 0 && (
               <span
                 aria-hidden="true"
-                className="w-px h-4 bg-color-tinta/20 mx-0.5"
+                className={`w-px h-4 mx-0.5 opacity-60 ${accentStyles.divider}`}
               />
             )}
             <button
@@ -115,10 +142,10 @@ function LanguageSelector({
               type="button"
               aria-pressed={isActive}
               onClick={() => setLang(opt)}
-              className={`relative uppercase font-semibold rounded-full transition-colors ${styles.button} ${styles.text} ${
+              className={`relative uppercase font-black rounded-full transition-colors ${styles.button} ${styles.text} ${
                 isActive
-                  ? 'text-color-papel'
-                  : 'text-color-tinta/65 hover:text-color-tinta'
+                  ? accent === 'yellow' ? 'text-color-papel' : 'text-color-tinta'
+                  : `text-color-tinta/50 ${accentStyles.hoverText}`
               }`}
             >
               <span className="relative z-10">{opt}</span>

@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Globe, Lock } from 'lucide-react'
+import { ExternalLink, Globe, Lock, Terminal } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import type { Repo } from '../data/repos'
 import type { Lang } from '../data/translations'
 import ProjectCarousel from './ProjectCarousel'
 import TechIcon from './TechIcon'
-import SakuraIcon from './SakuraIcon'
 import PillButton from './PillButton'
 
 type Props = {
@@ -18,11 +17,15 @@ type Props = {
   index?: number
 }
 
+/**
+ * Elegant Glass Project Card.
+ * Sophisticated balance: Heavy Cyan (Buttons), Medium Yellow (Titles),
+ * and subtle Red micro-accents (Status dot).
+ */
 function ProjectCard({ repo, lang, viewProjectLabel, visitSiteLabel, index = 0 }: Props) {
   const subtitle = repo.subtitle[lang]
   const description = repo.description[lang]
   const images = repo.images ?? []
-  // Prefer the live URL when available; otherwise the repo URL is the CTA.
   const hasLiveUrl = !!repo.liveUrl
   const primaryUrl = repo.liveUrl ?? repo.repoUrl
   const ctaLabel = hasLiveUrl ? visitSiteLabel : viewProjectLabel
@@ -30,82 +33,92 @@ function ProjectCard({ repo, lang, viewProjectLabel, visitSiteLabel, index = 0 }
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7, delay: 0.1 + index * 0.12, ease: 'easeOut' }}
-      className="group relative flex flex-col rounded-2xl bg-color-papel/40 backdrop-blur-sm border border-color-tinta/10 shadow-[0_8px_24px_-16px_rgba(26,26,26,0.35)] overflow-hidden transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_-16px_rgba(26,26,26,0.45)]"
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.33, 1, 0.68, 1] }}
+      className="group relative flex flex-col overflow-hidden rounded-[2rem] glass-card transition-all duration-500"
     >
-      {/* Image carousel — fills up once `repo.images` is populated */}
+      {/* --- Micro-accent (Red dot) --- */}
+      <div className="absolute top-5 right-5 z-30 accent-red-dot opacity-55 transition-opacity group-hover:opacity-100" />
+
+      {/* Image carousel */}
       <div className="relative">
         <ProjectCarousel images={images} title={repo.name} />
-        {/* Sakura accent top-left */}
-        <SakuraIcon className="absolute top-3 left-3 z-10 w-5 h-5 text-color-sakura drop-shadow-sm pointer-events-none" />
-
-        {/* Private badge if the repo is not public */}
-        {repo.isPrivate && (
-          <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-color-tinta/85 text-color-papel text-[0.6rem] uppercase tracking-[0.25em] font-semibold px-2.5 py-1 backdrop-blur-sm">
-            <Lock className="w-3 h-3" strokeWidth={2.2} />
-            {lang === 'es' ? 'Privado' : 'Private'}
+        
+        {/* Minimal info pill (Cyan) */}
+        <div className="absolute top-5 left-5 z-10 flex items-center gap-2 rounded-full border border-color-accent/10 bg-color-accent/5 px-3 py-1 backdrop-blur-md">
+          <Terminal className="w-3 h-3 text-color-accent" />
+          <span className="text-[0.6rem] font-black text-color-accent uppercase tracking-[0.2em]">
+            {repo.id.slice(0, 4)}
           </span>
-        )}
+        </div>
       </div>
 
       {/* Body */}
-      <div className="flex flex-col items-center text-center gap-3 px-6 pt-6 pb-7 flex-1">
-        <h3 className="font-brush text-color-tinta text-3xl md:text-4xl leading-none tracking-wide">
+      <div className="flex flex-1 flex-col items-center gap-3.5 px-7 pt-8 pb-10 text-center">
+        <h3 className="text-2xl font-black leading-none tracking-tight text-color-tinta md:text-3xl">
           {repo.name}
         </h3>
-        <p className="text-color-sakura text-sm tracking-wide italic">
+        
+        {/* Subtitle (Yellow accent) */}
+        <p className="text-[0.7rem] font-black uppercase tracking-[0.24em] text-color-accent-alt">
           {subtitle}
         </p>
-        <p className="text-color-tinta/75 text-fluid-sm max-w-[22rem]">
+        
+        <p className="text-color-tinta/90 text-fluid-sm leading-relaxed max-w-[20rem]">
           {description}
         </p>
 
-        {/* Sakura divider */}
-        <div className="flex items-center gap-3 w-full max-w-[16rem] mt-2">
-          <span className="flex-1 h-px bg-color-sakura/50" />
-          <SakuraIcon className="w-3 h-3 text-color-sakura/80" />
-          <span className="flex-1 h-px bg-color-sakura/50" />
+        {/* Private indicator (Red accent text) */}
+        {repo.isPrivate && (
+          <div className="flex items-center gap-1.5 text-[0.7rem] font-bold text-color-danger uppercase tracking-widest mt-1 opacity-80">
+            <Lock className="w-3 h-3" />
+            {lang === 'es' ? 'Acceso Privado' : 'Private Access'}
+          </div>
+        )}
+
+        {/* Minimal Divider */}
+        <div className="mt-2 flex w-full max-w-[8.5rem] items-center gap-3 opacity-65">
+          <span className="flex-1 h-px tricolor-separator rounded-full" />
         </div>
 
-        {/* Tech icons — wrap if more than ~6 */}
-        <ul className="flex items-center justify-center gap-4 flex-wrap mt-3 mb-5 max-w-[22rem]">
+        {/* Tech icons (Blue tint) */}
+        <ul className="mt-3 mb-6 flex flex-wrap items-center justify-center gap-4">
           {repo.technologies.map((techId) => (
             <li key={techId}>
               <TechIcon
                 id={techId}
-                className="w-6 h-6 text-color-tinta/80 hover:text-color-sakura transition-colors"
+                className="h-6 w-6 text-color-tinta/35 transition-colors hover:text-color-accent"
               />
             </li>
           ))}
         </ul>
 
-        {/* CTA row — pushes to the bottom of the card */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 mt-auto">
+        {/* CTA row (Cyan focus) */}
+        <div className="mt-auto flex flex-col items-center gap-5 sm:flex-row">
           <PillButton
             href={primaryUrl}
             ariaLabel={`${ctaLabel}: ${repo.name}`}
           >
             {ctaLabel}
-            <CtaIcon className="w-3.5 h-3.5" strokeWidth={2} />
+            <CtaIcon className="w-4 h-4" strokeWidth={2.5} />
           </PillButton>
 
-          {/* Secondary GitHub link — only when public AND there's a live URL
-              (so we don't show two buttons pointing to the same repo). */}
           {!repo.isPrivate && hasLiveUrl && (
-            <a
+            <motion.a
               href={repo.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`GitHub: ${repo.name}`}
-              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.25em] text-color-tinta/65 hover:text-color-tinta transition-colors"
+              whileHover={{ x: 3, opacity: 1 }}
+              className="inline-flex items-center gap-2 text-[0.75rem] uppercase tracking-[0.3em] font-black text-color-tinta/30 transition-all"
             >
-              <SiGithub className="w-4 h-4 fill-current" />
+              <SiGithub className="w-5 h-5 fill-current" />
               <span>Repo</span>
-              <ExternalLink className="w-3 h-3" strokeWidth={1.5} />
-            </a>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </motion.a>
           )}
         </div>
       </div>

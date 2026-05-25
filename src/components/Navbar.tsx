@@ -19,7 +19,7 @@ const SECTION_IDS = linkDefs.map((l) => l.id)
 // consistent (same height, blur, border, shadow). Height is fixed so the brand,
 // nav links, and language selector all line up perfectly.
 const CAPSULE =
-  'h-12 rounded-full bg-color-papel/40 backdrop-blur-xl border border-color-tinta/15 shadow-[0_10px_30px_-12px_rgba(26,26,26,0.45)]'
+  'h-12 rounded-full bg-black/65 backdrop-blur-xl border border-white/15 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)]'
 
 function Navbar() {
   const active = useActiveSection(SECTION_IDS)
@@ -39,36 +39,19 @@ function Navbar() {
         transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         aria-label={t.brand.title}
       >
-        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-black">
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-black/45 border border-white/10">
           <Logo
             alt={t.brand.title}
-            className="h-8 w-auto transition-transform duration-300 group-hover:scale-110"
+            className="h-7 w-auto transition-transform duration-300 group-hover:scale-110"
           />
         </div>
         <div className="leading-tight">
-          <p className="font-bold text-color-tinta tracking-[0.2em] text-sm">
+          <p className="font-black text-color-tinta tracking-widest text-xs uppercase">
             {t.brand.title}
           </p>
-          <p className="text-[0.65rem] text-color-tinta/60 tracking-wide">
+          <p className="text-[0.6rem] text-color-danger font-bold tracking-widest uppercase">
             {t.brand.subtitle}
           </p>
-        </div>
-      </motion.a>
-
-      {/* Brand (Mobile) */}
-      <motion.a
-        href="#inicio"
-        className="flex lg:hidden fixed top-6 left-6 md:top-7 md:left-8 z-40 items-center justify-center w-12 h-12 rounded-full bg-color-papel/40 backdrop-blur-xl border border-color-tinta/15 shadow-[0_10px_30px_-12px_rgba(26,26,26,0.45)] group"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-        aria-label={t.brand.title}
-      >
-        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-black">
-          <Logo
-            alt={t.brand.title}
-            className="h-8 w-auto transition-transform duration-300 group-hover:scale-110"
-          />
         </div>
       </motion.a>
 
@@ -87,16 +70,16 @@ function Navbar() {
               <li key={id} className="relative">
                 <a
                   href={href}
-                  className={`relative block whitespace-nowrap px-3.5 xl:px-4 py-1.5 text-[0.7rem] xl:text-[0.75rem] tracking-[0.2em] uppercase font-semibold rounded-full transition-colors ${
+                  className={`relative block whitespace-nowrap px-3.5 xl:px-4 py-1.5 text-[0.65rem] xl:text-[0.7rem] tracking-[0.25em] uppercase font-bold rounded-full transition-colors ${
                     isActive
                       ? 'text-color-papel'
-                      : 'text-color-tinta/70 hover:text-color-tinta'
+                      : 'text-color-tinta/60 hover:text-color-accent'
                   }`}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-color-tinta shadow-[0_4px_12px_-4px_rgba(26,26,26,0.5)]"
+                      className="absolute inset-0 rounded-full bg-color-accent shadow-[0_0_15px_rgba(34,213,224,0.4)]"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -115,7 +98,7 @@ function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
       >
-        <LanguageSelector size="lg" layoutKey="lang-pill-desktop" />
+        <LanguageSelector size="lg" accent="yellow" layoutKey="lang-pill-desktop" />
       </motion.div>
 
       {/* ---------- Mobile / tablet language selector (top-right) ---------- */}
@@ -125,7 +108,7 @@ function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
       >
-        <LanguageSelector size="md" layoutKey="lang-pill-mobile" />
+        <LanguageSelector size="md" accent="yellow" layoutKey="lang-pill-mobile" />
       </motion.div>
     </>
   )

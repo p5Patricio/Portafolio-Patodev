@@ -65,7 +65,7 @@ describe('ProjectCard', () => {
     renderWithProviders(
       <ProjectCard repo={privateRepo} lang="es" viewProjectLabel="Ver proyecto" visitSiteLabel="Visitar sitio" />
     )
-    expect(screen.getByText('Privado')).toBeInTheDocument()
+    expect(screen.getByText(/Acceso Privado/i)).toBeInTheDocument()
   })
 
   it('shows secondary GitHub link for public repos with live URL', () => {

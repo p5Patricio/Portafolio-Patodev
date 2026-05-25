@@ -10,16 +10,16 @@ describe('Hero', () => {
     expect(section).toBeInTheDocument()
   })
 
-  it('renders brush text words', () => {
+  it('renders title text words', () => {
     renderWithProviders(<Hero />)
     expect(screen.getByText('Soy')).toBeInTheDocument()
     expect(screen.getByText('Ingeniero')).toBeInTheDocument()
     expect(screen.getByText('Software')).toBeInTheDocument()
   })
 
-  it('renders the hanko stamp', () => {
+  it('renders the massive integrated logo', () => {
     renderWithProviders(<Hero />)
-    // HankoStamp renders kanji characters vertically
-    expect(screen.getByText('私')).toBeInTheDocument()
+    // Massive logo as background
+    expect(screen.getByRole('img', { name: /logo personal/i })).toBeInTheDocument()
   })
 })

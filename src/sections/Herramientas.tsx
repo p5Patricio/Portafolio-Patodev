@@ -4,10 +4,11 @@ import type { Variants } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import { SKILL_CATEGORIES, type SkillCategory } from '../data/skills'
-import SakuraIcon from '../components/SakuraIcon'
 import SectionHeader from '../components/SectionHeader'
 import TechIcon, { TECH_LABELS } from '../components/TechIcon'
 import type { Lang } from '../data/translations'
+
+import { Terminal } from 'lucide-react'
 
 // ---------- Desktop: animated tool stack ----------
 
@@ -26,8 +27,48 @@ const chipVariants: Variants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.42, ease: 'easeOut' },
   },
+}
+
+type ToolAccent = 'cyan' | 'yellow' | 'red'
+
+const TOOL_ACCENTS: ToolAccent[] = ['cyan', 'yellow', 'red']
+
+const TOOL_ACCENT_STYLES: Record<
+  ToolAccent,
+  {
+    card: string
+    icon: string
+    line: string
+    dot: string
+  }
+> = {
+  cyan: {
+    card:
+      'hover:border-color-accent/50 hover:bg-color-accent/[0.055] hover:shadow-[0_18px_44px_-24px_rgba(0,216,240,0.76)]',
+    icon: 'group-hover:text-color-accent',
+    line: 'bg-color-accent shadow-[0_0_16px_rgba(0,216,240,0.48)]',
+    dot: 'bg-color-accent shadow-[0_0_16px_rgba(0,216,240,0.62)]',
+  },
+  yellow: {
+    card:
+      'hover:border-color-accent-alt/50 hover:bg-color-accent-alt/[0.055] hover:shadow-[0_18px_44px_-24px_rgba(255,220,60,0.72)]',
+    icon: 'group-hover:text-color-accent-alt',
+    line: 'bg-color-accent-alt shadow-[0_0_16px_rgba(255,220,60,0.48)]',
+    dot: 'bg-color-accent-alt shadow-[0_0_16px_rgba(255,220,60,0.62)]',
+  },
+  red: {
+    card:
+      'hover:border-color-danger/50 hover:bg-color-danger/[0.055] hover:shadow-[0_18px_44px_-24px_rgba(255,76,76,0.7)]',
+    icon: 'group-hover:text-color-danger',
+    line: 'bg-color-danger shadow-[0_0_16px_rgba(255,76,76,0.48)]',
+    dot: 'bg-color-danger shadow-[0_0_16px_rgba(255,76,76,0.62)]',
+  },
+}
+
+function getToolAccent(categoryIndex: number, skillIndex: number): ToolAccent {
+  return TOOL_ACCENTS[(categoryIndex + skillIndex) % TOOL_ACCENTS.length]
 }
 
 function DesktopToolStack({
@@ -45,57 +86,79 @@ function DesktopToolStack({
       whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
       variants={stackVariants}
-      className="relative w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center py-10 border-b border-color-tinta/10 last:border-b-0"
+      className="relative w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center py-12 border-b border-white/5 last:border-b-0"
     >
       {/* Left: narrative */}
-      <div className={`flex flex-col gap-4 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-        <div className="flex items-baseline gap-3 md:gap-4">
-          <h3 className="font-brush text-color-tinta text-3xl md:text-4xl uppercase leading-none tracking-wide">
+      <div className={`flex flex-col gap-5 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-color-accent/10 border border-color-accent/20">
+            <Terminal className="w-5 h-5 text-color-accent" />
+          </div>
+          <h3 className="font-black text-color-tinta text-3xl md:text-4xl uppercase leading-none tracking-tight">
             {category.title[lang]}
           </h3>
-          <span className="flex-1 h-px bg-color-sakura/30" />
-          <SakuraIcon className="w-3.5 h-3.5 text-color-sakura/80 shrink-0" />
         </div>
-        <p className="text-sm md:text-[0.95rem] text-color-tinta/70 italic max-w-xl">
+        <p className="text-sm md:text-base text-color-accent font-bold uppercase tracking-widest italic opacity-80">
           {category.caption[lang]}
         </p>
-        <p className="text-sm md:text-base text-color-tinta/85 leading-relaxed max-w-xl bg-color-papel/40 backdrop-blur-sm rounded-xl px-5 py-4 border border-color-tinta/10">
+        <p className="text-sm md:text-[1.05rem] text-color-tinta/80 leading-relaxed max-w-xl glass-card rounded-2xl px-8 py-6 shadow-xl">
           {category.narrative[lang]}
         </p>
       </div>
 
       {/* Right: animated tool pile */}
-      <div className={`flex flex-wrap items-center justify-center gap-3 md:gap-4 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-        {category.skills.map((skillId) => (
-          <motion.div
-            key={skillId}
-            variants={chipVariants}
-            className={`group relative flex flex-col items-center gap-2 px-3 py-3 sm:px-4 sm:py-4 rounded-xl bg-color-papel/60 backdrop-blur-md border transition-all duration-300 shadow-[0_4px_12px_-8px_rgba(26,26,26,0.25)] hover:shadow-[0_8px_20px_-10px_rgba(201,91,100,0.3)] ${
-              skillId === category.highlight
-                ? 'border-color-sakura/40 -translate-y-1 shadow-[0_8px_20px_-10px_rgba(201,91,100,0.3)]'
-                : 'border-color-tinta/10 hover:border-color-sakura/40 hover:-translate-y-0.5'
-            }`}
-          >
-            <TechIcon
-              id={skillId}
-              className={`w-7 h-7 sm:w-9 sm:h-9 transition-colors duration-300 ${
-                skillId === category.highlight
-                  ? 'text-color-sakura'
-                  : 'text-color-tinta/75 group-hover:text-color-sakura'
-              }`}
-            />
-            <span className="text-[0.6rem] sm:text-[0.65rem] uppercase tracking-[0.15em] text-color-tinta/65 group-hover:text-color-tinta text-center leading-tight">
-              {TECH_LABELS[skillId]}
-            </span>
+      <div className={`flex flex-wrap items-center justify-center gap-4 md:gap-5 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+        {category.skills.map((skillId, skillIndex) => {
+          const isHighlighted = skillId === category.highlight
+          const accent = isHighlighted ? 'cyan' : getToolAccent(index, skillIndex)
+          const accentStyles = TOOL_ACCENT_STYLES[accent]
+          const rotate = accent === 'red' ? -1.2 : accent === 'yellow' ? 1.2 : 0.8
 
-            {skillId === category.highlight && (
-              <SakuraIcon
-                aria-hidden="true"
-                className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-color-sakura drop-shadow-sm"
+          return (
+            <motion.div
+              key={skillId}
+              variants={chipVariants}
+              whileHover={{
+                y: -7,
+                scale: 1.045,
+                rotate,
+                transition: { type: 'spring', stiffness: 520, damping: 28, mass: 0.55 },
+              }}
+              whileTap={{ scale: 0.98 }}
+              className={`group relative flex flex-col items-center gap-3 overflow-hidden rounded-2xl px-4 py-5 sm:px-5 sm:py-6 glass-card transition-[border-color,background-color,box-shadow] duration-150 ease-out will-change-transform ${
+                isHighlighted
+                  ? 'border-color-accent/45 bg-color-accent/[0.04] shadow-[0_16px_42px_-24px_rgba(0,216,240,0.72)]'
+                  : accentStyles.card
+              }`}
+            >
+              <span
+                className={`pointer-events-none absolute inset-x-4 top-3 h-px origin-left scale-x-0 rounded-full opacity-0 transition-all duration-150 ease-out group-hover:scale-x-100 group-hover:opacity-100 ${
+                  isHighlighted ? 'scale-x-100 opacity-90' : ''
+                } ${accentStyles.line}`}
               />
-            )}
-          </motion.div>
-        ))}
+
+              <TechIcon
+                id={skillId}
+                className={`w-8 h-8 sm:w-10 sm:h-10 transition-colors duration-150 ${
+                  isHighlighted
+                    ? 'text-color-accent'
+                    : `text-color-tinta/60 ${accentStyles.icon}`
+                }`}
+              />
+              <span className="text-center text-[0.65rem] font-bold uppercase leading-tight tracking-[0.2em] text-color-tinta/50 transition-colors duration-150 group-hover:text-color-tinta sm:text-[0.7rem]">
+                {TECH_LABELS[skillId]}
+              </span>
+
+              <span
+                className={`absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full transition-all duration-150 ease-out ${
+                  isHighlighted
+                    ? `scale-100 opacity-100 ${TOOL_ACCENT_STYLES.cyan.dot}`
+                    : `scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 ${accentStyles.dot}`
+                }`}
+              />
+            </motion.div>
+          )
+        })}
       </div>
     </motion.div>
   )
@@ -145,27 +208,30 @@ function MobileAccordion({
   onToggle: () => void
 }) {
   return (
-    <div className="border-b border-color-tinta/10 last:border-b-0">
+    <div className="border-b border-white/5 last:border-b-0">
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-5 text-left"
+        className="w-full flex items-center justify-between py-6 text-left"
         aria-expanded={isOpen}
       >
-        <div className="flex items-baseline gap-3">
-          <h3 className="font-brush text-color-tinta text-2xl uppercase leading-none tracking-wide">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-color-accent/10 border border-color-accent/20">
+            <Terminal className="w-4 h-4 text-color-accent" />
+          </div>
+          <h3 className="font-black text-color-tinta text-2xl uppercase leading-none tracking-tight">
             {category.title[lang]}
           </h3>
           {category.highlight && (
-            <SakuraIcon className="w-3 h-3 text-color-sakura" />
+            <div className="w-2 h-2 rounded-full bg-color-accent glow-cyan" />
           )}
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.25 }}
-          className="flex items-center justify-center w-8 h-8 rounded-lg bg-color-papel/50 backdrop-blur-sm border border-color-tinta/10"
+          className="flex items-center justify-center w-8 h-8 rounded-lg glass-card"
         >
-          <ChevronDown className="w-5 h-5 text-color-tinta" />
+          <ChevronDown className="w-5 h-5 text-color-accent" />
         </motion.div>
       </button>
 
@@ -179,8 +245,8 @@ function MobileAccordion({
             exit="exit"
             className="overflow-hidden"
           >
-            <div className="pb-6 space-y-4">
-              <p className="text-sm text-color-tinta/70 italic">
+            <div className="pb-8 space-y-5">
+              <p className="text-sm text-color-accent font-bold uppercase tracking-widest opacity-80 italic">
                 {category.caption[lang]}
               </p>
 
@@ -188,27 +254,27 @@ function MobileAccordion({
                 variants={inkStagger}
                 initial="hidden"
                 animate="visible"
-                className="flex flex-wrap gap-2 pt-2"
+                className="flex flex-wrap gap-3 pt-2"
               >
                 {category.skills.map((skillId) => (
                   <motion.li
                     key={skillId}
                     variants={inkItem}
-                    className={`group relative flex flex-col items-center gap-1.5 px-2.5 py-2.5 rounded-lg bg-color-papel/60 backdrop-blur-md border transition-colors duration-300 ${
+                    className={`group relative flex flex-col items-center gap-2 px-3 py-4 rounded-xl glass-card transition-colors duration-300 ${
                       skillId === category.highlight
-                        ? 'border-color-sakura/40'
-                        : 'border-color-tinta/10'
+                        ? 'border-color-accent/40 shadow-[0_0_15px_rgba(34,213,224,0.1)]'
+                        : ''
                     }`}
                   >
                     <TechIcon
                       id={skillId}
-                      className={`w-6 h-6 ${
+                      className={`w-7 h-7 ${
                         skillId === category.highlight
-                          ? 'text-color-sakura'
-                          : 'text-color-tinta/75'
+                          ? 'text-color-accent'
+                          : 'text-color-tinta/60'
                       }`}
                     />
-                    <span className="text-[0.55rem] uppercase tracking-[0.12em] text-color-tinta/60 text-center leading-tight">
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest text-color-tinta/50 text-center leading-tight">
                       {TECH_LABELS[skillId]}
                     </span>
                   </motion.li>
@@ -240,10 +306,10 @@ function Herramientas() {
     >
       {/* Background handled by ScrollBackground component */}
 
-      <SectionHeader title={h.title} stamp={h.stamp} intro={h.intro} />
+      <SectionHeader title={h.title} intro={h.intro} />
 
       {/* Desktop: workbench layout */}
-      <div className="hidden lg:block w-full max-w-6xl mt-20">
+      <div className="hidden lg:block w-full max-w-6xl mt-24">
         {SKILL_CATEGORIES.map((category, i) => (
           <DesktopToolStack
             key={category.id}
@@ -255,7 +321,7 @@ function Herramientas() {
       </div>
 
       {/* Mobile: accordion */}
-      <div className="lg:hidden w-full max-w-xl mt-14">
+      <div className="lg:hidden w-full max-w-xl mt-16">
         {SKILL_CATEGORIES.map((category, i) => (
           <MobileAccordion
             key={category.id}
@@ -267,11 +333,11 @@ function Herramientas() {
         ))}
       </div>
 
-      {/* Bottom sakura ornament */}
-      <div className="flex items-center gap-3 mt-20">
-        <span className="h-px w-10 bg-color-sakura/60" />
-        <SakuraIcon className="w-3 h-3 text-color-sakura" />
-        <span className="h-px w-10 bg-color-sakura/60" />
+      {/* Bottom ornament */}
+      <div className="flex items-center gap-4 mt-24">
+        <span className="h-0.5 w-12 tricolor-separator rounded-full" />
+        <div className="w-2 h-2 rounded-full tricolor-dot" />
+        <span className="h-0.5 w-12 tricolor-separator rounded-full" />
       </div>
     </section>
   )

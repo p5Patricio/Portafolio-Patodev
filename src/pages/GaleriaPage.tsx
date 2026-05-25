@@ -4,24 +4,19 @@ import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import { ALL_REPOS_BY_YEAR, type Repo } from '../data/repos'
-import SakuraIcon from '../components/SakuraIcon'
-import HankoStamp from '../components/HankoStamp'
 import ProjectCard from '../components/ProjectCard'
-import SakuraPetals from '../components/SakuraPetals'
+import { LaserField } from '../components/ScrollBackground'
 
 /**
- * Standalone full-gallery page at `/galeria`.
- *
- * - Lists every repo in `ALL_REPOS_BY_YEAR`, grouped by year (newest first).
- * - Reuses the same `ProjectCard` as the home so cards stay 1:1 consistent.
- * - Has its own minimal header (no main navbar) plus a "back to home" CTA so
- *   the page can stand on its own without depending on the floating navbar.
+ * CyberDuck full-gallery page.
+ * Clean, bold grouping of projects by year with glassmorphism and neon accents.
  */
 function GaleriaPage() {
   const { t, lang } = useLanguage()
   const g = t.galeria
+  const galleryTitle =
+    lang === 'es' ? 'Galería completa de proyectos' : 'Complete project gallery'
 
-  // Group repos by year while preserving the (already sorted) order
   const byYear = useMemo(() => {
     const map = new Map<number, Repo[]>()
     for (const repo of ALL_REPOS_BY_YEAR) {
@@ -29,20 +24,18 @@ function GaleriaPage() {
       list.push(repo)
       map.set(repo.year, list)
     }
-    // Years sorted descending
     return Array.from(map.entries()).sort((a, b) => b[0] - a[0])
   }, [])
 
-  // Reset scroll on mount so deep-linking lands at the top of the gallery
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
   }, [])
 
   return (
-    <main className="relative bg-color-papel min-h-screen">
-      <SakuraPetals />
+    <main className="relative min-h-screen overflow-hidden bg-[#000000] text-color-tinta selection:bg-color-accent selection:text-color-papel">
+      <LaserField variant="gallery" />
 
-      {/* "Back to home" floating chip — top-left, glass capsule */}
+      {/* "Back to home" floating chip */}
       <motion.div
         initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
@@ -51,79 +44,65 @@ function GaleriaPage() {
       >
         <Link
           to="/"
-          className="group inline-flex items-center gap-2 h-12 px-5 rounded-full bg-color-papel/70 backdrop-blur-xl border border-color-tinta/15 shadow-[0_10px_30px_-12px_rgba(26,26,26,0.45)] text-color-tinta/80 hover:text-color-tinta transition-colors"
+          className="group relative inline-flex items-center gap-3 h-12 px-6 rounded-full bg-black/70 backdrop-blur-xl border border-white/10 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] text-color-tinta/80 hover:text-color-accent transition-colors overflow-hidden"
         >
+          <span className="absolute inset-x-4 top-0 h-px tricolor-separator" />
           <ArrowLeft
-            className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"
-            strokeWidth={2}
+            className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1.5"
+            strokeWidth={2.5}
           />
-          <span className="text-xs uppercase tracking-[0.25em] font-semibold whitespace-nowrap">
+          <span className="text-xs uppercase tracking-[0.25em] font-black whitespace-nowrap">
             {g.backHome}
           </span>
         </Link>
       </motion.div>
 
-      <section className="relative px-6 py-32 md:py-36 lg:py-40 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden">
-        {/* Title + hanko */}
-        <div className="relative flex items-start justify-center gap-4 md:gap-6">
+      <section className="relative z-10 flex flex-col items-center overflow-hidden px-6 py-28 md:px-12 md:py-32 lg:px-24 lg:py-36">
+        {/* Title */}
+        <div className="relative flex flex-col items-center justify-center">
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="font-brush text-color-tinta text-6xl md:text-8xl lg:text-[9rem] uppercase leading-none tracking-wide text-center"
+            transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+            className="max-w-5xl bg-[linear-gradient(100deg,#00d8f0_0%,#ffffff_34%,#ffdc3c_66%,#ff4c4c_100%)] bg-clip-text text-center text-4xl font-black uppercase leading-[0.95] tracking-tighter text-transparent drop-shadow-[0_0_24px_rgba(0,216,240,0.13)] md:text-6xl lg:text-7xl"
           >
-            {g.title}
+            {galleryTitle}
           </motion.h1>
+          
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotate: -6 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
-            className="mt-3 md:mt-6 lg:mt-10"
-          >
-            <HankoStamp
-              text={g.stamp}
-              className="w-7 h-12 md:w-8 md:h-14 lg:w-10 lg:h-16 text-[0.6rem] md:text-xs lg:text-sm"
-            />
-          </motion.div>
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: '96px', opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="mt-7 h-px tricolor-separator rounded-full"
+          />
         </div>
 
-        {/* Sakura divider */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0.6 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-          className="flex items-center gap-4 md:gap-6 mt-8"
-        >
-          <span className="h-px w-16 md:w-24 bg-color-sakura/70" />
-          <SakuraIcon className="w-4 h-4 text-color-sakura" />
-          <span className="h-px w-16 md:w-24 bg-color-sakura/70" />
-        </motion.div>
-
-        {/* Intro */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
-          className="max-w-2xl mt-10 text-center text-color-tinta/80 leading-relaxed"
-        >
-          {g.intro}
-        </motion.p>
-
         {/* Year groups */}
-        <div className="w-full max-w-6xl mt-20 flex flex-col gap-20">
-          {byYear.map(([year, repos]) => (
-            <div key={year} className="w-full">
+        <div className="mt-20 flex w-full max-w-7xl flex-col gap-20 md:gap-24">
+          {byYear.map(([year, repos], groupIndex) => (
+            <motion.section
+              key={year}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, delay: groupIndex * 0.08, ease: 'easeOut' }}
+              className="w-full"
+            >
               {/* Year heading */}
-              <div className="flex items-baseline gap-3 md:gap-4 mb-10">
-                <h2 className="font-brush text-color-tinta text-4xl md:text-5xl uppercase leading-none tracking-wide">
+              <div className="mb-9 flex flex-wrap items-center gap-4 border-b border-white/10 pb-5">
+                <h2 className="text-3xl font-black uppercase leading-none tracking-tight text-color-tinta md:text-4xl">
                   {year}
                 </h2>
-                <span className="flex-1 h-px bg-color-sakura/30" />
-                <SakuraIcon className="w-3.5 h-3.5 text-color-sakura/80 shrink-0" />
+                <span
+                  className="min-w-24 flex-1 h-px rounded-full tricolor-separator opacity-70"
+                />
+                <span className="rounded-full border border-white/10 bg-white/[0.018] px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.26em] text-color-tinta/55">
+                  {repos.length} {lang === 'es' ? 'proyectos' : 'projects'}
+                </span>
               </div>
 
               {/* Cards grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-9">
                 {repos.map((repo, i) => (
                   <ProjectCard
                     key={repo.id}
@@ -135,15 +114,8 @@ function GaleriaPage() {
                   />
                 ))}
               </div>
-            </div>
+            </motion.section>
           ))}
-        </div>
-
-        {/* Bottom sakura ornament */}
-        <div className="flex items-center gap-3 mt-24">
-          <span className="h-px w-10 bg-color-sakura/60" />
-          <SakuraIcon className="w-3 h-3 text-color-sakura" />
-          <span className="h-px w-10 bg-color-sakura/60" />
         </div>
       </section>
     </main>

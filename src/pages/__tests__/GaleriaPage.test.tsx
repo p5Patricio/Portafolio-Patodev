@@ -6,7 +6,8 @@ import GaleriaPage from '../GaleriaPage'
 describe('GaleriaPage', () => {
   it('renders gallery title', () => {
     renderWithProviders(<GaleriaPage />)
-    expect(screen.getByRole('heading', { name: /galería/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /galería completa de proyectos/i })).toBeInTheDocument()
+    expect(screen.queryByText(/archivo completo/i)).not.toBeInTheDocument()
   })
 
   it('renders back to home link', () => {

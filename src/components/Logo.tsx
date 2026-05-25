@@ -17,17 +17,17 @@ type Props = {
  *   (256x256 transparent PNG recommended).
  */
 function Logo({ className = 'w-10 h-10', alt = 'Logo personal' }: Props) {
-  const [errored, setErrored] = useState(false)
+  const [errorStage, setErrorStage] = useState(0) // 0: PNG, 1: SVG, 2: Fallback
 
-  if (errored) {
+  if (errorStage === 2) {
     return <DuckFallback className={className} ariaLabel={alt} />
   }
 
   return (
     <img
-      src="/LogoDark.svg"
+      src={errorStage === 0 ? "/LogoDark.png" : "/LogoDark.svg"}
       alt={alt}
-      onError={() => setErrored(true)}
+      onError={() => setErrorStage(prev => prev + 1)}
       className={`${className} object-contain select-none shrink-0`}
       draggable={false}
     />
@@ -59,21 +59,15 @@ function DuckFallback({
       role="img"
       aria-label={ariaLabel}
     >
-      <defs>
-        <filter id="duckGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="0.4" />
-        </filter>
-      </defs>
-
       {/* `<` developer marker (left) */}
-      <g fill={cyan} filter="url(#duckGlow)">
+      <g fill={cyan}>
         <rect x="3"  y="32" width="2" height="2" rx="0.5" />
         <rect x="5"  y="30" width="2" height="2" rx="0.5" />
         <rect x="5"  y="34" width="2" height="2" rx="0.5" />
       </g>
 
       {/* `/>` developer marker (right) */}
-      <g fill={cyan} filter="url(#duckGlow)">
+      <g fill={cyan}>
         <rect x="57" y="30" width="2" height="2" rx="0.5" />
         <rect x="57" y="34" width="2" height="2" rx="0.5" />
         <rect x="59" y="32" width="2" height="2" rx="0.5" />

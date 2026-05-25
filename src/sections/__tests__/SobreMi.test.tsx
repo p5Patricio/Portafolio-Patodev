@@ -15,10 +15,10 @@ describe('SobreMi', () => {
     expect(screen.getByRole('heading', { name: /sobre mí/i })).toBeInTheDocument()
   })
 
-  it('renders personal description paragraphs', () => {
+  it('renders personal description without the old videogame paragraph', () => {
     renderWithProviders(<SobreMi />)
     expect(screen.getByText(/patricio garcía/i)).toBeInTheDocument()
-    expect(screen.getByText(/videojuegos/i)).toBeInTheDocument()
+    expect(screen.queryByText(/videojuegos/i)).not.toBeInTheDocument()
   })
 
   it('renders the philosophy homage', () => {
@@ -32,6 +32,6 @@ describe('SobreMi', () => {
     expect(screen.getByText('Overwatch')).toBeInTheDocument()
     expect(screen.getByText('Master')).toBeInTheDocument()
     expect(screen.getByText('Rocket League')).toBeInTheDocument()
-    expect(screen.getByText('Diamond III')).toBeInTheDocument()
+    expect(screen.getByText('Diamante III')).toBeInTheDocument()
   })
 })

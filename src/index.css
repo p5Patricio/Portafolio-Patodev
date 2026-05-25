@@ -1,25 +1,22 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Edo SZ";
-  src: url("./assets/fonts/edosz.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
-  --color-color-tinta: #1a1a1a;
-  --color-color-papel: #f4eee0;
-  --color-color-sakura: #c95b64;
-  --font-brush: "Edo SZ", "Brush Script MT", cursive;
-  --font-size-fluid-body: clamp(0.9375rem, 0.85rem + 0.3vw, 1.25rem);
+  --color-color-tinta: #f8fafc;
+  --color-color-papel: #000000;
+  --color-color-accent: #00D8F0;
+  --color-color-accent-alt: #FFDC3C;
+  --color-color-danger: #FF4C4C;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Montserrat", "Poppins", "Inter", "Segoe UI", Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-size-fluid-body: clamp(1rem, 0.9rem + 0.3vw, 1.25rem);
   --font-size-fluid-sm: clamp(0.8125rem, 0.75rem + 0.2vw, 1rem);
 }
 
 @utility text-fluid-body {
   font-size: var(--font-size-fluid-body);
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 @utility text-fluid-sm {
@@ -27,9 +24,22 @@
   line-height: 1.7;
 }
 
-/* Tailwind v4 ships utilities inside @layer utilities. Unlayered rules win
-   the cascade over layered ones, so this reset MUST live inside @layer base
-   — otherwise it nukes every .px-*, .py-*, .m-*, etc. on the page. */
+@utility font-elegant {
+  font-family: var(--font-serif);
+  font-weight: 500;
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-optical-sizing: auto;
+}
+
+@utility font-technical {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
 @layer base {
   *,
   *::before,
@@ -42,16 +52,21 @@
 
 html {
   scroll-behavior: smooth;
-  /* Account for the fixed floating navbar (top-7 + capsule height ~ 80px). */
   scroll-padding-top: 6rem;
+  scrollbar-width: none;
 }
 
 body {
-  @apply bg-color-papel;
+  @apply bg-[#000000] text-color-tinta;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -60,57 +75,99 @@ body {
   }
 }
 
-/* ---------- Scroll-driven background (compositor-thread, zero jank) ----------
-   Chrome/Edge 115+ and Safari 18.2+ animate background-position-y directly
-   linked to document scroll. Falls back to the JS listener for older browsers. */
-@keyframes scroll-bg-move {
-  0%   { background-position-y: 0%; }
-  100% { background-position-y: 100%; }
+/* ---------- Elegant UI Utilities ---------- */
+.glass-card {
+  @apply bg-white/[0.025] backdrop-blur-3xl border border-white/[0.07] shadow-[0_22px_72px_-54px_rgba(0,216,240,0.32)];
 }
 
-.scroll-bg-driven {
-  animation: scroll-bg-move linear both;
-  animation-timeline: scroll(root);
-  animation-range: 0% 100%;
+.text-gradient-cyan {
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-color-accent to-[#0099ab];
 }
 
-@keyframes sakura-fall {
-  0% {
-    transform: translate3d(0, -10vh, 0) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  25% {
-    transform: translate3d(calc(var(--petal-drift) * 0.25), 25vh, 0) rotate(calc(var(--petal-sway) * 0.25));
-  }
-  50% {
-    transform: translate3d(calc(var(--petal-drift) * 0.6), 50vh, 0) rotate(calc(var(--petal-sway) * 0.5));
-  }
-  75% {
-    transform: translate3d(calc(var(--petal-drift) * 0.85), 75vh, 0) rotate(calc(var(--petal-sway) * 0.75));
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(var(--petal-drift), 110vh, 0) rotate(var(--petal-sway));
-    opacity: 0;
-  }
+.accent-red-dot {
+  @apply w-1.5 h-1.5 rounded-full bg-color-danger shadow-[0_0_15px_rgba(255,76,76,0.6)];
 }
 
-.sakura-petal {
+.tricolor-separator {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 18%,
+    rgba(0, 216, 240, 0.5) 50%,
+    rgba(255, 255, 255, 0.16) 82%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 10px rgba(0, 216, 240, 0.14),
+    0 0 18px rgba(0, 216, 240, 0.08);
+}
+
+.tricolor-separator-y {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.14) 18%,
+    rgba(0, 216, 240, 0.44) 50%,
+    rgba(255, 255, 255, 0.14) 82%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 10px rgba(0, 216, 240, 0.12),
+    0 0 18px rgba(0, 216, 240, 0.07);
+}
+
+.tricolor-dot {
+  background: radial-gradient(circle, #e9feff 0 16%, #00d8f0 42%, rgba(0, 216, 240, 0.22) 72%, transparent 100%);
+  box-shadow:
+    0 0 10px rgba(0, 216, 240, 0.28),
+    0 0 16px rgba(0, 216, 240, 0.12);
+}
+
+.tracking-tightest {
+  letter-spacing: -0.08em;
+}
+
+.tracking-display {
+  letter-spacing: -0.045em;
+}
+
+.glow-cyan {
+  box-shadow:
+    0 0 10px rgba(0, 216, 240, 0.28),
+    0 0 26px rgba(0, 216, 240, 0.11);
+}
+
+.glow-yellow {
+  box-shadow:
+    0 0 16px rgba(255, 220, 60, 0.36),
+    0 0 42px rgba(255, 184, 0, 0.16);
+}
+
+.glow-red {
+  box-shadow:
+    0 0 16px rgba(255, 76, 76, 0.34),
+    0 0 42px rgba(255, 76, 76, 0.16);
+}
+
+.laser-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.008)),
+    rgba(0, 0, 0, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 24px 76px -60px rgba(0, 216, 240, 0.46);
+}
+
+.laser-panel::before {
+  content: "";
   position: absolute;
-  top: 0;
-  animation-name: sakura-fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  will-change: transform, opacity;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sakura-petal {
-    display: none;
-  }
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 0 28%, rgba(0, 216, 240, 0.1) 28.2%, transparent 29%, transparent 62%, rgba(255, 220, 60, 0.08) 62.2%, transparent 63%, transparent 78%, rgba(255, 76, 76, 0.08) 78.2%, transparent 79%);
+  opacity: 0.28;
+  mix-blend-mode: screen;
 }

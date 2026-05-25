@@ -31,6 +31,19 @@ describe('Contacto', () => {
     expect(screen.getByText(/guanajuato/i)).toBeInTheDocument()
   })
 
+  it('renders contact cards in the preferred order', () => {
+    renderWithProviders(<Contacto />)
+
+    const github = screen.getByText('github.com/p5Patricio')
+    const linkedin = screen.getByText('linkedin.com/in/patricioagpv')
+    const email = screen.getByText('pa.garciaperezvela@ugto.mx')
+    const location = screen.getByText(/guanajuato/i)
+
+    expect(github.compareDocumentPosition(linkedin)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(linkedin.compareDocumentPosition(email)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(email.compareDocumentPosition(location)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+  })
+
   it('submits the form and shows success state', async () => {
     const user = userEvent.setup()
     global.fetch = vi.fn(() =>

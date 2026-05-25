@@ -38,13 +38,13 @@ function MobileNavbar() {
 
   return (
     <motion.nav
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 lg:hidden"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden"
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
       aria-label="Mobile navigation"
     >
-      <ul className="flex items-center gap-1 px-3 py-2 rounded-full bg-color-papel/40 backdrop-blur-xl border border-color-tinta/15 shadow-[0_10px_30px_-10px_rgba(26,26,26,0.4)]">
+      <ul className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-black/70 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)]">
         {items.map(({ id, href, icon: Icon, labelKey }) => {
           const isActive = active === id
           const label = t.nav[labelKey]
@@ -57,19 +57,19 @@ function MobileNavbar() {
                 className={`relative flex items-center justify-center w-11 h-11 rounded-full transition-colors ${
                   isActive
                     ? 'text-color-papel'
-                    : 'text-color-tinta/70 hover:text-color-tinta'
+                    : 'text-color-tinta/50 hover:text-color-accent'
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="mobile-nav-pill"
-                    className="absolute inset-0 rounded-full bg-color-tinta"
+                    className="absolute inset-0 rounded-full bg-color-accent shadow-[0_0_15px_rgba(34,213,224,0.5)]"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
                 <Icon
                   className="relative z-10 w-5 h-5"
-                  strokeWidth={isActive ? 2 : 1.75}
+                  strokeWidth={isActive ? 2.5 : 2}
                 />
               </a>
             </li>

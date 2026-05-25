@@ -1,7 +1,6 @@
 import { useRef, useState, type FormEvent, type ReactNode, type SVGProps } from 'react'
 import { Mail, MapPin, Send, Copy, ExternalLink, Check } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
-import SakuraIcon from '../components/SakuraIcon'
 import SectionHeader from '../components/SectionHeader'
 import PillButton from '../components/PillButton'
 
@@ -38,26 +37,26 @@ type InfoRowProps = {
 
 function InfoRow({ icon: Icon, label, value, href, onClick, actionIcon: ActionIcon }: InfoRowProps) {
   const content = (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-5 group bg-color-papel/40 backdrop-blur-sm border border-color-tinta/10 rounded-xl p-3 md:p-4">
+    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 group glass-card rounded-2xl p-4 md:p-5 transition-all duration-300 hover:glow-cyan">
       {/* Top Row (Mobile) / Left Side (Desktop) */}
-      <div className="flex items-center gap-2.5 md:gap-0 w-full md:w-auto">
-        <span className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-color-tinta flex items-center justify-center text-color-papel shadow-[0_4px_12px_-4px_rgba(26,26,26,0.5)] transition-transform duration-300 group-hover:scale-[1.05]">
-          <Icon className="w-4 h-4 md:w-5 md:h-5" strokeWidth={1.8} />
+      <div className="flex items-center gap-3 w-full md:w-auto">
+        <span className="flex-shrink-0 w-11 h-11 md:w-14 md:h-14 rounded-xl bg-color-accent/10 flex items-center justify-center text-color-accent border border-color-accent/20 shadow-[0_0_15px_rgba(34,213,224,0.1)] transition-transform duration-300 group-hover:scale-110">
+          <Icon className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2} />
         </span>
-        <span className="md:hidden text-[10px] text-color-tinta font-semibold tracking-[0.15em] uppercase flex-1">
+        <span className="md:hidden text-[0.65rem] text-color-accent font-black tracking-widest uppercase flex-1">
           {label}
         </span>
       </div>
 
       {/* Bottom Row (Mobile) / Right Side (Desktop) */}
-      <div className="flex flex-col gap-0.5 flex-1 min-w-0 w-full">
-        <span className="hidden md:block text-xs text-color-tinta font-semibold tracking-[0.3em] uppercase">
+      <div className="flex flex-col gap-1 flex-1 min-w-0 w-full">
+        <span className="hidden md:block text-[0.65rem] text-color-accent font-black tracking-widest uppercase">
           {label}
         </span>
-        <div className="flex items-center gap-1.5 md:gap-2 w-full">
-          <span className="text-xs md:text-sm text-color-tinta/75 truncate">{value}</span>
+        <div className="flex items-center gap-2 w-full">
+          <span className="text-sm md:text-base text-color-tinta font-medium truncate">{value}</span>
           {ActionIcon && (
-            <ActionIcon className="w-3.5 h-3.5 text-color-tinta/40 group-hover:text-color-sakura transition-colors shrink-0" strokeWidth={2.5} />
+            <ActionIcon className="w-4 h-4 text-color-tinta/30 group-hover:text-color-accent transition-colors shrink-0" strokeWidth={2.5} />
           )}
         </div>
       </div>
@@ -69,7 +68,7 @@ function InfoRow({ icon: Icon, label, value, href, onClick, actionIcon: ActionIc
       <button
         type="button"
         onClick={onClick}
-        className="block w-full text-left hover:text-color-sakura transition-colors cursor-pointer bg-transparent border-none p-0"
+        className="block w-full text-left hover:text-color-accent transition-colors cursor-pointer bg-transparent border-none p-0"
       >
         {content}
       </button>
@@ -83,7 +82,7 @@ function InfoRow({ icon: Icon, label, value, href, onClick, actionIcon: ActionIc
         href={href}
         target={external ? '_blank' : undefined}
         rel={external ? 'noopener noreferrer' : undefined}
-        className="block hover:text-color-sakura transition-colors"
+        className="block hover:text-color-accent transition-colors"
       >
         {content}
       </a>
@@ -101,10 +100,10 @@ type FieldProps = {
 
 function Field({ id, label, children }: FieldProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2.5">
       <label
         htmlFor={id}
-        className="text-xs uppercase tracking-[0.3em] text-color-tinta font-semibold"
+        className="text-[0.65rem] uppercase tracking-[0.4em] text-color-accent font-black"
       >
         {label}
       </label>
@@ -114,7 +113,7 @@ function Field({ id, label, children }: FieldProps) {
 }
 
 const inputClass =
-  'w-full bg-transparent border border-color-tinta/25 rounded-sm px-4 py-3 text-sm text-color-tinta placeholder:text-color-tinta/40 focus:outline-none focus:border-color-tinta/70 transition-colors'
+  'w-full bg-black/35 border border-white/10 rounded-xl px-5 py-4 text-sm text-color-tinta placeholder:text-color-tinta/30 focus:outline-none focus:border-color-accent/50 focus:bg-color-accent/5 transition-all'
 
 // ---------- Section ----------
 
@@ -173,40 +172,25 @@ function Contacto() {
     <section
       ref={ref}
       id="contacto"
-      className="relative z-10 overflow-hidden pb-20 md:pb-[40vh]"
+      className="relative z-10 overflow-hidden pb-12 md:pb-16 lg:pb-20"
     >
       {/* Background handled by ScrollBackground component */}
-      <div className="relative z-10 px-6 py-28 md:py-32 lg:py-36 md:px-12 lg:px-24 flex flex-col items-center">
+      <div className="relative z-10 px-6 pt-28 pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24 md:px-12 lg:px-24 flex flex-col items-center">
       <SectionHeader
         title={c.title}
-        stamp={c.stamp}
         intro={c.intro.join(' ')}
         introDelay={0.3}
       />
 
       {/* Info + Form */}
-      <div className="w-full max-w-5xl mt-14 grid grid-cols-1 lg:grid-cols-[1fr_auto_1.2fr] gap-10 lg:gap-14 items-start">
+      <div className="w-full max-w-6xl mt-16 grid grid-cols-1 lg:grid-cols-[1fr_auto_1.3fr] gap-12 lg:gap-16 items-start">
         {/* Info column */}
-        <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-8">
-          <InfoRow
-            icon={Mail}
-            label={c.info.email.label}
-            value={c.info.email.value}
-            onClick={copyEmail}
-            actionIcon={copied ? Check : Copy}
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6">
           <InfoRow
             icon={GitHubIcon}
             label={c.info.github.label}
             value={c.info.github.value}
             href={c.info.github.href}
-            actionIcon={ExternalLink}
-          />
-          <InfoRow
-            icon={MapPin}
-            label={c.info.location.label}
-            value={c.info.location.value}
-            href="https://www.google.com.mx/maps/place/Guanajuato,+Gto./@21.0250736,-101.2991017,13z/data=!3m1!4b1!4m6!3m5!1s0x842b73f58b0cf1eb:0x25f4b0d165571e74!8m2!3d21.0190145!4d-101.2573586!16zL20vMDE4bmI4?entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D"
             actionIcon={ExternalLink}
           />
           <InfoRow
@@ -216,31 +200,45 @@ function Contacto() {
             href={c.info.linkedin.href}
             actionIcon={ExternalLink}
           />
+          <InfoRow
+            icon={Mail}
+            label={c.info.email.label}
+            value={c.info.email.value}
+            onClick={copyEmail}
+            actionIcon={copied ? Check : Copy}
+          />
+          <InfoRow
+            icon={MapPin}
+            label={c.info.location.label}
+            value={c.info.location.value}
+            href="https://www.google.com.mx/maps/place/Guanajuato,+Gto./@21.0250736,-101.2991017,13z/data=!3m1!4b1!4m6!3m5!1s0x842b73f58b0cf1eb:0x25f4b0d165571e74!8m2!3d21.0190145!4d-101.2573586!16zL20vMDE4bmI4?entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D"
+            actionIcon={ExternalLink}
+          />
         </div>
 
-        {/* Vertical divider with sakura */}
+        {/* Vertical divider */}
         <div
           aria-hidden="true"
           className="hidden lg:flex flex-col items-center self-stretch"
         >
-          <span className="flex-1 w-px bg-color-sakura/40" />
-          <SakuraIcon className="w-4 h-4 text-color-sakura my-2" />
-          <span className="flex-1 w-px bg-color-sakura/40" />
+          <span className="flex-1 w-0.5 tricolor-separator-y rounded-full" />
+          <div className="w-2 h-2 rounded-full tricolor-dot my-4" />
+          <span className="flex-1 w-0.5 tricolor-separator-y rounded-full" />
         </div>
 
         {/* Horizontal divider for mobile/tablet */}
         <div
           aria-hidden="true"
-          className="flex lg:hidden items-center gap-3 w-full"
+          className="flex lg:hidden items-center gap-4 w-full"
         >
-          <span className="flex-1 h-px bg-color-sakura/40" />
-          <SakuraIcon className="w-3 h-3 text-color-sakura" />
-          <span className="flex-1 h-px bg-color-sakura/40" />
+          <span className="flex-1 h-0.5 tricolor-separator rounded-full" />
+          <div className="w-2 h-2 rounded-full tricolor-dot" />
+          <span className="flex-1 h-0.5 tricolor-separator rounded-full" />
         </div>
 
         {/* Form column */}
-        <div className="bg-color-papel/50 rounded-xl p-6">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <div className="glass-card rounded-3xl p-8 shadow-2xl">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-7">
           <input
             type="text"
             name="website"
@@ -251,7 +249,7 @@ function Contacto() {
             className="hidden"
             aria-hidden="true"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
             <Field id="contact-name" label={c.form.nameLabel}>
               <input
                 id="contact-name"
@@ -304,21 +302,16 @@ function Contacto() {
                 value={form.message}
                 onChange={handleChange('message')}
                 placeholder={c.form.messagePlaceholder}
-                className={`${inputClass} resize-none pr-10`}
+                className={`${inputClass} resize-none`}
                 minLength={10}
                 maxLength={2000}
                 disabled={status === 'sending'}
                 required
               />
-              <Send
-                aria-hidden="true"
-                className="absolute bottom-3 right-3 w-4 h-4 text-color-sakura/70 pointer-events-none"
-                strokeWidth={1.5}
-              />
             </div>
           </Field>
 
-          <div className="flex flex-col items-center lg:items-start gap-3 mt-2">
+          <div className="flex flex-col items-center lg:items-start gap-4 mt-2">
             <div className="relative inline-block">
               <PillButton
                 type="submit"
@@ -327,24 +320,19 @@ function Contacto() {
               >
                 <span>{status === 'sending' ? c.form.sending : c.form.submit}</span>
                 <Send
-                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
-                  strokeWidth={2}
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  strokeWidth={2.5}
                 />
               </PillButton>
-              {/* Sakura accent floating on the top-right corner of the button */}
-              <SakuraIcon
-                aria-hidden="true"
-                className="absolute -top-1 -right-2 w-4 h-4 text-color-sakura pointer-events-none drop-shadow-sm"
-              />
             </div>
             <div aria-live="polite">
             {status === 'success' && (
-              <p className="text-xs text-green-700 text-center lg:text-left max-w-xs">
+              <p className="text-sm text-green-400 font-bold text-center lg:text-left">
                 {c.form.success}
               </p>
             )}
             {status === 'error' && (
-              <p className="text-xs text-color-sakura text-center lg:text-left max-w-xs">
+              <p className="text-sm text-color-danger font-bold text-center lg:text-left">
                 {c.form.error}
               </p>
             )}
@@ -354,7 +342,6 @@ function Contacto() {
         </div>
       </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-color-papel via-color-papel/80 to-transparent z-20 pointer-events-none hidden md:block" />
     </section>
   )
 }
