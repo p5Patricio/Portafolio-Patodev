@@ -4,9 +4,9 @@ import { renderWithProviders } from '../../test-utils'
 import Navbar from '../Navbar'
 
 describe('Navbar', () => {
-  it('renders desktop brand link', () => {
+  it('renders a single desktop brand link', () => {
     renderWithProviders(<Navbar />)
-    expect(screen.getAllByLabelText(/portafolio/i).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getAllByRole('link', { name: /portafolio/i })).toHaveLength(1)
   })
 
   it('renders navigation links', () => {
@@ -23,6 +23,6 @@ describe('Navbar', () => {
   it('renders language selectors (desktop + mobile)', () => {
     renderWithProviders(<Navbar />)
     const selectors = screen.getAllByRole('group', { name: /language selector/i })
-    expect(selectors.length).toBeGreaterThanOrEqual(1)
+    expect(selectors).toHaveLength(2)
   })
 })

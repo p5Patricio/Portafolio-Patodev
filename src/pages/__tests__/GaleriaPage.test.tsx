@@ -8,6 +8,7 @@ describe('GaleriaPage', () => {
     renderWithProviders(<GaleriaPage />)
     expect(screen.getByRole('heading', { name: /galería completa de proyectos/i })).toBeInTheDocument()
     expect(screen.queryByText(/archivo completo/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/todos los proyectos en los que he trabajado/i)).not.toBeInTheDocument()
   })
 
   it('renders back to home link', () => {

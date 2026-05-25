@@ -108,7 +108,7 @@ function AntigravityIcon({ className, ...props }: SVGProps<SVGSVGElement>) {
 //   windows-assistant (Python + Gemini + Gemma + UIA + COM + pyautogui)
 //   wisprlocal (Python + Whisper + GPU)
 //   voiceagenda (TypeScript)
-//   portafolio-sakura (Vite + React + TS + Tailwind + Framer)
+//   portafolio (Vite + React + TS + Tailwind + Framer)
 //
 // Plus the AI dev tools the user explicitly mentioned (Claude Code, Antigravity,
 // Kimi Code, Gentle-AI). Some have no Simple Icons brand asset — we map those
@@ -282,10 +282,10 @@ type Props = {
 
 /**
  * Monochromatic tech icon. Inherits its color from currentColor so it picks up
- * the surrounding text color (e.g. text-color-tinta or text-color-sakura).
+ * the surrounding text color (e.g. text-color-tinta or text-color-accent).
  *
  * Usage:
- *   <TechIcon id="react" className="w-7 h-7 text-color-sakura" />
+ *   <TechIcon id="react" className="w-7 h-7 text-color-accent" />
  */
 function TechIcon({ id, className = 'w-7 h-7', label }: Props) {
   const Icon = ICONS[id] ?? FallbackIcon

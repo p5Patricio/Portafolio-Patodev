@@ -10,6 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+coverage
+.vite
+*.tsbuildinfo
 *.local
 
 # Editor directories and files
@@ -26,7 +29,19 @@ dist-ssr
 # Agent infrastructure
 .atl/
 .claude/
+.codex/
 
 # Environment variables
 .env
-.vercel
+.env.local
+.env.*.local
+.vercel/
+
+# Local/generated design scratch files
+ChatGPT Image*.png
+prompts-*.md
+public/hero-reference-*.png
+public/projects/*.webp
+!public/projects/thumbs/
+public/ranks/*.png
+*.backup

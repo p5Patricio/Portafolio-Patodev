@@ -16,7 +16,7 @@ export interface SkillCategory {
   narrative: { es: string; en: string }
   /** Tech IDs that belong to this category — drives the icon grid. */
   skills: TechId[]
-  /** Featured / star skill for this category — gets a sakura accent. */
+  /** Featured / star skill for this category — gets the main accent treatment. */
   highlight?: TechId
 }
 

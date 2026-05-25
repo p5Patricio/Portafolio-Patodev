@@ -10,8 +10,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage",
-    "cut-bg": "node scripts/cut-backgrounds.js"
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
@@ -40,7 +39,6 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
     "jsdom": "^29.1.0",
-    "sharp": "^0.34.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.10",
@@ -49,8 +47,7 @@
   "packageManager": "pnpm@10.33.3",
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp"
+      "esbuild"
     ],
     "overrides": {
       "@vercel/static-config>ajv": "^8.18.0",

@@ -1,120 +1,137 @@
-# Portafolio
+# Portafolio — Patricio García
 
-> Portafolio personal con estética japonesa **Sumi-e** (tinta sobre papel washi).
+Portafolio personal bilingüe para presentar experiencia, proyectos, herramientas y contacto profesional con una identidad visual oscura tipo **CyberDuck**: fondo negro, trazos de luz SVG, acentos cian/amarillo/rojo y componentes glass minimalistas.
 
 [![Vite](https://img.shields.io/badge/Vite-8.0.10-646CFF?logo=vite)](https://vitejs.dev)
 [![React](https://img.shields.io/badge/React-19.2.5-61DAFB?logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-3178C6?logo=typescript)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 
-## ✨ Vista previa
+## Qué incluye
 
-Single-page application con navegación por secciones, animaciones de pétalos de sakura en CSS puro, y un sistema de sellos *hanko* que acompaña cada título.
+- **Hero cinematográfico** con logo personal y rayos de luz SVG separados para desktop/mobile.
+- **Navegación responsive**: navbar desktop, selector de idioma fijo y navegación inferior en móvil.
+- **Experiencia** con timeline, imágenes ampliables y certificaciones.
+- **Proyectos destacados** en tarjetas con carrusel de miniaturas y CTA a la galería completa.
+- **Galería completa** minimalista agrupada por año.
+- **Herramientas** con categorías técnicas, iconografía y narrativa de stack.
+- **Sobre mí** con presentación personal, homenaje visual y rangos competitivos.
+- **Contacto** con tarjetas ordenadas, formulario y endpoint serverless de Resend.
+- **ES/EN** con traducciones centralizadas en React Context.
 
-- 🌸 **Tema visual**: Paleta Sumi-e con tinta (`#1a1a1a`), papel washi (`#f4eee0`) y sakura (`#c95b64`)
-- 🈯 **Bilingüe**: Español / Inglés con cambio instantáneo
-- 📱 **Responsive**: Mobile-first con navbar flotante tipo cápsula de cristal
-- 🎨 **Tipografía**: *Edo SZ* self-hosted para estética de pincel japones
-- ✨ **Animaciones**: Framer Motion + scroll-driven transforms en el Hero
+## Stack
 
-## 🚀 Stack técnico
-
-| Capa | Tecnología |
-|------|------------|
+| Área | Tecnología |
+| --- | --- |
+| UI | React 19 + TypeScript 6 |
 | Build | Vite 8 |
-| Framework | React 19 |
-| Lenguaje | TypeScript 6 |
-| Estilos | Tailwind CSS v4 |
-| Animaciones | Framer Motion |
+| Estilos | Tailwind CSS v4 (`@tailwindcss/vite`) |
+| Animación | Framer Motion |
 | Routing | React Router DOM v7 |
 | Iconos | Lucide React + React Icons |
-| Testing | Vitest + React Testing Library |
+| Email | Vercel Serverless Function + Resend |
+| Tests | Vitest + React Testing Library + jsdom |
+| Package manager | pnpm |
 
-## 🛠️ Decisiones técnicas
-
-- **Vite sobre CRA**: Tiempo de build ~450ms vs minutos en CRA. HMR instantáneo.
-- **Tailwind v4**: Nuevo engine `@tailwindcss/vite` sin PostCSS. `@theme` para tokens de diseño propios.
-- **Context API para i18n**: Suficiente para 2 idiomas. Sin librería externa = menos bundle.
-- **Framer Motion**: `useScroll` + `useTransform` para el parallax del Hero sin librerías pesadas.
-- **CSS puro para sakura**: `@keyframes sakura-fall` con `will-change` para 60fps sin JS.
-
-## 📦 Instalación
+## Inicio rápido
 
 ```bash
-# Clonar
-$ git clone https://github.com/p5Patricio/portafolio.git
-$ cd portafolio
-
-# Instalar dependencias
-$ pnpm install
-
-# Desarrollo
-$ pnpm dev
-
-# Build de producción
-$ pnpm build
-
-# Preview local
-$ pnpm preview
-
-# Tests
-$ pnpm test
-
-# Lint
-$ pnpm lint
+pnpm install
+pnpm dev
 ```
 
-## 🧪 Testing
+Comandos principales:
 
 ```bash
-# Unit + integration tests
-$ pnpm test
-
-# Con UI interactiva
-$ pnpm test:ui
-
-# Cobertura
-$ pnpm coverage
+pnpm build      # TypeScript + build de producción
+pnpm test       # Tests en modo watch
+pnpm test -- --run
+pnpm lint       # ESLint
+pnpm preview    # Preview del build local
+pnpm coverage   # Cobertura de tests
 ```
 
-## 📁 Estructura de carpetas
+## Variables de entorno
 
-```
+Copia `.env.example` a `.env` para desarrollo local o configura estas variables en Vercel:
+
+| Variable | Uso |
+| --- | --- |
+| `RESEND_API_KEY` | API key de Resend para enviar mensajes. |
+| `RESEND_TO_EMAIL` | Correo destino del formulario de contacto. |
+| `RESEND_FROM_EMAIL` | Remitente verificado en Resend. |
+
+## Estructura actual
+
+```text
+api/
+└── send-email.ts              # Endpoint serverless para el formulario
+public/
+├── LogoDark.*                 # Logo e iconos del sitio
+├── projects/thumbs/           # Miniaturas usadas por las tarjetas
+├── ranks/                     # Insignias competitivas en WebP
+├── certificacion-ia.webp      # Certificación mostrada en Experiencia
+├── garou-2.jpg                # Imagen homenaje en Sobre mí
+├── mazda-new-logo.jpg         # Logo usado en Experiencia
+├── titulo.webp                # Imagen de graduación/título
+└── og-image.png               # Imagen Open Graph
 src/
-├── components/       # Componentes reutilizables (UI puros)
-├── sections/         # Secciones de la página (Hero, SobreMi, etc.)
-├── pages/            # Rutas de React Router
-├── context/          # React Context (i18n)
-├── data/             # Datos estáticos (proyectos, skills, traducciones)
-├── assets/           # Imágenes, fuentes, fondos
-└── setupTests.ts     # Configuración de Vitest
+├── components/                # UI reusable: navegación, tarjetas, iconos, fondos
+├── context/                   # LanguageProvider y hook de idioma
+├── data/                      # Traducciones, repositorios y skills
+├── hooks/                     # Hooks de navegación activa
+├── pages/                     # Home y Galería
+├── sections/                  # Hero, Experiencia, Proyectos, Herramientas, Sobre mí, Contacto
+├── setupTests.ts              # Setup global de Vitest
+└── test-utils.tsx             # Render helper con providers
 ```
 
-## 🚢 Deploy
+## Diseño y contenido
 
-El proyecto está configurado para deploy estático en cualquier CDN:
+| Sección | Propósito |
+| --- | --- |
+| `Hero` | Primera impresión visual con trazos SVG desktop/mobile. |
+| `Experiencia` | Formación, prácticas y certificaciones con modal de imagen. |
+| `Proyectos` | Selección principal de proyectos y enlace a `/galeria`. |
+| `Herramientas` | Stack técnico agrupado por frontend, backend, IA y workflow. |
+| `SobreMi` | Bio, filosofía personal y rangos competitivos. |
+| `Contacto` | Links profesionales y formulario conectado a Resend. |
+| `/galeria` | Lista completa de proyectos agrupados por año. |
 
-```bash
-npm run build
-# Subir la carpeta `dist/` a Vercel, Netlify, Cloudflare Pages, etc.
-```
+## Tests pertinentes
 
-## 📝 Roadmap
+La suite cubre comportamiento visible del portafolio actual:
 
-- [x] Sección de proyectos con tarjetas interactivas
-- [x] Galería completa de repositorios por año
-- [x] Sistema de traducción ES/EN
-- [x] Skip-to-content link (accesibilidad)
-- [ ] Conectar formulario de contacto (EmailJS / Formspree)
-- [ ] Blog técnico
+- Render de rutas principales (`App`, `HomePage`, `GaleriaPage`).
+- Navegación desktop/mobile y selector de idioma.
+- Secciones críticas: Hero, Experiencia, Proyectos, Herramientas, Sobre mí y Contacto.
+- Formulario de contacto: campos, submit exitoso/error y orden de tarjetas.
+- API de contacto: métodos permitidos, validación, honeypot y envío con Resend mockeado.
+- Tarjetas de proyecto: links, estado privado, tecnologías y CTAs.
+- Componentes UI compartidos: `PillButton`, `SectionHeader`, `LanguageSelector`.
 
-## 👤 Autor
+## Limpieza del repositorio
+
+El repositorio debe mantener solo assets usados por la app. `.gitignore` bloquea artefactos locales o temporales como:
+
+- `dist/`, `coverage/`, `.vite/`, `*.tsbuildinfo`.
+- `.env*` locales y `.vercel/`.
+- imágenes temporales de ChatGPT o referencias visuales (`ChatGPT Image*.png`, `public/hero-reference-*.png`).
+- imágenes full-size duplicadas en `public/projects/*.webp`; la app usa `public/projects/thumbs/`.
+- backups (`*.backup`) y prompts scratch (`prompts-*.md`).
+
+## Deploy
+
+La app está preparada para Vercel:
+
+1. Configura las variables de Resend en el dashboard.
+2. Ejecuta `pnpm build` localmente antes de publicar cambios grandes.
+3. Vercel sirve el frontend estático y `api/send-email.ts` como function.
+
+## Autor
 
 **Patricio García Pérez Vela**
-- 📧 [pa.garciaperezvela@ugto.mx](mailto:pa.garciaperezvela@ugto.mx)
-- 💼 [LinkedIn](https://www.linkedin.com/in/patricioagpv/)
-- 🐙 [GitHub](https://github.com/p5Patricio)
 
----
-
-*Construido con paciencia, un pincel digital y mucho café.* ☕🌸
+- GitHub: [p5Patricio](https://github.com/p5Patricio)
+- LinkedIn: [patricioagpv](https://www.linkedin.com/in/patricioagpv/)
+- Email: [pa.garciaperezvela@ugto.mx](mailto:pa.garciaperezvela@ugto.mx)
