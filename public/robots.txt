@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
+# Host & Sitemap location
+Host: https://patodev.com
 Sitemap: https://patodev.com/sitemap.xml

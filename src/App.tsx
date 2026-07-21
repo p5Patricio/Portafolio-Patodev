@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import MobileNavbar from './components/MobileNavbar'
 import HomePage from './pages/HomePage'
+import SEO from './components/SEO'
 
 const GaleriaPage = lazy(() => import('./pages/GaleriaPage'))
 
@@ -30,11 +31,28 @@ function App() {
         {isHome && <MobileNavbar />}
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <SEO
+                  title="Patricio García | Ingeniero de Software & Desarrollador Full Stack"
+                  description="Portafolio profesional de Patricio García, Ingeniero de Software y Desarrollador Full Stack especializado en React, TypeScript, Node.js e Inteligencia Artificial en México."
+                  canonical="https://patodev.com/"
+                />
+                <HomePage />
+              </>
+            }
+          />
           <Route
             path="/galeria"
             element={
               <Suspense fallback={null}>
+                <SEO
+                  title="Galería de Certificados y Logros | Patricio García"
+                  description="Explora los certificados profesionales, títulos académicos y acreditaciones de Inteligencia Artificial de Patricio García, Ingeniero de Software."
+                  canonical="https://patodev.com/galeria"
+                />
                 <GaleriaPage />
               </Suspense>
             }
