@@ -24,12 +24,12 @@ function Hero() {
     <section
       ref={ref}
       id="inicio"
-      className="relative z-10 min-h-screen overflow-hidden bg-black"
+      className="relative z-10 min-h-screen overflow-hidden bg-transparent"
       aria-labelledby="hero-title"
     >
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="sticky top-0 z-10 h-screen overflow-hidden bg-[#000000]"
+        className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent"
       >
         <HeroLightTrails />
 
@@ -89,7 +89,7 @@ function HeroLightTrails() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#000000]"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-transparent"
       aria-hidden="true"
     >
       <svg

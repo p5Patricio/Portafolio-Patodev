@@ -276,7 +276,7 @@ export default function ColorBends({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full overflow-hidden ${className}`}
+      className={`absolute inset-0 w-full h-full overflow-hidden ${className}`}
       style={style}
     />
   )

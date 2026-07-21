@@ -386,7 +386,7 @@ export function LaserField({ variant = 'home', className = '' }: LaserFieldProps
 
   return (
     <div
-      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#000000] ${className}`}
+      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden bg-transparent ${className}`}
       aria-hidden="true"
     >
       <svg
@@ -434,24 +434,24 @@ export function LaserField({ variant = 'home', className = '' }: LaserFieldProps
 
 function ScrollBackground({ children }: { children: ReactNode }) {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#000000] selection:bg-color-accent selection:text-color-papel">
+    <div className="relative min-h-screen overflow-x-hidden bg-black selection:bg-color-accent selection:text-color-papel">
       {/* Interactive WebGL ColorBends Background */}
-      <div className="fixed inset-0 z-0 opacity-75 pointer-events-none">
+      <div className="fixed inset-0 z-0 opacity-100 pointer-events-none w-screen h-screen">
         <ColorBends
           colors={['#00d8f0', '#8a5cff', '#00ffd1', '#ff2a85']}
-          rotation={90}
-          speed={0.12}
-          scale={1.2}
-          frequency={1.1}
-          warpStrength={1.2}
-          mouseInfluence={0.8}
-          parallax={0.4}
-          noise={0.12}
-          iterations={2}
-          intensity={1.4}
-          bandWidth={5}
-          transparent={true}
-          autoRotate={1.5}
+          rotation={45}
+          speed={0.2}
+          scale={1.0}
+          frequency={1.4}
+          warpStrength={1.5}
+          mouseInfluence={1.0}
+          parallax={0.5}
+          noise={0.1}
+          iterations={3}
+          intensity={1.8}
+          bandWidth={6}
+          transparent={false}
+          autoRotate={2.0}
         />
       </div>
 
