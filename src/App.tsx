@@ -5,18 +5,22 @@ import Navbar from './components/Navbar'
 import MobileNavbar from './components/MobileNavbar'
 import HomePage from './pages/HomePage'
 import SEO from './components/SEO'
+import ClickSpark from './components/ClickSpark'
 
 const GaleriaPage = lazy(() => import('./pages/GaleriaPage'))
 
 function App() {
   const { pathname } = useLocation()
-  // Hide the section-anchor navbars on the standalone gallery page —
-  // it has its own "back to home" floating chip and ID-based nav links
-  // (e.g. #sobre-mi) wouldn't resolve there anyway.
   const isHome = pathname === '/'
 
   return (
-    <>
+    <ClickSpark
+      sparkColor="#00d8f0"
+      sparkSize={10}
+      sparkRadius={22}
+      sparkCount={10}
+      duration={450}
+    >
       {/* Skip-to-content link for keyboard users */}
       <a
         href="#main-content"
@@ -59,7 +63,7 @@ function App() {
           />
         </Routes>
       </main>
-    </>
+    </ClickSpark>
   )
 }
 

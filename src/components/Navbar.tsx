@@ -15,11 +15,8 @@ const linkDefs = [
 
 const SECTION_IDS = linkDefs.map((l) => l.id)
 
-// Shared glass capsule styling — keeps the three desktop nav elements visually
-// consistent (same height, blur, border, shadow). Height is fixed so the brand,
-// nav links, and language selector all line up perfectly.
 const CAPSULE =
-  'h-12 rounded-full bg-black/65 backdrop-blur-xl border border-white/15 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)]'
+  'h-11 rounded-full liquid-glass border border-white/15 shadow-xl'
 
 function Navbar() {
   const active = useActiveSection(SECTION_IDS)
@@ -27,29 +24,26 @@ function Navbar() {
 
   return (
     <>
-      {/* ---------- Desktop / large screens ---------- */}
-      {/* Three floating glass elements: brand (left), links capsule (center), language selector (right) */}
-
       {/* Brand */}
       <motion.a
         href="#inicio"
-        className={`hidden lg:flex fixed top-7 left-8 xl:left-12 z-40 items-center gap-3 group pl-1.5 pr-5 ${CAPSULE}`}
+        className={`hidden lg:flex fixed top-6 left-8 xl:left-12 z-40 items-center gap-3 group pl-1.5 pr-4 ${CAPSULE}`}
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         aria-label={t.brand.title}
       >
-        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-black/45 border border-white/10">
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-black/40 border border-white/10">
           <Logo
             alt={t.brand.title}
-            className="h-7 w-auto transition-transform duration-300 group-hover:scale-110"
+            className="h-6 w-auto transition-transform duration-300 group-hover:scale-110"
           />
         </div>
         <div className="leading-tight">
-          <p className="font-black text-color-tinta tracking-widest text-xs uppercase">
+          <p className="font-black text-color-tinta tracking-widest text-[0.7rem] uppercase">
             {t.brand.title}
           </p>
-          <p className="text-[0.6rem] text-color-danger font-bold tracking-widest uppercase">
+          <p className="text-[0.55rem] text-color-danger font-bold tracking-widest uppercase">
             {t.brand.subtitle}
           </p>
         </div>
@@ -57,7 +51,7 @@ function Navbar() {
 
       {/* Center nav links capsule */}
       <motion.nav
-        className="hidden lg:block fixed top-7 left-1/2 -translate-x-1/2 z-40"
+        className="hidden lg:block fixed top-6 left-1/2 -translate-x-1/2 z-40"
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
@@ -70,10 +64,10 @@ function Navbar() {
               <li key={id} className="relative">
                 <a
                   href={href}
-                  className={`relative block whitespace-nowrap px-3.5 xl:px-4 py-1.5 text-[0.65rem] xl:text-[0.7rem] tracking-[0.25em] uppercase font-bold rounded-full transition-colors ${
+                  className={`relative block whitespace-nowrap px-3.5 xl:px-4 py-1 text-[0.65rem] xl:text-[0.7rem] tracking-[0.2em] uppercase font-bold rounded-full transition-colors ${
                     isActive
                       ? 'text-color-papel'
-                      : 'text-color-tinta/60 hover:text-color-accent'
+                      : 'text-color-tinta/70 hover:text-color-accent'
                   }`}
                 >
                   {isActive && (
@@ -93,7 +87,7 @@ function Navbar() {
 
       {/* Language selector — right floating */}
       <motion.div
-        className="hidden lg:block fixed top-7 right-8 xl:right-12 z-40"
+        className="hidden lg:block fixed top-6 right-8 xl:right-12 z-40"
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
@@ -101,9 +95,9 @@ function Navbar() {
         <LanguageSelector size="lg" accent="yellow" layoutKey="lang-pill-desktop" />
       </motion.div>
 
-      {/* ---------- Mobile / tablet language selector (top-right) ---------- */}
+      {/* Mobile / tablet language selector */}
       <motion.div
-        className="fixed top-6 right-6 md:top-7 md:right-8 z-40 lg:hidden"
+        className="fixed top-5 right-5 md:top-6 md:right-7 z-40 lg:hidden"
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}

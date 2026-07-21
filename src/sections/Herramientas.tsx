@@ -1,33 +1,29 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Variants } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Terminal } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import { SKILL_CATEGORIES, type SkillCategory } from '../data/skills'
 import SectionHeader from '../components/SectionHeader'
 import TechIcon, { TECH_LABELS } from '../components/TechIcon'
 import type { Lang } from '../data/translations'
 
-import { Terminal } from 'lucide-react'
-
-// ---------- Desktop: animated tool stack ----------
-
 const stackVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.06,
+      staggerChildren: 0.05,
     },
   },
 }
 
 const chipVariants: Variants = {
-  hidden: { opacity: 0, y: 24, scale: 0.9 },
+  hidden: { opacity: 0, y: 16, scale: 0.92 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.42, ease: 'easeOut' },
+    transition: { duration: 0.35, ease: 'easeOut' },
   },
 }
 
@@ -46,24 +42,24 @@ const TOOL_ACCENT_STYLES: Record<
 > = {
   cyan: {
     card:
-      'hover:border-color-accent/50 hover:bg-color-accent/[0.055] hover:shadow-[0_18px_44px_-24px_rgba(0,216,240,0.76)]',
+      'hover:border-color-accent/50 hover:bg-color-accent/[0.05]',
     icon: 'group-hover:text-color-accent',
-    line: 'bg-color-accent shadow-[0_0_16px_rgba(0,216,240,0.48)]',
-    dot: 'bg-color-accent shadow-[0_0_16px_rgba(0,216,240,0.62)]',
+    line: 'bg-color-accent shadow-[0_0_12px_rgba(0,216,240,0.48)]',
+    dot: 'bg-color-accent shadow-[0_0_12px_rgba(0,216,240,0.62)]',
   },
   yellow: {
     card:
-      'hover:border-color-accent-alt/50 hover:bg-color-accent-alt/[0.055] hover:shadow-[0_18px_44px_-24px_rgba(255,220,60,0.72)]',
+      'hover:border-color-accent-alt/50 hover:bg-color-accent-alt/[0.05]',
     icon: 'group-hover:text-color-accent-alt',
-    line: 'bg-color-accent-alt shadow-[0_0_16px_rgba(255,220,60,0.48)]',
-    dot: 'bg-color-accent-alt shadow-[0_0_16px_rgba(255,220,60,0.62)]',
+    line: 'bg-color-accent-alt shadow-[0_0_12px_rgba(255,220,60,0.48)]',
+    dot: 'bg-color-accent-alt shadow-[0_0_12px_rgba(255,220,60,0.62)]',
   },
   red: {
     card:
-      'hover:border-color-danger/50 hover:bg-color-danger/[0.055] hover:shadow-[0_18px_44px_-24px_rgba(255,76,76,0.7)]',
+      'hover:border-color-danger/50 hover:bg-color-danger/[0.05]',
     icon: 'group-hover:text-color-danger',
-    line: 'bg-color-danger shadow-[0_0_16px_rgba(255,76,76,0.48)]',
-    dot: 'bg-color-danger shadow-[0_0_16px_rgba(255,76,76,0.62)]',
+    line: 'bg-color-danger shadow-[0_0_12px_rgba(255,76,76,0.48)]',
+    dot: 'bg-color-danger shadow-[0_0_12px_rgba(255,76,76,0.62)]',
   },
 }
 
@@ -84,73 +80,73 @@ function DesktopToolStack({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ once: true, amount: 0.2 }}
       variants={stackVariants}
-      className="relative w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center py-12 border-b border-white/5 last:border-b-0"
+      className="relative w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center py-8 border-b border-white/5 last:border-b-0"
     >
       {/* Left: narrative */}
-      <div className={`flex flex-col gap-5 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-color-accent/10 border border-color-accent/20">
-            <Terminal className="w-5 h-5 text-color-accent" />
+      <div className={`flex flex-col gap-3 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-color-accent/10 border border-color-accent/20">
+            <Terminal className="w-4 h-4 text-color-accent" />
           </div>
-          <h3 className="font-black text-color-tinta text-3xl md:text-4xl uppercase leading-none tracking-tight">
+          <h3 className="font-bold text-color-tinta text-2xl md:text-3xl uppercase leading-none tracking-tight">
             {category.title[lang]}
           </h3>
         </div>
-        <p className="text-sm md:text-base text-color-accent font-bold uppercase tracking-widest italic opacity-80">
+        <p className="text-xs md:text-sm text-color-accent font-bold uppercase tracking-widest italic opacity-80">
           {category.caption[lang]}
         </p>
-        <p className="text-sm md:text-[1.05rem] text-color-tinta/80 leading-relaxed max-w-xl glass-card rounded-2xl px-8 py-6 shadow-xl">
+        <p className="text-xs md:text-sm text-color-tinta/85 leading-relaxed max-w-xl liquid-glass rounded-xl px-6 py-4 shadow-md">
           {category.narrative[lang]}
         </p>
       </div>
 
       {/* Right: animated tool pile */}
-      <div className={`flex flex-wrap items-center justify-center gap-4 md:gap-5 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+      <div className={`flex flex-wrap items-center justify-center gap-3 md:gap-4 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
         {category.skills.map((skillId, skillIndex) => {
           const isHighlighted = skillId === category.highlight
           const accent = isHighlighted ? 'cyan' : getToolAccent(index, skillIndex)
           const accentStyles = TOOL_ACCENT_STYLES[accent]
-          const rotate = accent === 'red' ? -1.2 : accent === 'yellow' ? 1.2 : 0.8
+          const rotate = accent === 'red' ? -1 : accent === 'yellow' ? 1 : 0.6
 
           return (
             <motion.div
               key={skillId}
               variants={chipVariants}
               whileHover={{
-                y: -7,
-                scale: 1.045,
+                y: -5,
+                scale: 1.04,
                 rotate,
-                transition: { type: 'spring', stiffness: 520, damping: 28, mass: 0.55 },
+                transition: { type: 'spring', stiffness: 500, damping: 25 },
               }}
               whileTap={{ scale: 0.98 }}
-              className={`group relative flex flex-col items-center gap-3 overflow-hidden rounded-2xl px-4 py-5 sm:px-5 sm:py-6 glass-card transition-[border-color,background-color,box-shadow] duration-150 ease-out will-change-transform ${
+              className={`group relative flex flex-col items-center gap-2 overflow-hidden rounded-xl px-4 py-4 sm:px-4 sm:py-4 liquid-glass transition-all duration-200 ease-out ${
                 isHighlighted
-                  ? 'border-color-accent/45 bg-color-accent/[0.04] shadow-[0_16px_42px_-24px_rgba(0,216,240,0.72)]'
+                  ? 'border-color-accent/40 bg-color-accent/[0.04]'
                   : accentStyles.card
               }`}
             >
               <span
-                className={`pointer-events-none absolute inset-x-4 top-3 h-px origin-left scale-x-0 rounded-full opacity-0 transition-all duration-150 ease-out group-hover:scale-x-100 group-hover:opacity-100 ${
+                className={`pointer-events-none absolute inset-x-3 top-2 h-px origin-left scale-x-0 rounded-full opacity-0 transition-all duration-150 ease-out group-hover:scale-x-100 group-hover:opacity-100 ${
                   isHighlighted ? 'scale-x-100 opacity-90' : ''
                 } ${accentStyles.line}`}
               />
 
               <TechIcon
                 id={skillId}
-                className={`w-8 h-8 sm:w-10 sm:h-10 transition-colors duration-150 ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors duration-150 ${
                   isHighlighted
                     ? 'text-color-accent'
                     : `text-color-tinta/60 ${accentStyles.icon}`
                 }`}
               />
-              <span className="text-center text-[0.65rem] font-bold uppercase leading-tight tracking-[0.2em] text-color-tinta/50 transition-colors duration-150 group-hover:text-color-tinta sm:text-[0.7rem]">
+              <span className="text-center text-[0.6rem] font-bold uppercase leading-tight tracking-[0.15em] text-color-tinta/60 transition-colors duration-150 group-hover:text-color-tinta">
                 {TECH_LABELS[skillId]}
               </span>
 
               <span
-                className={`absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full transition-all duration-150 ease-out ${
+                className={`absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full transition-all duration-150 ease-out ${
                   isHighlighted
                     ? `scale-100 opacity-100 ${TOOL_ACCENT_STYLES.cyan.dot}`
                     : `scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 ${accentStyles.dot}`
@@ -162,38 +158,6 @@ function DesktopToolStack({
       </div>
     </motion.div>
   )
-}
-
-// ---------- Mobile: accordion with ink reveal ----------
-
-const accordionContentVariants: Variants = {
-  hidden: { height: 0, opacity: 0 },
-  visible: {
-    height: 'auto',
-    opacity: 1,
-    transition: { duration: 0.4, ease: 'easeOut' },
-  },
-  exit: {
-    height: 0,
-    opacity: 0,
-    transition: { duration: 0.3, ease: 'easeIn' },
-  },
-}
-
-const inkStagger: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.05 },
-  },
-}
-
-const inkItem: Variants = {
-  hidden: { opacity: 0, scaleY: 0, originY: 0 },
-  visible: {
-    opacity: 1,
-    scaleY: 1,
-    transition: { duration: 0.4, ease: 'easeOut' },
-  },
 }
 
 function MobileAccordion({
@@ -212,26 +176,26 @@ function MobileAccordion({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-6 text-left"
+        className="w-full flex items-center justify-between py-4 text-left cursor-pointer"
         aria-expanded={isOpen}
       >
-        <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-color-accent/10 border border-color-accent/20">
-            <Terminal className="w-4 h-4 text-color-accent" />
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-color-accent/10 border border-color-accent/20">
+            <Terminal className="w-3.5 h-3.5 text-color-accent" />
           </div>
-          <h3 className="font-black text-color-tinta text-2xl uppercase leading-none tracking-tight">
+          <h3 className="font-bold text-color-tinta text-xl uppercase leading-none tracking-tight">
             {category.title[lang]}
           </h3>
           {category.highlight && (
-            <div className="w-2 h-2 rounded-full bg-color-accent glow-cyan" />
+            <div className="w-1.5 h-1.5 rounded-full bg-color-accent glow-cyan" />
           )}
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          className="flex items-center justify-center w-8 h-8 rounded-lg glass-card"
+          transition={{ duration: 0.2 }}
+          className="flex items-center justify-center w-7 h-7 rounded-lg liquid-glass"
         >
-          <ChevronDown className="w-5 h-5 text-color-accent" />
+          <ChevronDown className="w-4 h-4 text-color-accent" />
         </motion.div>
       </button>
 
@@ -239,47 +203,41 @@ function MobileAccordion({
         {isOpen && (
           <motion.div
             key={category.id}
-            variants={accordionContentVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <div className="pb-8 space-y-5">
-              <p className="text-sm text-color-accent font-bold uppercase tracking-widest opacity-80 italic">
+            <div className="pb-6 space-y-4">
+              <p className="text-xs text-color-accent font-bold uppercase tracking-widest opacity-80 italic">
                 {category.caption[lang]}
               </p>
 
-              <motion.ul
-                variants={inkStagger}
-                initial="hidden"
-                animate="visible"
-                className="flex flex-wrap gap-3 pt-2"
-              >
+              <div className="flex flex-wrap gap-2.5 pt-1">
                 {category.skills.map((skillId) => (
-                  <motion.li
+                  <div
                     key={skillId}
-                    variants={inkItem}
-                    className={`group relative flex flex-col items-center gap-2 px-3 py-4 rounded-xl glass-card transition-colors duration-300 ${
+                    className={`flex flex-col items-center gap-1.5 px-3 py-3 rounded-lg liquid-glass transition-colors duration-200 ${
                       skillId === category.highlight
-                        ? 'border-color-accent/40 shadow-[0_0_15px_rgba(34,213,224,0.1)]'
+                        ? 'border-color-accent/40'
                         : ''
                     }`}
                   >
                     <TechIcon
                       id={skillId}
-                      className={`w-7 h-7 ${
+                      className={`w-6 h-6 ${
                         skillId === category.highlight
                           ? 'text-color-accent'
                           : 'text-color-tinta/60'
                       }`}
                     />
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest text-color-tinta/50 text-center leading-tight">
+                    <span className="text-[0.55rem] font-bold uppercase tracking-widest text-color-tinta/60 text-center leading-tight">
                       {TECH_LABELS[skillId]}
                     </span>
-                  </motion.li>
+                  </div>
                 ))}
-              </motion.ul>
+              </div>
             </div>
           </motion.div>
         )}
@@ -287,8 +245,6 @@ function MobileAccordion({
     </div>
   )
 }
-
-// ---------- Section ----------
 
 function Herramientas() {
   const { t, lang } = useLanguage()
@@ -302,14 +258,12 @@ function Herramientas() {
   return (
     <section
       id="herramientas"
-      className="relative z-10 px-6 py-28 md:py-32 lg:py-36 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden"
+      className="relative z-10 px-6 py-12 md:py-16 lg:py-20 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden"
     >
-      {/* Background handled by ScrollBackground component */}
-
       <SectionHeader title={h.title} intro={h.intro} />
 
       {/* Desktop: workbench layout */}
-      <div className="hidden lg:block w-full max-w-6xl mt-24">
+      <div className="hidden lg:block w-full max-w-6xl mt-12">
         {SKILL_CATEGORIES.map((category, i) => (
           <DesktopToolStack
             key={category.id}
@@ -321,7 +275,7 @@ function Herramientas() {
       </div>
 
       {/* Mobile: accordion */}
-      <div className="lg:hidden w-full max-w-xl mt-16">
+      <div className="lg:hidden w-full max-w-xl mt-10">
         {SKILL_CATEGORIES.map((category, i) => (
           <MobileAccordion
             key={category.id}
@@ -334,10 +288,10 @@ function Herramientas() {
       </div>
 
       {/* Bottom ornament */}
-      <div className="flex items-center gap-4 mt-24">
-        <span className="h-0.5 w-12 tricolor-separator rounded-full" />
-        <div className="w-2 h-2 rounded-full tricolor-dot" />
-        <span className="h-0.5 w-12 tricolor-separator rounded-full" />
+      <div className="flex items-center gap-3 mt-16">
+        <span className="h-0.5 w-10 tricolor-separator rounded-full" />
+        <div className="w-1.5 h-1.5 rounded-full tricolor-dot" />
+        <span className="h-0.5 w-10 tricolor-separator rounded-full" />
       </div>
     </section>
   )

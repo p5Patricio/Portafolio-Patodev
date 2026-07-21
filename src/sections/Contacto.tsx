@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext'
 import SectionHeader from '../components/SectionHeader'
 import PillButton from '../components/PillButton'
 
-// ---------- Brand icons (not available in lucide-react) ----------
+// ---------- Brand icons ----------
 
 function GitHubIcon({ className, ...props }: SVGProps<SVGSVGElement> & { strokeWidth?: number }) {
   return (
@@ -37,26 +37,24 @@ type InfoRowProps = {
 
 function InfoRow({ icon: Icon, label, value, href, onClick, actionIcon: ActionIcon }: InfoRowProps) {
   const content = (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 group glass-card rounded-2xl p-4 md:p-5 transition-all duration-300 hover:glow-cyan">
-      {/* Top Row (Mobile) / Left Side (Desktop) */}
+    <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4 group liquid-glass hover:border-color-accent/40 rounded-xl p-3.5 md:p-4 transition-all duration-300">
       <div className="flex items-center gap-3 w-full md:w-auto">
-        <span className="flex-shrink-0 w-11 h-11 md:w-14 md:h-14 rounded-xl bg-color-accent/10 flex items-center justify-center text-color-accent border border-color-accent/20 shadow-[0_0_15px_rgba(34,213,224,0.1)] transition-transform duration-300 group-hover:scale-110">
-          <Icon className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2} />
+        <span className="flex-shrink-0 w-9 h-9 md:w-11 md:h-11 rounded-lg bg-color-accent/10 flex items-center justify-center text-color-accent border border-color-accent/20 transition-transform duration-300 group-hover:scale-110">
+          <Icon className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
         </span>
-        <span className="md:hidden text-[0.65rem] text-color-accent font-black tracking-widest uppercase flex-1">
+        <span className="md:hidden text-[0.6rem] text-color-accent font-black tracking-widest uppercase flex-1">
           {label}
         </span>
       </div>
 
-      {/* Bottom Row (Mobile) / Right Side (Desktop) */}
-      <div className="flex flex-col gap-1 flex-1 min-w-0 w-full">
-        <span className="hidden md:block text-[0.65rem] text-color-accent font-black tracking-widest uppercase">
+      <div className="flex flex-col gap-0.5 flex-1 min-w-0 w-full">
+        <span className="hidden md:block text-[0.6rem] text-color-accent font-black tracking-widest uppercase">
           {label}
         </span>
         <div className="flex items-center gap-2 w-full">
-          <span className="text-sm md:text-base text-color-tinta font-medium truncate">{value}</span>
+          <span className="text-xs md:text-sm text-color-tinta font-medium truncate">{value}</span>
           {ActionIcon && (
-            <ActionIcon className="w-4 h-4 text-color-tinta/30 group-hover:text-color-accent transition-colors shrink-0" strokeWidth={2.5} />
+            <ActionIcon className="w-3.5 h-3.5 text-color-tinta/40 group-hover:text-color-accent transition-colors shrink-0" strokeWidth={2.5} />
           )}
         </div>
       </div>
@@ -100,10 +98,10 @@ type FieldProps = {
 
 function Field({ id, label, children }: FieldProps) {
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-2">
       <label
         htmlFor={id}
-        className="text-[0.65rem] uppercase tracking-[0.4em] text-color-accent font-black"
+        className="text-[0.6rem] uppercase tracking-[0.3em] text-color-accent font-black"
       >
         {label}
       </label>
@@ -113,7 +111,7 @@ function Field({ id, label, children }: FieldProps) {
 }
 
 const inputClass =
-  'w-full bg-black/35 border border-white/10 rounded-xl px-5 py-4 text-sm text-color-tinta placeholder:text-color-tinta/30 focus:outline-none focus:border-color-accent/50 focus:bg-color-accent/5 transition-all'
+  'w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xs md:text-sm text-color-tinta placeholder:text-color-tinta/30 focus:outline-none focus:border-color-accent/50 focus:bg-color-accent/5 transition-all'
 
 // ---------- Section ----------
 
@@ -172,175 +170,174 @@ function Contacto() {
     <section
       ref={ref}
       id="contacto"
-      className="relative z-10 overflow-hidden pb-12 md:pb-16 lg:pb-20"
+      className="relative z-10 overflow-hidden pb-12 md:pb-16"
     >
-      {/* Background handled by ScrollBackground component */}
-      <div className="relative z-10 px-6 pt-28 pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24 md:px-12 lg:px-24 flex flex-col items-center">
-      <SectionHeader
-        title={c.title}
-        intro={c.intro.join(' ')}
-        introDelay={0.3}
-      />
+      <div className="relative z-10 px-6 pt-12 pb-12 md:pt-16 md:pb-16 md:px-12 lg:px-24 flex flex-col items-center">
+        <SectionHeader
+          title={c.title}
+          intro={c.intro.join(' ')}
+          introDelay={0.3}
+        />
 
-      {/* Info + Form */}
-      <div className="w-full max-w-6xl mt-16 grid grid-cols-1 lg:grid-cols-[1fr_auto_1.3fr] gap-12 lg:gap-16 items-start">
-        {/* Info column */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6">
-          <InfoRow
-            icon={GitHubIcon}
-            label={c.info.github.label}
-            value={c.info.github.value}
-            href={c.info.github.href}
-            actionIcon={ExternalLink}
-          />
-          <InfoRow
-            icon={LinkedInIcon}
-            label={c.info.linkedin.label}
-            value={c.info.linkedin.value}
-            href={c.info.linkedin.href}
-            actionIcon={ExternalLink}
-          />
-          <InfoRow
-            icon={Mail}
-            label={c.info.email.label}
-            value={c.info.email.value}
-            onClick={copyEmail}
-            actionIcon={copied ? Check : Copy}
-          />
-          <InfoRow
-            icon={MapPin}
-            label={c.info.location.label}
-            value={c.info.location.value}
-            href="https://www.google.com.mx/maps/place/Guanajuato,+Gto./@21.0250736,-101.2991017,13z/data=!3m1!4b1!4m6!3m5!1s0x842b73f58b0cf1eb:0x25f4b0d165571e74!8m2!3d21.0190145!4d-101.2573586!16zL20vMDE4bmI4?entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D"
-            actionIcon={ExternalLink}
-          />
-        </div>
-
-        {/* Vertical divider */}
-        <div
-          aria-hidden="true"
-          className="hidden lg:flex flex-col items-center self-stretch"
-        >
-          <span className="flex-1 w-0.5 tricolor-separator-y rounded-full" />
-          <div className="w-2 h-2 rounded-full tricolor-dot my-4" />
-          <span className="flex-1 w-0.5 tricolor-separator-y rounded-full" />
-        </div>
-
-        {/* Horizontal divider for mobile/tablet */}
-        <div
-          aria-hidden="true"
-          className="flex lg:hidden items-center gap-4 w-full"
-        >
-          <span className="flex-1 h-0.5 tricolor-separator rounded-full" />
-          <div className="w-2 h-2 rounded-full tricolor-dot" />
-          <span className="flex-1 h-0.5 tricolor-separator rounded-full" />
-        </div>
-
-        {/* Form column */}
-        <div className="glass-card rounded-3xl p-8 shadow-2xl">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-7">
-          <input
-            type="text"
-            name="website"
-            value={form.website}
-            onChange={handleChange('website')}
-            tabIndex={-1}
-            autoComplete="off"
-            className="hidden"
-            aria-hidden="true"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            <Field id="contact-name" label={c.form.nameLabel}>
-              <input
-                id="contact-name"
-                type="text"
-                value={form.name}
-                onChange={handleChange('name')}
-                placeholder={c.form.namePlaceholder}
-                className={inputClass}
-                autoComplete="name"
-                maxLength={120}
-                disabled={status === 'sending'}
-                required
-              />
-            </Field>
-            <Field id="contact-email" label={c.form.emailLabel}>
-              <input
-                id="contact-email"
-                type="email"
-                value={form.email}
-                onChange={handleChange('email')}
-                placeholder={c.form.emailPlaceholder}
-                className={inputClass}
-                autoComplete="email"
-                maxLength={254}
-                disabled={status === 'sending'}
-                required
-              />
-            </Field>
-          </div>
-
-          <Field id="contact-subject" label={c.form.subjectLabel}>
-            <input
-              id="contact-subject"
-              type="text"
-              value={form.subject}
-              onChange={handleChange('subject')}
-              placeholder={c.form.subjectPlaceholder}
-              className={inputClass}
-              maxLength={160}
-              disabled={status === 'sending'}
-              required
+        {/* Info + Form */}
+        <div className="w-full max-w-6xl mt-10 grid grid-cols-1 lg:grid-cols-[1fr_auto_1.3fr] gap-8 lg:gap-12 items-start">
+          {/* Info column */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
+            <InfoRow
+              icon={GitHubIcon}
+              label={c.info.github.label}
+              value={c.info.github.value}
+              href={c.info.github.href}
+              actionIcon={ExternalLink}
             />
-          </Field>
-
-          <Field id="contact-message" label={c.form.messageLabel}>
-            <div className="relative">
-              <textarea
-                id="contact-message"
-                rows={6}
-                value={form.message}
-                onChange={handleChange('message')}
-                placeholder={c.form.messagePlaceholder}
-                className={`${inputClass} resize-none`}
-                minLength={10}
-                maxLength={2000}
-                disabled={status === 'sending'}
-                required
-              />
-            </div>
-          </Field>
-
-          <div className="flex flex-col items-center lg:items-start gap-4 mt-2">
-            <div className="relative inline-block">
-              <PillButton
-                type="submit"
-                disabled={status === 'sending' || status === 'success'}
-                ariaLabel={status === 'sending' ? c.form.sending : c.form.submit}
-              >
-                <span>{status === 'sending' ? c.form.sending : c.form.submit}</span>
-                <Send
-                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                  strokeWidth={2.5}
-                />
-              </PillButton>
-            </div>
-            <div aria-live="polite">
-            {status === 'success' && (
-              <p className="text-sm text-green-400 font-bold text-center lg:text-left">
-                {c.form.success}
-              </p>
-            )}
-            {status === 'error' && (
-              <p className="text-sm text-color-danger font-bold text-center lg:text-left">
-                {c.form.error}
-              </p>
-            )}
-            </div>
+            <InfoRow
+              icon={LinkedInIcon}
+              label={c.info.linkedin.label}
+              value={c.info.linkedin.value}
+              href={c.info.linkedin.href}
+              actionIcon={ExternalLink}
+            />
+            <InfoRow
+              icon={Mail}
+              label={c.info.email.label}
+              value={c.info.email.value}
+              onClick={copyEmail}
+              actionIcon={copied ? Check : Copy}
+            />
+            <InfoRow
+              icon={MapPin}
+              label={c.info.location.label}
+              value={c.info.location.value}
+              href="https://www.google.com.mx/maps/place/Guanajuato,+Gto./@21.0250736,-101.2991017,13z/data=!3m1!4b1!4m6!3m5!1s0x842b73f58b0cf1eb:0x25f4b0d165571e74!8m2!3d21.0190145!4d-101.2573586!16zL20vMDE4bmI4?entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D"
+              actionIcon={ExternalLink}
+            />
           </div>
-        </form>
+
+          {/* Vertical divider */}
+          <div
+            aria-hidden="true"
+            className="hidden lg:flex flex-col items-center self-stretch"
+          >
+            <span className="flex-1 w-0.5 tricolor-separator-y rounded-full" />
+            <div className="w-1.5 h-1.5 rounded-full tricolor-dot my-3" />
+            <span className="flex-1 w-0.5 tricolor-separator-y rounded-full" />
+          </div>
+
+          {/* Horizontal divider for mobile/tablet */}
+          <div
+            aria-hidden="true"
+            className="flex lg:hidden items-center gap-3 w-full"
+          >
+            <span className="flex-1 h-0.5 tricolor-separator rounded-full" />
+            <div className="w-1.5 h-1.5 rounded-full tricolor-dot" />
+            <span className="flex-1 h-0.5 tricolor-separator rounded-full" />
+          </div>
+
+          {/* Form column */}
+          <div className="liquid-glass rounded-2xl p-6 md:p-8 shadow-xl">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <input
+                type="text"
+                name="website"
+                value={form.website}
+                onChange={handleChange('website')}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <Field id="contact-name" label={c.form.nameLabel}>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    value={form.name}
+                    onChange={handleChange('name')}
+                    placeholder={c.form.namePlaceholder}
+                    className={inputClass}
+                    autoComplete="name"
+                    maxLength={120}
+                    disabled={status === 'sending'}
+                    required
+                  />
+                </Field>
+                <Field id="contact-email" label={c.form.emailLabel}>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange('email')}
+                    placeholder={c.form.emailPlaceholder}
+                    className={inputClass}
+                    autoComplete="email"
+                    maxLength={254}
+                    disabled={status === 'sending'}
+                    required
+                  />
+                </Field>
+              </div>
+
+              <Field id="contact-subject" label={c.form.subjectLabel}>
+                <input
+                  id="contact-subject"
+                  type="text"
+                  value={form.subject}
+                  onChange={handleChange('subject')}
+                  placeholder={c.form.subjectPlaceholder}
+                  className={inputClass}
+                  maxLength={160}
+                  disabled={status === 'sending'}
+                  required
+                />
+              </Field>
+
+              <Field id="contact-message" label={c.form.messageLabel}>
+                <div className="relative">
+                  <textarea
+                    id="contact-message"
+                    rows={4}
+                    value={form.message}
+                    onChange={handleChange('message')}
+                    placeholder={c.form.messagePlaceholder}
+                    className={`${inputClass} resize-none`}
+                    minLength={10}
+                    maxLength={2000}
+                    disabled={status === 'sending'}
+                    required
+                  />
+                </div>
+              </Field>
+
+              <div className="flex flex-col items-center lg:items-start gap-3 mt-1">
+                <div className="relative inline-block">
+                  <PillButton
+                    type="submit"
+                    disabled={status === 'sending' || status === 'success'}
+                    ariaLabel={status === 'sending' ? c.form.sending : c.form.submit}
+                  >
+                    <span>{status === 'sending' ? c.form.sending : c.form.submit}</span>
+                    <Send
+                      className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
+                      strokeWidth={2.5}
+                    />
+                  </PillButton>
+                </div>
+                <div aria-live="polite">
+                  {status === 'success' && (
+                    <p className="text-xs text-green-400 font-bold text-center lg:text-left">
+                      {c.form.success}
+                    </p>
+                  )}
+                  {status === 'error' && (
+                    <p className="text-xs text-color-danger font-bold text-center lg:text-left">
+                      {c.form.error}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
       </div>
     </section>
   )

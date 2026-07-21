@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import type { Transition } from 'framer-motion'
+import ColorBends from './ColorBends'
 
 type LaserFieldVariant = 'home' | 'gallery'
 
@@ -82,13 +83,6 @@ function LuminousCurve({
   )
 }
 
-/**
- * Minimal long-form light trace.
- *
- * The Hero keeps the cinematic, thick beams; the rest of the page uses quieter
- * hairline curves with controlled glow so the content feels premium instead of
- * heavy. Everything still sits on a pure #000 background.
- */
 function LightBand({ y, scale = 1, delay = 0, idSuffix, flip = false }: LightBandProps) {
   const transform = flip
     ? `translate(1440 ${y}) scale(${-scale} ${scale})`
@@ -157,14 +151,6 @@ function LightBand({ y, scale = 1, delay = 0, idSuffix, flip = false }: LightBan
   )
 }
 
-/**
- * Mobile-only companion traces.
- *
- * These use their own 430px-wide coordinate system instead of squeezing the
- * desktop SVG into a phone viewport. The paths are intentionally flatter,
- * shorter in height and more horizontal so they read as light accents rather
- * than oversized diagonal bands on small screens.
- */
 function MobileLightBand({ y, scale = 1, delay = 0, idSuffix, flip = false }: LightBandProps) {
   const transform = flip
     ? `translate(430 ${y}) scale(${-scale} ${scale})`
@@ -367,13 +353,6 @@ function LaserDefs({ idSuffix }: { idSuffix: string }) {
   )
 }
 
-/**
- * Pure-black long-form laser field.
- *
- * The page background is intentionally a single solid #000000 plane. The only
- * color comes from restrained SVG traces that echo the Hero without competing
- * with the content.
- */
 export function LaserField({ variant = 'home', className = '' }: LaserFieldProps) {
   const isGallery = variant === 'gallery'
   const viewBoxHeight = isGallery ? 3000 : 5900
@@ -456,6 +435,26 @@ export function LaserField({ variant = 'home', className = '' }: LaserFieldProps
 function ScrollBackground({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#000000] selection:bg-color-accent selection:text-color-papel">
+      {/* Interactive WebGL ColorBends Background */}
+      <div className="fixed inset-0 z-0 opacity-75 pointer-events-none">
+        <ColorBends
+          colors={['#00d8f0', '#8a5cff', '#00ffd1', '#ff2a85']}
+          rotation={90}
+          speed={0.12}
+          scale={1.2}
+          frequency={1.1}
+          warpStrength={1.2}
+          mouseInfluence={0.8}
+          parallax={0.4}
+          noise={0.12}
+          iterations={2}
+          intensity={1.4}
+          bandWidth={5}
+          transparent={true}
+          autoRotate={1.5}
+        />
+      </div>
+
       <LaserField />
 
       <div className="relative z-10">
