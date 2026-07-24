@@ -1,27 +1,17 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import ProjectIllustration from './ProjectIllustration'
 
 type Props = {
-  images: string[]
+  images?: string[]
   title: string
+  repoId?: string
   /** Milliseconds between auto-advance. Pass 0 to disable auto-play. */
   autoPlayMs?: number
 }
 
-/**
- * Small image carousel for project cards.
- *
- * - Empty `images` → renders an elegant "coming soon" placeholder.
- * - 1 image      → renders it static (no controls).
- * - 2+ images    → auto-rotates every `autoPlayMs`, with dot indicators and
- *                  hover-revealed arrows. Click dots/arrows to navigate.
- *
- * Drop the image files into `src/assets/projects/<project-id>/` (or `public/`)
- * and list their paths in `projectsData[*].images`. That's all that's needed —
- * no further wiring.
- */
-function ProjectCarousel({ images, title, autoPlayMs = 5000 }: Props) {
+function ProjectCarousel({ images = [], title, repoId = '', autoPlayMs = 5000 }: Props) {
   const [index, setIndex] = useState(0)
   const hasImages = images.length > 0
   const multiple = images.length > 1
@@ -43,19 +33,14 @@ function ProjectCarousel({ images, title, autoPlayMs = 5000 }: Props) {
 
   if (!hasImages) {
     return (
-      <div className="relative w-full aspect-[16/9] bg-gradient-to-br from-color-papel via-color-papel to-color-tinta/10 border-b border-color-tinta/10 flex items-center justify-center overflow-hidden">
-        <div className="flex flex-col items-center gap-2 text-color-tinta/40">
-          <ImageIcon className="w-9 h-9" strokeWidth={1.2} />
-          <span className="text-[0.65rem] uppercase tracking-[0.35em]">
-            Próximamente
-          </span>
-        </div>
+      <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#090a0d] border-b border-white/10">
+        <ProjectIllustration id={repoId} className="w-full h-full object-cover" />
       </div>
     )
   }
 
   return (
-    <div className="relative w-full aspect-[16/9] overflow-hidden group/carousel bg-color-tinta/5">
+    <div className="relative w-full aspect-[16/9] overflow-hidden group/carousel bg-[#090a0d]">
       <AnimatePresence mode="wait">
         <motion.img
           key={safeIndex}
@@ -70,8 +55,17 @@ function ProjectCarousel({ images, title, autoPlayMs = 5000 }: Props) {
           decoding="async"
           width={900}
           height={506}
+          onError={(e) => {
+            // Fallback to SVG vector illustration if image file fails to load
+            e.currentTarget.style.display = 'none'
+          }}
         />
       </AnimatePresence>
+
+      {/* Fallback Vector background rendered underneath img */}
+      <div className="absolute inset-0 -z-10 w-full h-full">
+        <ProjectIllustration id={repoId} className="w-full h-full object-cover" />
+      </div>
 
       {multiple && (
         <>

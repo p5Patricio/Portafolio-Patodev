@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SplitText from './SplitText'
 
 type Size = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -29,15 +30,14 @@ function SectionHeader({
     <>
       {/* Title + Elegant Accent */}
       <div className="relative flex flex-col items-center justify-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
-          className={`font-display text-white ${SIZE_MAP[size]} uppercase leading-[0.95] tracking-display text-center`}
-        >
-          {title}
-        </motion.h2>
+        <SplitText
+          text={title}
+          tag="h2"
+          splitType="chars"
+          delay={25}
+          duration={0.5}
+          className={`font-display text-white ${SIZE_MAP[size]} uppercase leading-[0.95] tracking-tight text-center font-bold`}
+        />
 
         {/* Tri-color Accent Bar */}
         <motion.div
