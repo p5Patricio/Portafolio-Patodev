@@ -41,8 +41,6 @@ export interface Repo {
 }
 
 // ---------- Repo registry ----------
-//
-// Curated list of finished, relevant projects from p5Patricio GitHub account.
 
 export const REPOS: Repo[] = [
   // ---- 2026 ----
@@ -66,7 +64,7 @@ export const REPOS: Repo[] = [
     isPrivate: true,
     featured: true,
     illustration: 'pagoda',
-    images: ['/projects/thumbs/rey-asesino.jpg'],
+    images: ['/projects/thumbs/rey-asesino.webp'],
   },
   {
     id: 'd-mox',
@@ -87,7 +85,7 @@ export const REPOS: Repo[] = [
     isPrivate: true,
     featured: true,
     illustration: 'mountain',
-    images: ['/projects/thumbs/demox.jpg'],
+    images: ['/projects/thumbs/demox.webp'],
   },
   {
     id: 'whisperkey',
@@ -106,7 +104,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: true,
-    images: ['/projects/thumbs/wisprlocal.jpg'],
+    images: ['/projects/thumbs/wisprlocal.webp'],
   },
   {
     id: 'garou',
@@ -125,7 +123,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/garou.jpg'],
+    images: ['/projects/thumbs/garou.webp'],
   },
   {
     id: 'mcp-agenda',
@@ -144,7 +142,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/mcp-agenda.jpg'],
+    images: ['/projects/thumbs/mcp-agenda.webp'],
   },
   {
     id: 'eclipse-desktop-agent',
@@ -164,7 +162,7 @@ export const REPOS: Repo[] = [
     isPrivate: false,
     featured: false,
     illustration: 'torii',
-    images: ['/projects/thumbs/eclipse-desktop-agent.jpg'],
+    images: ['/projects/thumbs/eclipse-desktop-agent.webp'],
   },
   {
     id: 'interprete-lsm',
@@ -183,7 +181,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/interprete-lsm.jpg'],
+    images: ['/projects/thumbs/interprete-lsm.webp'],
   },
   {
     id: 'esteganobot',
@@ -203,7 +201,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/esteganobot.jpg'],
+    images: ['/projects/thumbs/esteganobot.webp'],
   },
   {
     id: 'clasificador-nba',
@@ -222,7 +220,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/clasificador-nba.jpg'],
+    images: ['/projects/thumbs/clasificador-nba.webp'],
   },
   {
     id: 'infinite-tic-tac-toe',
@@ -241,7 +239,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/infinite-tic-tac-toe.jpg'],
+    images: ['/projects/thumbs/infinite-tic-tac-toe.webp'],
   },
   {
     id: 'ascii-vision',
@@ -260,7 +258,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    images: ['/projects/thumbs/ascii-vision.jpg'],
+    images: ['/projects/thumbs/ascii-vision.webp'],
   },
   // ---- 2025 ----
   {
