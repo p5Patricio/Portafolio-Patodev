@@ -25,6 +25,7 @@ const ENTRIES: TimelineEntry[] = [
 ]
 
 const CERTIFICACIONES = [
+  { id: 'ia-profesional', image: '/certificacion-ia.webp' },
   { id: 'tecnm-ia', image: '/cert-tecnm-ia.webp' },
   { id: 'mouredev-ia', image: '/cert-mouredev-ia.webp' },
 ]
@@ -40,7 +41,7 @@ type ImageSlotProps = {
 function ImageSlot({ src, alt, placeholderLabel, position = 'center', onClick }: ImageSlotProps) {
   return (
     <div 
-      className={`relative w-full aspect-[16/10] rounded-2xl overflow-hidden liquid-glass shadow-xl ${onClick && src ? 'cursor-zoom-in hover:border-color-accent/50 transition-all duration-300 group' : ''}`}
+      className={`relative w-full aspect-[16/9] rounded-xl overflow-hidden liquid-glass shadow-lg ${onClick && src ? 'cursor-zoom-in hover:border-color-accent/50 transition-all duration-300 group' : ''}`}
       onClick={() => { if (onClick && src) onClick() }}
     >
       {onClick && src && (
@@ -49,37 +50,37 @@ function ImageSlot({ src, alt, placeholderLabel, position = 'center', onClick }:
             initial={false}
             animate={{ scale: 1 }}
             whileHover={{ scale: 1.1, rotate: 90 }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-color-accent/80 p-2.5 rounded-xl backdrop-blur-md shadow-lg"
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-color-accent/80 p-2 rounded-lg backdrop-blur-md shadow-md"
           >
-            <ImageIcon className="w-5 h-5 text-color-papel" />
+            <ImageIcon className="w-4 h-4 text-color-papel" />
           </motion.div>
         </div>
       )}
 
-      <div className="absolute inset-3 border border-white/10 rounded-xl pointer-events-none z-10" />
+      <div className="absolute inset-2 border border-white/10 rounded-lg pointer-events-none z-10" />
 
       {src ? (
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-contain p-4"
+          className="w-full h-full object-contain p-3"
           style={{ objectPosition: position }}
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/[0.02]">
+        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 bg-white/[0.02]">
           <ImageIcon
             aria-hidden="true"
-            className="w-8 h-8 text-color-accent/40"
+            className="w-6 h-6 text-color-accent/40"
             strokeWidth={1.5}
           />
-          <span className="text-[0.6rem] uppercase tracking-widest text-color-accent/50 font-bold">
+          <span className="text-[0.55rem] uppercase tracking-widest text-color-accent/50 font-bold">
             {placeholderLabel}
           </span>
         </div>
       )}
 
-      <div className="absolute top-3 right-3 w-2 h-2 bg-color-accent glow-cyan rounded-full z-10" />
+      <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-color-accent glow-cyan rounded-full z-10" />
     </div>
   )
 }
@@ -120,39 +121,39 @@ function TimelineCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, delay: index * 0.12, ease: [0.33, 1, 0.68, 1] }}
-      className={`relative flex flex-col gap-6 ${desktopOrder} lg:flex-row lg:items-stretch lg:gap-8`}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.33, 1, 0.68, 1] }}
+      className={`relative flex flex-col gap-4 ${desktopOrder} lg:flex-row lg:items-stretch lg:gap-6`}
     >
       <div
-        className={`relative w-full lg:w-[48%] pl-12 lg:pl-0 ${
-          align === 'left' ? 'lg:pr-8 lg:text-right' : 'lg:pl-8 lg:text-left'
+        className={`relative w-full lg:w-[48%] pl-10 lg:pl-0 ${
+          align === 'left' ? 'lg:pr-6 lg:text-right' : 'lg:pl-6 lg:text-left'
         }`}
       >
-        <div className="liquid-glass rounded-2xl px-6 py-5 md:px-7 md:py-6 h-full flex flex-col justify-center shadow-lg transition-all duration-300 hover:border-color-accent/40">
-          <span className="inline-block text-xs uppercase tracking-[0.3em] text-color-accent font-black mb-2">
+        <div className="liquid-glass rounded-xl px-5 py-4 md:px-6 md:py-4.5 h-full flex flex-col justify-center shadow-md transition-all duration-300 hover:border-color-accent/40">
+          <span className="inline-block text-[0.65rem] uppercase tracking-[0.25em] text-color-accent font-black mb-1">
             {period}
           </span>
 
-          <h3 className="font-bold text-xl md:text-2xl text-color-tinta uppercase leading-tight tracking-tight">
+          <h3 className="font-bold text-lg md:text-xl text-color-tinta uppercase leading-tight tracking-tight">
             {title}
           </h3>
 
-          <p className="mt-1 text-xs text-color-accent-alt font-bold uppercase tracking-widest opacity-90 italic">
+          <p className="mt-0.5 text-[0.7rem] text-color-accent-alt font-bold uppercase tracking-widest opacity-90 italic">
             {institution}
           </p>
 
-          <p className="mt-3 text-color-tinta/90 text-xs md:text-sm leading-relaxed">
+          <p className="mt-2 text-color-tinta/90 text-xs leading-relaxed">
             {description}
           </p>
         </div>
       </div>
 
       <div
-        className={`w-full lg:w-[48%] pl-12 lg:pl-0 ${
-          align === 'left' ? 'lg:pl-8' : 'lg:pr-8'
+        className={`w-full lg:w-[48%] pl-10 lg:pl-0 ${
+          align === 'left' ? 'lg:pl-6' : 'lg:pr-6'
         }`}
       >
         <ImageSlot
@@ -168,9 +169,9 @@ function TimelineCard({
         aria-hidden="true"
         className="absolute left-0 top-0 lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 z-10"
       >
-        <div className="relative w-9 h-9 rounded-xl liquid-glass flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110 hover:border-color-accent/50">
-          <Icon className="w-4 h-4 text-color-accent" strokeWidth={2} />
-          <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-color-accent glow-cyan border border-color-papel" />
+        <div className="relative w-8 h-8 rounded-lg liquid-glass flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110 hover:border-color-accent/50">
+          <Icon className="w-3.5 h-3.5 text-color-accent" strokeWidth={2} />
+          <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-color-accent glow-cyan border border-color-papel" />
         </div>
       </div>
     </motion.div>
@@ -200,28 +201,28 @@ function MinimalTimelineCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, delay: index * 0.12, ease: 'easeOut' }}
-      className={`relative flex flex-col gap-4 ${desktopOrder} lg:flex-row lg:items-center lg:gap-8`}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: 'easeOut' }}
+      className={`relative flex flex-col gap-3 ${desktopOrder} lg:flex-row lg:items-center lg:gap-6`}
     >
       <div
-        className={`relative w-full lg:w-[48%] pl-12 lg:pl-0 ${
-          align === 'left' ? 'lg:pr-8 lg:text-right' : 'lg:pl-8 lg:text-left'
+        className={`relative w-full lg:w-[48%] pl-10 lg:pl-0 ${
+          align === 'left' ? 'lg:pr-6 lg:text-right' : 'lg:pl-6 lg:text-left'
         }`}
       >
-        <div className="liquid-glass rounded-xl px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full hover:border-color-accent/40 transition-all duration-300 shadow-md">
+        <div className="liquid-glass rounded-lg px-4 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full hover:border-color-accent/40 transition-all duration-300 shadow-sm">
           <div className={`${align === 'left' ? 'sm:text-right' : 'sm:text-left'} text-left flex-1`}>
-            <span className="block text-[0.65rem] uppercase tracking-[0.3em] text-color-accent font-black mb-1">
+            <span className="block text-[0.6rem] uppercase tracking-[0.25em] text-color-accent font-black mb-0.5">
               {period}
             </span>
-            <h3 className="font-bold text-base md:text-lg text-color-tinta uppercase tracking-tight">{title}</h3>
-            <p className="text-[0.7rem] text-color-accent-alt font-bold uppercase tracking-widest opacity-80 italic mt-0.5">{institution}</p>
+            <h3 className="font-bold text-sm md:text-base text-color-tinta uppercase tracking-tight leading-snug">{title}</h3>
+            <p className="text-[0.65rem] text-color-accent-alt font-bold uppercase tracking-widest opacity-80 italic mt-0.5">{institution}</p>
           </div>
           <button
             onClick={onButtonClick}
-            className="text-[0.6rem] uppercase tracking-[0.2em] font-black text-color-papel bg-color-accent hover:glow-cyan transition-all rounded-lg px-4 py-2 shrink-0 cursor-pointer"
+            className="text-[0.55rem] uppercase tracking-[0.18em] font-black text-color-papel bg-color-accent hover:glow-cyan transition-all rounded-md px-3 py-1.5 shrink-0 cursor-pointer"
           >
             {buttonLabel}
           </button>
@@ -234,9 +235,9 @@ function MinimalTimelineCard({
         aria-hidden="true"
         className="absolute left-0 top-1/2 -translate-y-1/2 lg:left-1/2 lg:-translate-x-1/2 z-10"
       >
-        <div className="relative w-8 h-8 rounded-xl liquid-glass flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110 hover:border-color-accent/50">
-          <Icon className="w-3.5 h-3.5 text-color-accent" strokeWidth={2} />
-          <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-color-accent glow-cyan border border-color-papel" />
+        <div className="relative w-7 h-7 rounded-lg liquid-glass flex items-center justify-center shadow-sm transition-transform duration-300 hover:scale-110 hover:border-color-accent/50">
+          <Icon className="w-3 h-3 text-color-accent" strokeWidth={2} />
+          <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-color-accent glow-cyan border border-color-papel" />
         </div>
       </div>
     </motion.div>
@@ -251,18 +252,18 @@ function Experiencia() {
   return (
     <section
       id="experiencia"
-      className="relative z-10 min-h-screen px-6 py-10 md:py-14 lg:py-16 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden"
+      className="relative z-10 min-h-screen px-6 py-8 md:py-12 lg:py-14 md:px-12 lg:px-24 flex flex-col items-center overflow-hidden"
     >
       <div className="relative z-10 w-full flex flex-col items-center">
         <SectionHeader title={e.title} intro={e.intro} />
 
-        <div className="relative w-full max-w-5xl mt-12">
+        <div className="relative w-full max-w-5xl mt-10">
           <div
             aria-hidden="true"
-            className="absolute top-0 bottom-0 left-4 lg:left-1/2 lg:-translate-x-1/2 w-0.5 tricolor-separator-y rounded-full"
+            className="absolute top-0 bottom-0 left-3.5 lg:left-1/2 lg:-translate-x-1/2 w-0.5 tricolor-separator-y rounded-full"
           />
 
-          <div className="flex flex-col gap-12 lg:gap-16">
+          <div className="flex flex-col gap-8 lg:gap-10">
             {ENTRIES.map((entry, i) => {
               const item = e.items[i]
               if (!item) return null
@@ -302,7 +303,7 @@ function Experiencia() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 mt-16">
+        <div className="flex items-center gap-3 mt-12">
           <span className="h-0.5 w-10 tricolor-separator rounded-full" />
           <div className="w-1.5 h-1.5 rounded-full tricolor-dot" />
           <span className="h-0.5 w-10 tricolor-separator rounded-full" />

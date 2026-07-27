@@ -166,6 +166,7 @@ export const translations: Record<Lang, Dict> = {
       certificacionesTitle: 'Certificaciones',
       viewCert: 'Ver certificado',
       certificaciones: [
+        { period: '2026', name: 'Desarrollo con IA', institution: 'Certificación Profesional' },
         { period: '23/07/2026', name: 'Formación en Inteligencia Artificial', institution: 'TecNM / SEP / CPFIA' },
         { period: '27/06/2026', name: 'Desarrollo con IA: Programa con Agentes', institution: 'mouredev & BIG school' },
       ],
@@ -286,6 +287,7 @@ export const translations: Record<Lang, Dict> = {
       certificacionesTitle: 'Certifications',
       viewCert: 'View certificate',
       certificaciones: [
+        { period: '2026', name: 'AI-Assisted Development', institution: 'Professional Certification' },
         { period: '07/23/2026', name: 'Artificial Intelligence Training Program', institution: 'TecNM / SEP / CPFIA' },
         { period: '06/27/2026', name: 'AI Development: Agentic Programming', institution: 'mouredev & BIG school' },
       ],
