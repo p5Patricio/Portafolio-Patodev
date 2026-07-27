@@ -41,7 +41,7 @@ function Hero() {
           >
             {/* --- NAME: Patricio García --- */}
             {/* Mobile: 2 lines ("Patricio", "García") | Desktop: 1 line ("Patricio García") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(2.2rem,6.5vw,4.2rem)] font-bold tracking-normal mb-2 md:mb-3">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(2.2rem,6.5vw,4.2rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold tracking-tight mb-2 md:mb-3">
               <SplitText
                 text="Patricio"
                 tag="span"
@@ -56,13 +56,13 @@ function Hero() {
                 splitType="chars"
                 delay={25}
                 duration={0.55}
-                className="text-white/90 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
               />
             </div>
 
             {/* --- TITLE: Ingeniero de Software --- */}
             {/* Mobile: 3 lines ("Ingeniero", "de", "Software") | Desktop: 1 line ("Ingeniero de Software") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,6vw,5.5rem)] font-extrabold leading-none">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,6vw,5.5rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-none">
               <SplitText
                 text="Ingeniero"
                 tag="span"
@@ -77,7 +77,7 @@ function Hero() {
                 splitType="chars"
                 delay={30}
                 duration={0.6}
-                className="text-[#FF4C4C] drop-shadow-[0_0_15px_rgba(255,76,76,0.35)]"
+                className="text-white"
               />
               <SplitText
                 text="Software"
@@ -90,7 +90,7 @@ function Hero() {
             </div>
           </h1>
 
-          {/* Logo below title (larger size) */}
+          {/* Logo below title */}
           <Logo
             alt="Logo personal de programador"
             className="mt-6 md:mt-3 w-[clamp(15rem,36vw,34rem)] max-w-[88vw]"
