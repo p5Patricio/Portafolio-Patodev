@@ -25,7 +25,8 @@ const ENTRIES: TimelineEntry[] = [
 ]
 
 const CERTIFICACIONES = [
-  { id: 'ia', image: '/certificacion-ia.webp' }
+  { id: 'tecnm-ia', image: '/cert-tecnm-ia.webp' },
+  { id: 'mouredev-ia', image: '/cert-mouredev-ia.webp' },
 ]
 
 type ImageSlotProps = {
@@ -295,7 +296,7 @@ function Experiencia() {
                 title={cert.name}
                 institution={cert.institution}
                 buttonLabel={e.viewCert}
-                onButtonClick={() => setSelectedImg(CERTIFICACIONES[j].image)}
+                onButtonClick={() => setSelectedImg(CERTIFICACIONES[j]?.image ?? null)}
               />
             ))}
           </div>
