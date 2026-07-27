@@ -32,12 +32,12 @@ function Hero() {
     >
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent flex flex-col justify-between items-center py-6 md:py-10"
+        className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent flex flex-col justify-between items-center py-6 md:py-8"
       >
-        <div className="w-full flex-1 flex flex-col items-center justify-center px-4 pt-12 md:pt-8">
+        <div className="w-full flex-1 flex flex-col items-center justify-center px-4 pt-10 md:pt-6">
           <h1
             id="hero-title"
-            className="flex flex-col items-center justify-center text-center font-display font-extrabold leading-tight tracking-tight"
+            className="flex flex-col items-center justify-center text-center font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-tight tracking-tight"
           >
             {/* --- NAME: Patricio García --- */}
             {/* Mobile: 2 lines ("Patricio", "García") | Desktop: 1 line ("Patricio García") */}
@@ -62,7 +62,7 @@ function Hero() {
 
             {/* --- TITLE: Ingeniero de Software --- */}
             {/* Mobile: 3 lines ("Ingeniero", "de", "Software") | Desktop: 1 line ("Ingeniero de Software") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,6vw,5.5rem)] uppercase font-extrabold leading-none">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,6vw,5.5rem)] font-extrabold leading-none">
               <SplitText
                 text="Ingeniero"
                 tag="span"
@@ -77,7 +77,7 @@ function Hero() {
                 splitType="chars"
                 delay={30}
                 duration={0.6}
-                className="text-white"
+                className="text-[#FF4C4C] drop-shadow-[0_0_15px_rgba(255,76,76,0.35)]"
               />
               <SplitText
                 text="Software"
@@ -90,10 +90,10 @@ function Hero() {
             </div>
           </h1>
 
-          {/* Logo below title */}
+          {/* Logo below title (larger size) */}
           <Logo
             alt="Logo personal de programador"
-            className="mt-6 md:mt-2 w-[clamp(11rem,24vw,24rem)] max-w-[70vw]"
+            className="mt-6 md:mt-3 w-[clamp(15rem,36vw,34rem)] max-w-[88vw]"
           />
         </div>
 
