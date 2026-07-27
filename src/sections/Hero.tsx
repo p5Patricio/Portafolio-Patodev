@@ -32,16 +32,16 @@ function Hero() {
     >
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent flex flex-col justify-between items-center py-6 md:py-8"
+        className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent flex flex-col justify-between items-center px-4 py-6 md:py-10"
       >
-        <div className="w-full flex-1 flex flex-col items-center justify-center px-4 pt-10 md:pt-6">
+        <div className="w-full max-w-6xl flex-1 flex flex-col items-center justify-center pt-8 md:pt-4">
           <h1
             id="hero-title"
             className="flex flex-col items-center justify-center text-center font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-tight tracking-tight"
           >
             {/* --- NAME: Patricio García --- */}
             {/* Mobile: 2 lines ("Patricio", "García") | Desktop: 1 line ("Patricio García") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(2.2rem,6.5vw,4.2rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold tracking-tight mb-2 md:mb-3">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(1.9rem,6.5vw,2.5rem)] md:text-[clamp(1.4rem,2.2vw,2.4rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold tracking-tight mb-2 md:mb-3">
               <SplitText
                 text="Patricio"
                 tag="span"
@@ -62,7 +62,7 @@ function Hero() {
 
             {/* --- TITLE: Ingeniero de Software --- */}
             {/* Mobile: 3 lines ("Ingeniero", "de", "Software") | Desktop: 1 line ("Ingeniero de Software") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,6vw,5.5rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-none">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,7vw,3.2rem)] md:text-[clamp(2.1rem,3.6vw,3.8rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-none">
               <SplitText
                 text="Ingeniero"
                 tag="span"
@@ -90,10 +90,10 @@ function Hero() {
             </div>
           </h1>
 
-          {/* Logo below title */}
+          {/* Logo below title - Sleek compact proportions on PC */}
           <Logo
             alt="Logo personal de programador"
-            className="mt-6 md:mt-3 w-[clamp(15rem,36vw,34rem)] max-w-[88vw]"
+            className="mt-6 md:mt-5 w-[clamp(12rem,40vw,17rem)] md:w-[clamp(11rem,15vw,16.5rem)] max-w-[75vw] md:max-w-[20rem]"
           />
         </div>
 
@@ -105,7 +105,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}
           aria-label="Deslizar para explorar"
-          className="group flex flex-col items-center gap-2 cursor-pointer pb-6 md:pb-8 text-white/60 hover:text-white transition-colors"
+          className="group flex flex-col items-center gap-2 cursor-pointer pb-4 md:pb-6 text-white/60 hover:text-white transition-colors"
         >
           <span className="text-[0.65rem] uppercase tracking-[0.25em] font-semibold text-white/50 group-hover:text-white/80 transition-colors">
             Desliza para explorar
