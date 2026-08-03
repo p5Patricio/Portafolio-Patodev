@@ -73,7 +73,7 @@ function ProjectCard({ repo, lang, viewProjectLabel, visitSiteLabel, index = 0 }
         </p>
 
         {/* Description */}
-        <p className="text-color-tinta/85 text-xs md:text-sm leading-relaxed max-w-[21rem]">
+        <p className="text-color-tinta/90 text-sm md:text-base leading-relaxed max-w-[23rem]">
           {description}
         </p>
 

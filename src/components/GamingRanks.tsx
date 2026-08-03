@@ -33,7 +33,7 @@ function GamingRanks() {
           key={item.game}
           whileHover={{ y: -3 }}
           transition={{ type: 'spring', stiffness: 420, damping: 30, mass: 0.75 }}
-          className={`group/rank relative w-36 rounded-2xl border bg-white/[0.018] px-3 py-4 backdrop-blur-xl transition-[border-color,background-color] duration-200 ease-out hover:bg-white/[0.028] sm:min-w-[10.5rem] sm:w-auto sm:px-5 sm:py-5 ${item.border}`}
+          className={`group/rank relative w-36 rounded-2xl liquid-glass px-4 py-5 transition-all duration-300 ease-out hover:border-color-accent/40 sm:min-w-[11rem] sm:w-auto sm:px-6 sm:py-6 shadow-lg ${item.border}`}
         >
           <div className="flex flex-col items-center gap-3">
             <img

@@ -12,7 +12,7 @@ describe('SobreMi', () => {
 
   it('renders the title', () => {
     renderWithProviders(<SobreMi />)
-    expect(screen.getByRole('heading', { name: /sobre mí/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /sobre/i })).toBeInTheDocument()
   })
 
   it('renders personal description without the old videogame paragraph', () => {

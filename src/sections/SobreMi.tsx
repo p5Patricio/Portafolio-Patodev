@@ -39,7 +39,7 @@ function SobreMi() {
         </div>
 
         {/* Philosophy / Homage */}
-        <div className="max-w-2xl mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 px-4 group">
+        <div className="max-w-2xl mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 px-6 py-6 md:px-8 md:py-7 liquid-glass rounded-2xl shadow-xl group border border-white/10 hover:border-color-accent/40 transition-all duration-300">
           {/* Avatar / Portrait Container */}
           <div className="relative flex items-center justify-center">
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center bg-color-accent/5 rounded-full overflow-hidden liquid-glass transition-all duration-300 group-hover:border-color-accent group-hover:glow-cyan z-10">
@@ -63,7 +63,7 @@ function SobreMi() {
             <blockquote className="font-bold text-lg sm:text-xl text-color-tinta tracking-tight leading-relaxed">
               {t.sobreMi.philosophyQuote}
             </blockquote>
-            <span className="mt-2 text-[10px] sm:text-xs uppercase tracking-[0.3em] text-color-accent font-black">
+            <span className="mt-2 text-xs sm:text-sm uppercase tracking-[0.3em] text-color-accent font-black">
               {t.sobreMi.philosophyAuthor}
             </span>
           </div>

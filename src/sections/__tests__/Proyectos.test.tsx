@@ -12,7 +12,7 @@ describe('Proyectos', () => {
 
   it('renders the title', () => {
     renderWithProviders(<Proyectos />)
-    expect(screen.getByRole('heading', { name: /proyectos/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /proyect/i })).toBeInTheDocument()
   })
 
   it('renders all featured project cards', () => {

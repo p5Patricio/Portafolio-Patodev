@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent, type ReactNode, type SVGProps } from 
 import { Mail, MapPin, Send, Copy, ExternalLink, Check } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import SectionHeader from '../components/SectionHeader'
+import FocusBlur, { type FocusBlurItem } from '../components/FocusBlur'
 import PillButton from '../components/PillButton'
 
 // ---------- Brand icons ----------
@@ -23,72 +24,6 @@ function LinkedInIcon({ className, ...props }: SVGProps<SVGSVGElement> & { strok
 }
 
 // ---------- Sub-components ----------
-
-type IconComponent = React.ComponentType<SVGProps<SVGSVGElement> & { strokeWidth?: number }>
-
-type InfoRowProps = {
-  icon: IconComponent
-  label: string
-  value: string
-  href?: string
-  onClick?: () => void
-  actionIcon?: IconComponent
-}
-
-function InfoRow({ icon: Icon, label, value, href, onClick, actionIcon: ActionIcon }: InfoRowProps) {
-  const content = (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4 group liquid-glass hover:border-color-accent/40 rounded-xl p-3.5 md:p-4 transition-all duration-300">
-      <div className="flex items-center gap-3 w-full md:w-auto">
-        <span className="flex-shrink-0 w-9 h-9 md:w-11 md:h-11 rounded-lg bg-color-accent/10 flex items-center justify-center text-color-accent border border-color-accent/20 transition-transform duration-300 group-hover:scale-110">
-          <Icon className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
-        </span>
-        <span className="md:hidden text-[0.6rem] text-color-accent font-black tracking-widest uppercase flex-1">
-          {label}
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-0.5 flex-1 min-w-0 w-full">
-        <span className="hidden md:block text-[0.6rem] text-color-accent font-black tracking-widest uppercase">
-          {label}
-        </span>
-        <div className="flex items-center gap-2 w-full">
-          <span className="text-xs md:text-sm text-color-tinta font-medium truncate">{value}</span>
-          {ActionIcon && (
-            <ActionIcon className="w-3.5 h-3.5 text-color-tinta/40 group-hover:text-color-accent transition-colors shrink-0" strokeWidth={2.5} />
-          )}
-        </div>
-      </div>
-    </div>
-  )
-
-  if (onClick) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        className="block w-full text-left hover:text-color-accent transition-colors cursor-pointer bg-transparent border-none p-0"
-      >
-        {content}
-      </button>
-    )
-  }
-
-  if (href) {
-    const external = href.startsWith('http')
-    return (
-      <a
-        href={href}
-        target={external ? '_blank' : undefined}
-        rel={external ? 'noopener noreferrer' : undefined}
-        className="block hover:text-color-accent transition-colors"
-      >
-        {content}
-      </a>
-    )
-  }
-
-  return content
-}
 
 type FieldProps = {
   id: string
@@ -130,7 +65,8 @@ function Contacto() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [copied, setCopied] = useState(false)
 
-  const copyEmail = async () => {
+  const copyEmail = async (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
     try {
       await navigator.clipboard.writeText(c.info.email.value)
       setCopied(true)
@@ -166,6 +102,55 @@ function Contacto() {
     }
   }
 
+  const focusBlurItems: FocusBlurItem[] = [
+    {
+      id: 'github',
+      sublabel: c.info.github.label,
+      label: c.info.github.value,
+      href: c.info.github.href,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      icon: <GitHubIcon className="w-4 h-4 md:w-5 md:h-5" />,
+      actionIcon: <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />,
+    },
+    {
+      id: 'linkedin',
+      sublabel: c.info.linkedin.label,
+      label: c.info.linkedin.value,
+      href: c.info.linkedin.href,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      icon: <LinkedInIcon className="w-4 h-4 md:w-5 md:h-5" />,
+      actionIcon: <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />,
+    },
+    {
+      id: 'email',
+      sublabel: c.info.email.label,
+      label: copied ? '¡Correo copiado!' : c.info.email.value,
+      onClick: copyEmail,
+      icon: copied ? (
+        <Check className="w-4 h-4 md:w-5 md:h-5 text-green-400" strokeWidth={2.5} />
+      ) : (
+        <Mail className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
+      ),
+      actionIcon: copied ? (
+        <Check className="w-3.5 h-3.5 text-green-400" strokeWidth={2.5} />
+      ) : (
+        <Copy className="w-3.5 h-3.5" strokeWidth={2.5} />
+      ),
+    },
+    {
+      id: 'location',
+      sublabel: c.info.location.label,
+      label: c.info.location.value,
+      href: 'https://www.google.com.mx/maps/place/Guanajuato,+Gto./@21.0250736,-101.2991017,13z/data=!3m1!4b1!4m6!3m5!1s0x842b73f58b0cf1eb:0x25f4b0d165571e74!8m2!3d21.0190145!4d-101.2573586!16zL20vMDE4bmI4?entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D',
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      icon: <MapPin className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />,
+      actionIcon: <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />,
+    },
+  ]
+
   return (
     <section
       ref={ref}
@@ -179,38 +164,11 @@ function Contacto() {
           introDelay={0.3}
         />
 
-        {/* Info + Form */}
+        {/* Info + Form Grid */}
         <div className="w-full max-w-6xl mt-10 grid grid-cols-1 lg:grid-cols-[1fr_auto_1.3fr] gap-8 lg:gap-12 items-start">
-          {/* Info column */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
-            <InfoRow
-              icon={GitHubIcon}
-              label={c.info.github.label}
-              value={c.info.github.value}
-              href={c.info.github.href}
-              actionIcon={ExternalLink}
-            />
-            <InfoRow
-              icon={LinkedInIcon}
-              label={c.info.linkedin.label}
-              value={c.info.linkedin.value}
-              href={c.info.linkedin.href}
-              actionIcon={ExternalLink}
-            />
-            <InfoRow
-              icon={Mail}
-              label={c.info.email.label}
-              value={c.info.email.value}
-              onClick={copyEmail}
-              actionIcon={copied ? Check : Copy}
-            />
-            <InfoRow
-              icon={MapPin}
-              label={c.info.location.label}
-              value={c.info.location.value}
-              href="https://www.google.com.mx/maps/place/Guanajuato,+Gto./@21.0250736,-101.2991017,13z/data=!3m1!4b1!4m6!3m5!1s0x842b73f58b0cf1eb:0x25f4b0d165571e74!8m2!3d21.0190145!4d-101.2573586!16zL20vMDE4bmI4?entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D"
-              actionIcon={ExternalLink}
-            />
+          {/* Vertical FocusBlur Interactive Links Column */}
+          <div className="liquid-glass rounded-2xl p-2 sm:p-3 shadow-xl w-full">
+            <FocusBlur items={focusBlurItems} direction="vertical" />
           </div>
 
           {/* Vertical divider */}

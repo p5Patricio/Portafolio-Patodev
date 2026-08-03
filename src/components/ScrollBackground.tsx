@@ -12,7 +12,7 @@ function ScrollBackground({ children }: { children: ReactNode }) {
       <div className="fixed inset-0 z-0 pointer-events-none w-screen h-screen">
         <ColorBends
           colors={['#3b82f6']}
-          rotation={140}
+          rotation={20}
           autoRotate={0}
           speed={0.2}
           scale={1}
@@ -23,7 +23,7 @@ function ScrollBackground({ children }: { children: ReactNode }) {
           noise={0.09}
           iterations={1}
           intensity={1.8}
-          bandWidth={8}
+          bandWidth={10}
           transparent={true}
         />
       </div>

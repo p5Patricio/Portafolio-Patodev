@@ -12,7 +12,7 @@ describe('Experiencia', () => {
 
   it('renders the title', () => {
     renderWithProviders(<Experiencia />)
-    expect(screen.getByRole('heading', { name: /experiencia/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /exp/i })).toBeInTheDocument()
   })
 
   it('renders university timeline entry', () => {

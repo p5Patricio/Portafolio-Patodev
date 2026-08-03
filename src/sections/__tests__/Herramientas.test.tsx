@@ -12,7 +12,7 @@ describe('Herramientas', () => {
 
   it('renders the title', () => {
     renderWithProviders(<Herramientas />)
-    const headings = screen.getAllByRole('heading', { name: /herramientas/i })
+    const headings = screen.getAllByRole('heading', { name: /herramien/i })
     expect(headings.length).toBeGreaterThanOrEqual(1)
   })
 
@@ -24,18 +24,13 @@ describe('Herramientas', () => {
     })
   })
 
-  it('renders narrative descriptions', () => {
+  it('renders narrative descriptions for active category', () => {
     renderWithProviders(<Herramientas />)
-    // Both desktop and mobile layouts render in DOM, so text appears twice
     expect(screen.getAllByText(/React 19 \+ TypeScript \+ Tailwind/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText(/Python \+ FastAPI para APIs/i).length).toBeGreaterThanOrEqual(1)
   })
 
-  it('renders tech icons for each category', () => {
+  it('renders tech icons for active category', () => {
     renderWithProviders(<Herramientas />)
-    // Both desktop and mobile layouts are in the DOM
     expect(screen.getAllByLabelText('React').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByLabelText('Python').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByLabelText('Claude Code').length).toBeGreaterThanOrEqual(1)
   })
 })

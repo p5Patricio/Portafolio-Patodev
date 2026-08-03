@@ -113,7 +113,7 @@ function Hero() {
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-            className="flex items-center justify-center w-8 h-8 2xl:w-10 2xl:h-10 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm group-hover:border-[#08d7f2]/50 group-hover:bg-[#08d7f2]/10 transition-colors"
+            className="flex items-center justify-center w-8 h-8 2xl:w-10 2xl:h-10 rounded-full liquid-glass-pill group-hover:border-[#08d7f2]/50 group-hover:bg-[#08d7f2]/20 transition-colors"
           >
             <ChevronDown className="w-4 h-4 2xl:w-5 2xl:h-5 text-white/80 group-hover:text-[#08d7f2] transition-colors" />
           </motion.div>

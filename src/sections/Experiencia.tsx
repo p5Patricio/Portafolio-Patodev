@@ -132,20 +132,20 @@ function TimelineCard({
           align === 'left' ? 'lg:pr-6 lg:text-right' : 'lg:pl-6 lg:text-left'
         }`}
       >
-        <div className="liquid-glass rounded-xl px-5 py-4 md:px-6 md:py-4.5 h-full flex flex-col justify-center shadow-md transition-all duration-300 hover:border-color-accent/40">
-          <span className="inline-block text-[0.65rem] uppercase tracking-[0.25em] text-color-accent font-black mb-1">
+        <div className="liquid-glass rounded-xl px-5 py-5 md:px-7 md:py-6 h-full flex flex-col justify-center shadow-lg transition-all duration-300 hover:border-color-accent/40">
+          <span className="inline-block text-xs md:text-sm uppercase tracking-[0.2em] text-color-accent font-black mb-1.5">
             {period}
           </span>
 
-          <h3 className="font-bold text-lg md:text-xl text-color-tinta uppercase leading-tight tracking-tight">
+          <h3 className="font-bold text-xl md:text-2xl text-color-tinta uppercase leading-tight tracking-tight">
             {title}
           </h3>
 
-          <p className="mt-0.5 text-[0.7rem] text-color-accent-alt font-bold uppercase tracking-widest opacity-90 italic">
+          <p className="mt-1 text-xs md:text-sm text-color-accent-alt font-bold uppercase tracking-widest opacity-95 italic">
             {institution}
           </p>
 
-          <p className="mt-2 text-color-tinta/90 text-xs leading-relaxed">
+          <p className="mt-3 text-color-tinta/90 text-sm md:text-base leading-relaxed">
             {description}
           </p>
         </div>
@@ -212,17 +212,17 @@ function MinimalTimelineCard({
           align === 'left' ? 'lg:pr-6 lg:text-right' : 'lg:pl-6 lg:text-left'
         }`}
       >
-        <div className="liquid-glass rounded-lg px-4 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full hover:border-color-accent/40 transition-all duration-300 shadow-sm">
+        <div className="liquid-glass rounded-xl px-5 py-4 md:px-6 md:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 w-full hover:border-color-accent/40 transition-all duration-300 shadow-md">
           <div className={`${align === 'left' ? 'sm:text-right' : 'sm:text-left'} text-left flex-1`}>
-            <span className="block text-[0.6rem] uppercase tracking-[0.25em] text-color-accent font-black mb-0.5">
+            <span className="block text-xs uppercase tracking-[0.2em] text-color-accent font-black mb-1">
               {period}
             </span>
-            <h3 className="font-bold text-sm md:text-base text-color-tinta uppercase tracking-tight leading-snug">{title}</h3>
-            <p className="text-[0.65rem] text-color-accent-alt font-bold uppercase tracking-widest opacity-80 italic mt-0.5">{institution}</p>
+            <h3 className="font-bold text-base md:text-lg text-color-tinta uppercase tracking-tight leading-snug">{title}</h3>
+            <p className="text-xs md:text-sm text-color-accent-alt font-bold uppercase tracking-widest opacity-90 italic mt-1">{institution}</p>
           </div>
           <button
             onClick={onButtonClick}
-            className="text-[0.55rem] uppercase tracking-[0.18em] font-black text-color-papel bg-color-accent hover:glow-cyan transition-all rounded-md px-3 py-1.5 shrink-0 cursor-pointer"
+            className="text-xs uppercase tracking-[0.18em] font-black text-color-papel bg-color-accent hover:glow-cyan transition-all rounded-md px-3.5 py-2 shrink-0 cursor-pointer"
           >
             {buttonLabel}
           </button>

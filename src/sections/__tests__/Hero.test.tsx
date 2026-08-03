@@ -12,9 +12,9 @@ describe('Hero', () => {
 
   it('renders title text words', () => {
     renderWithProviders(<Hero />)
-    expect(screen.getByText('Soy')).toBeInTheDocument()
-    expect(screen.getByText('Ingeniero')).toBeInTheDocument()
-    expect(screen.getByText('Software')).toBeInTheDocument()
+    expect(screen.getByText((content) => content.includes('Patricio'))).toBeInTheDocument()
+    expect(screen.getByText((content) => content.includes('Ingeniero'))).toBeInTheDocument()
+    expect(screen.getByText((content) => content.includes('Software'))).toBeInTheDocument()
   })
 
   it('renders the massive integrated logo', () => {
