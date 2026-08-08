@@ -189,7 +189,7 @@ function Herramientas() {
 
   const wheelOptions: OptionWheelItem[] = SKILL_CATEGORIES.map((cat) => ({
     id: cat.id,
-    label: cat.title[lang],
+    label: cat.wheelLabel[lang],
     sublabel: `${cat.skills.length} ${lang === 'es' ? 'tecnologías' : 'tools'}`,
   }))
 
@@ -210,7 +210,7 @@ function Herramientas() {
   })
 
   return (
-    <section id="herramientas" className="relative z-10 w-full overflow-hidden">
+    <section id="herramientas" className="relative z-10 w-full overflow-x-clip">
       {/* Desktop Sticky Scroll Section: Pinned Wheel Storytelling */}
       <div ref={sectionRef} className="hidden lg:block relative w-full h-[210vh]">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 lg:px-12 overflow-hidden">
@@ -230,7 +230,7 @@ function Herramientas() {
                 selectedIndex={selectedIndex}
                 onChange={setSelectedIndex}
                 side="left"
-                fontSize={2.1}
+                fontSize={2.0}
                 spacing={2.6}
                 tilt={22}
                 curve={1.7}
@@ -284,7 +284,7 @@ function Herramientas() {
       </div>
 
       {/* Bottom ornament */}
-      <div className="flex items-center justify-center gap-3 my-12">
+      <div className="flex items-center justify-center gap-3 my-8">
         <span className="h-0.5 w-10 tricolor-separator rounded-full" />
         <div className="w-1.5 h-1.5 rounded-full tricolor-dot" />
         <span className="h-0.5 w-10 tricolor-separator rounded-full" />

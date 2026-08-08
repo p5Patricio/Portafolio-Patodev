@@ -7,7 +7,7 @@ export function LaserField(_props?: { variant?: string; className?: string }) {
 
 function ScrollBackground({ children }: { children: ReactNode }) {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-black selection:bg-color-accent selection:text-color-papel">
+    <div className="relative min-h-screen overflow-x-clip bg-black selection:bg-color-accent selection:text-color-papel">
       {/* Interactive WebGL ColorBends Background */}
       <div className="fixed inset-0 z-0 pointer-events-none w-screen h-screen">
         <ColorBends

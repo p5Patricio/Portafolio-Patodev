@@ -151,7 +151,8 @@ export default function OptionWheel({
 
   // Mouse wheel scroll listener
   const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault()
+    // Controlled mode: the parent owns the position via page scroll
+    if (selectedIndex !== undefined) return
     const delta = Math.sign(e.deltaY)
     const count = items.length
     let nextTarget = targetRef.current + delta
@@ -159,7 +160,7 @@ export default function OptionWheel({
       nextTarget = Math.max(0, Math.min(count - 1, nextTarget))
     }
     targetRef.current = nextTarget
-  }, [items.length, loop])
+  }, [selectedIndex, items.length, loop])
 
   // Pointer Drag handling
   const handlePointerDown = (e: React.PointerEvent) => {

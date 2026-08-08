@@ -10,6 +10,8 @@ export interface SkillCategory {
   id: SkillCategoryId
   /** Localized title shown above the icon grid. */
   title: { es: string; en: string }
+  /** Short label shown in the category wheel. */
+  wheelLabel: { es: string; en: string }
   /** One-line description used as a small caption under the title. */
   caption: { es: string; en: string }
   /** Narrative explanation of how these tools fit into the workflow. */
@@ -26,6 +28,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: 'frontend',
     title: { es: 'Frontend', en: 'Frontend' },
+    wheelLabel: { es: 'Frontend', en: 'Frontend' },
     caption: {
       es: 'Interfaces rápidas, accesibles y con personalidad.',
       en: 'Fast, accessible interfaces with character.',
@@ -40,6 +43,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: 'backend',
     title: { es: 'Backend & Bases de datos', en: 'Backend & Databases' },
+    wheelLabel: { es: 'Backend', en: 'Backend' },
     caption: {
       es: 'APIs robustas, modelado de datos y persistencia.',
       en: 'Robust APIs, data modeling and persistence.',
@@ -54,6 +58,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: 'ai-ml',
     title: { es: 'Inteligencia Artificial', en: 'Artificial Intelligence' },
+    wheelLabel: { es: 'IA & ML', en: 'IA & ML' },
     caption: {
       es: 'LLMs en producción, machine learning y desarrollo con agentes.',
       en: 'Production LLMs, machine learning and agent-powered development.',
@@ -68,6 +73,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: 'devops',
     title: { es: 'DevOps y herramientas', en: 'DevOps & Tooling' },
+    wheelLabel: { es: 'DevOps & Tools', en: 'DevOps & Tools' },
     caption: {
       es: 'Containers, despliegues y flujo diario.',
       en: 'Containers, deployments and daily workflow.',
