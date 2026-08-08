@@ -45,3 +45,6 @@ public/projects/*.webp
 !public/projects/thumbs/
 public/ranks/*.png
 *.backup
+
+# Transpiled API artifacts (keep only .ts sources)
+api/*.js

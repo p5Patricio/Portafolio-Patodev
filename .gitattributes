@@ -1,0 +1,3 @@
+# Normalize all text files to LF in the repository.
+# On Windows checkout, core.autocrlf=true will convert to CRLF for editing.
+* text=auto eol=lf
