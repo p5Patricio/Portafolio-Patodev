@@ -171,7 +171,7 @@ export default function ProjectIllustration({ id, className = 'w-full h-full' }:
         </svg>
       )
 
-    case 'clasificador-nba':
+    case 'archetype-nba':
       return (
         <svg {...commonSvgProps}>
           <rect width="400" height="225" fill="#090a0d" />
@@ -255,6 +255,94 @@ export default function ProjectIllustration({ id, className = 'w-full h-full' }:
           {/* Paint Brush */}
           <line x1="260" y1="160" x2="285" y2="185" stroke="#e2e8f0" strokeWidth="3" strokeLinecap="round" />
           <path d="M253 153 L260 160" stroke="#eab308" strokeWidth="4" strokeLinecap="round" />
+        </svg>
+      )
+
+    case 'faro':
+      return (
+        <svg {...commonSvgProps}>
+          <rect width="400" height="225" fill="#090a0d" />
+          <circle cx="200" cy="100" r="75" fill="#f5a623" fillOpacity="0.04" />
+
+          {/* Lighthouse tower */}
+          <path d="M188 180 L182 100 L218 100 L212 180 Z" fill="#141720" stroke="#f5a623" strokeWidth="2.5" />
+          <rect x="180" y="88" width="40" height="14" rx="2" fill="#1e293b" stroke="#f5a623" strokeWidth="2" />
+          <path d="M190 88 L195 68 L205 68 L210 88 Z" fill="#f5a623" fillOpacity="0.85" />
+
+          {/* Beacon beam sweeping outward */}
+          <path d="M188 78 L120 45 L188 74" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
+          <path d="M212 78 L280 45 L212 74" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
+
+          {/* Signal candles: buy / sell / hold */}
+          <rect x="130" y="150" width="8" height="26" fill="#22c55e" />
+          <rect x="150" y="130" width="8" height="46" fill="#ff4c4c" />
+          <rect x="170" y="145" width="8" height="31" fill="#94a3b8" />
+        </svg>
+      )
+
+    case 'cocheravecina':
+      return (
+        <svg {...commonSvgProps}>
+          <rect width="400" height="225" fill="#090a0d" />
+          <circle cx="200" cy="112" r="75" fill="#6366f1" fillOpacity="0.04" />
+
+          {/* House silhouette */}
+          <path d="M150 175 L150 115 L200 78 L250 115 L250 175 Z" fill="#141720" stroke="#6366f1" strokeWidth="2.5" strokeLinejoin="round" />
+          <rect x="188" y="140" width="24" height="35" rx="2" fill="#1e293b" stroke="#6366f1" strokeWidth="2" />
+
+          {/* Key / booking pin */}
+          <circle cx="200" cy="102" r="9" fill="none" stroke="#e2e8f0" strokeWidth="2.5" />
+          <line x1="200" y1="111" x2="200" y2="126" stroke="#e2e8f0" strokeWidth="2.5" />
+          <line x1="200" y1="120" x2="207" y2="120" stroke="#e2e8f0" strokeWidth="2.5" />
+
+          {/* Two-way exchange arrows underneath */}
+          <path d="M140 190 L165 190" stroke="#6366f1" strokeWidth="2" strokeDasharray="3 3" />
+          <path d="M235 190 L260 190" stroke="#6366f1" strokeWidth="2" strokeDasharray="3 3" />
+        </svg>
+      )
+
+    case 'cv-patricio':
+      return (
+        <svg {...commonSvgProps}>
+          <rect width="400" height="225" fill="#090a0d" />
+          <circle cx="200" cy="112" r="75" fill="#a855f7" fillOpacity="0.04" />
+
+          {/* Document sheet */}
+          <rect x="150" y="50" width="100" height="130" rx="4" fill="#141720" stroke="#a855f7" strokeWidth="2.5" />
+          <circle cx="175" cy="75" r="8" fill="#a855f7" fillOpacity="0.7" />
+          <line x1="190" y1="72" x2="230" y2="72" stroke="#94a3b8" strokeWidth="2" />
+          <line x1="190" y1="80" x2="220" y2="80" stroke="#64748b" strokeWidth="1.5" />
+
+          <line x1="163" y1="100" x2="237" y2="100" stroke="#334155" strokeWidth="1.5" />
+          <line x1="163" y1="112" x2="230" y2="112" stroke="#64748b" strokeWidth="1.5" />
+          <line x1="163" y1="124" x2="222" y2="124" stroke="#64748b" strokeWidth="1.5" />
+          <line x1="163" y1="140" x2="237" y2="140" stroke="#334155" strokeWidth="1.5" />
+          <line x1="163" y1="152" x2="215" y2="152" stroke="#64748b" strokeWidth="1.5" />
+
+          {/* Bilingual toggle chip */}
+          <rect x="163" y="162" width="34" height="12" rx="6" fill="#a855f7" fillOpacity="0.2" stroke="#a855f7" strokeWidth="1.5" />
+          <text x="169" y="171" fill="#a855f7" fontSize="8" fontFamily="monospace">ES/EN</text>
+        </svg>
+      )
+
+    case 'ocean-depths':
+      return (
+        <svg {...commonSvgProps}>
+          <rect width="400" height="225" fill="#090a0d" />
+          <circle cx="200" cy="112" r="75" fill="#00d8f0" fillOpacity="0.04" />
+
+          {/* Layered depth waves, darkening downward */}
+          <path d="M100 80 Q150 65 200 80 T300 80" stroke="#00d8f0" strokeWidth="2" fill="none" opacity="0.7" />
+          <path d="M100 115 Q150 100 200 115 T300 115" stroke="#0ea5c4" strokeWidth="2" fill="none" opacity="0.5" />
+          <path d="M100 150 Q150 135 200 150 T300 150" stroke="#0d6c8a" strokeWidth="2" fill="none" opacity="0.4" />
+
+          {/* Bioluminescent depth marker */}
+          <circle cx="230" cy="145" r="5" fill="#00d8f0" />
+          <circle cx="230" cy="145" r="10" stroke="#00d8f0" strokeWidth="1" fill="none" opacity="0.4" />
+
+          {/* HUD depth readout */}
+          <rect x="140" y="175" width="60" height="16" rx="3" fill="#141720" stroke="#00d8f0" strokeWidth="1.5" opacity="0.8" />
+          <text x="148" y="187" fill="#00d8f0" fontSize="9" fontFamily="monospace">-4,200m</text>
         </svg>
       )
 

@@ -5,12 +5,13 @@ import { useLanguage } from '../context/LanguageContext'
 import useActiveSection from '../hooks/useActiveSection'
 
 const linkDefs = [
-  { id: 'inicio',       href: '#inicio',       labelKey: 'inicio' },
-  { id: 'experiencia',  href: '#experiencia',  labelKey: 'experiencia' },
-  { id: 'proyectos',    href: '#proyectos',    labelKey: 'proyectos' },
-  { id: 'herramientas', href: '#herramientas', labelKey: 'herramientas' },
-  { id: 'sobre-mi',     href: '#sobre-mi',     labelKey: 'sobreMi' },
-  { id: 'contacto',     href: '#contacto',     labelKey: 'contacto' },
+  { id: 'inicio',            href: '#inicio',            labelKey: 'inicio' },
+  { id: 'experiencia',       href: '#experiencia',       labelKey: 'experiencia' },
+  { id: 'proyectos',         href: '#proyectos',         labelKey: 'proyectos' },
+  { id: 'herramientas',      href: '#herramientas',      labelKey: 'herramientas' },
+  { id: 'sobre-mi',          href: '#sobre-mi',          labelKey: 'sobreMi' },
+  { id: 'symmetrical-code',  href: '#symmetrical-code',  labelKey: 'symmetricalCode' },
+  { id: 'contacto',          href: '#contacto',          labelKey: 'contacto' },
 ] as const
 
 const SECTION_IDS = linkDefs.map((l) => l.id)

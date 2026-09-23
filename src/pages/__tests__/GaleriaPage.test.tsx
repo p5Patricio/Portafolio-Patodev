@@ -27,7 +27,7 @@ describe('GaleriaPage', () => {
   it('renders project cards from all repos', () => {
     renderWithProviders(<GaleriaPage />)
     // Some non-featured repos should appear here
-    expect(screen.getByText('D-MOX')).toBeInTheDocument()
-    expect(screen.getByText('FitTrack Pro')).toBeInTheDocument()
+    expect(screen.getByText('WhisperKey')).toBeInTheDocument()
+    expect(screen.getByText('CocheraVecina')).toBeInTheDocument()
   })
 })

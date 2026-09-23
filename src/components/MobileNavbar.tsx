@@ -5,6 +5,7 @@ import {
   FolderGit2,
   Wrench,
   Briefcase,
+  Building2,
   Mail,
   type LucideIcon,
 } from 'lucide-react'
@@ -20,14 +21,16 @@ type NavItem = {
 
 // Order MUST mirror HomePage's section order so that the IntersectionObserver
 // active state lines up with what the user sees on screen.
-//   Inicio → Experiencia → Proyectos → Herramientas → Sobre mí → Contacto
+//   Inicio → Experiencia → Proyectos → Herramientas → Sobre mí →
+//   Symmetrical Code → Contacto
 const items: NavItem[] = [
-  { id: 'inicio',       href: '#inicio',       icon: Home,       labelKey: 'inicio' },
-  { id: 'experiencia',  href: '#experiencia',  icon: Briefcase,  labelKey: 'experiencia' },
-  { id: 'proyectos',    href: '#proyectos',    icon: FolderGit2, labelKey: 'proyectos' },
-  { id: 'herramientas', href: '#herramientas', icon: Wrench,     labelKey: 'herramientas' },
-  { id: 'sobre-mi',     href: '#sobre-mi',     icon: User,       labelKey: 'sobreMi' },
-  { id: 'contacto',     href: '#contacto',     icon: Mail,       labelKey: 'contacto' },
+  { id: 'inicio',            href: '#inicio',            icon: Home,       labelKey: 'inicio' },
+  { id: 'experiencia',       href: '#experiencia',       icon: Briefcase,  labelKey: 'experiencia' },
+  { id: 'proyectos',         href: '#proyectos',         icon: FolderGit2, labelKey: 'proyectos' },
+  { id: 'herramientas',      href: '#herramientas',      icon: Wrench,     labelKey: 'herramientas' },
+  { id: 'sobre-mi',          href: '#sobre-mi',          icon: User,       labelKey: 'sobreMi' },
+  { id: 'symmetrical-code',  href: '#symmetrical-code',  icon: Building2,  labelKey: 'symmetricalCode' },
+  { id: 'contacto',          href: '#contacto',          icon: Mail,       labelKey: 'contacto' },
 ]
 
 const SECTION_IDS = items.map((i) => i.id)

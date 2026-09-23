@@ -10,6 +10,7 @@ export interface SplitTextProps {
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div'
   textAlign?: 'left' | 'center' | 'right'
   onComplete?: () => void
+  id?: string
 }
 
 export default function SplitText({
@@ -21,6 +22,7 @@ export default function SplitText({
   tag: Tag = 'h2',
   textAlign = 'center',
   onComplete,
+  id,
 }: SplitTextProps) {
   const items = useMemo(() => {
     if (splitType === 'words') {
@@ -33,6 +35,9 @@ export default function SplitText({
 
   return (
     <MotionTag
+      id={id}
+      // Per-character spans lose word spacing in the accessible name
+      aria-label={text}
       className={`inline-flex flex-wrap items-center ${
         textAlign === 'center'
           ? 'justify-center text-center'

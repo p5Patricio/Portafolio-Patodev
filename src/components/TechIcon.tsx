@@ -37,9 +37,13 @@ import {
   SiObsidian,
   SiClaude,
   SiSupabase,
+  SiExpo,
+  SiFramer,
+  SiStripe,
+  SiLatex,
 } from 'react-icons/si'
 
-import { FaWindows, FaMicrochip, FaTerminal } from 'react-icons/fa6'
+import { FaWindows, FaMicrochip, FaTerminal, FaBoltLightning } from 'react-icons/fa6'
 
 // ----- Official brand SVGs (not yet in react-icons) -----
 
@@ -149,6 +153,13 @@ export type TechId =
   | 'openai'
   | 'anthropic'
   | 'ollama'
+  | 'groq'
+  // Mobile
+  | 'expo'
+  // Animation / payments / docs
+  | 'framer'
+  | 'stripe'
+  | 'latex'
   // DevOps / tooling
   | 'docker'
   | 'git'
@@ -200,6 +211,11 @@ export const TECH_LABELS: Record<TechId, string> = {
   openai: 'OpenAI',
   anthropic: 'Anthropic',
   ollama: 'Ollama',
+  groq: 'Groq',
+  expo: 'Expo',
+  framer: 'Framer Motion',
+  stripe: 'Stripe',
+  latex: 'LaTeX',
   docker: 'Docker',
   git: 'Git',
   github: 'GitHub',
@@ -251,6 +267,11 @@ const ICONS: Record<TechId, IconComponent> = {
   openai: SiOpenai,
   anthropic: SiClaude,
   ollama: SiOllama,
+  groq: FaBoltLightning, // No official Groq brand icon — bolt reads as "fast LPU inference"
+  expo: SiExpo,
+  framer: SiFramer,
+  stripe: SiStripe,
+  latex: SiLatex,
   docker: SiDocker,
   git: SiGit,
   github: SiGithub,

@@ -18,6 +18,8 @@ type SectionHeaderProps = {
   intro?: string
   /** Extra delay (seconds) for the intro paragraph animation */
   introDelay?: number
+  /** Optional id for the heading element (e.g. for aria-labelledby) */
+  id?: string
 }
 
 function SectionHeader({
@@ -25,12 +27,14 @@ function SectionHeader({
   size = 'md',
   intro,
   introDelay = 0.2,
+  id,
 }: SectionHeaderProps) {
   return (
     <>
       {/* Title + Elegant Accent */}
       <div className="relative flex flex-col items-center justify-center">
         <SplitText
+          id={id}
           text={title}
           tag="h2"
           splitType="chars"

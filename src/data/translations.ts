@@ -18,6 +18,7 @@ type Dict = {
     proyectos: string
     herramientas: string
     experiencia: string
+    symmetricalCode: string
     contacto: string
   }
   brand: {
@@ -58,6 +59,15 @@ type Dict = {
     title: string
     stamp: string
     intro: string
+  }
+  symmetricalCode: {
+    title: string
+    stamp: string
+    tagline: string
+    intro: string
+    services: { title: string; description: string }[]
+    ctaVisit: string
+    ctaContact: string
   }
   galeria: {
     title: string
@@ -102,6 +112,7 @@ export const translations: Record<Lang, Dict> = {
       proyectos:   'Proyectos',
       herramientas: 'Herramientas',
       experiencia: 'Experiencia',
+      symmetricalCode: 'Estudio',
       contacto:    'Contacto',
     },
     brand: {
@@ -177,6 +188,33 @@ export const translations: Record<Lang, Dict> = {
       intro:
         'Mi mesa de trabajo digital. Estas son las herramientas que uso día a día para transformar ideas en software real — desde interfaces con personalidad hasta agentes de IA que aceleran cada línea de código.',
     },
+    symmetricalCode: {
+      title: 'Symmetrical Code',
+      stamp: '設計',
+      tagline: 'Ingeniería real para problemas reales.',
+      intro:
+        'Además de mis proyectos personales, dirijo Symmetrical Code, un estudio de desarrollo de software en etapa inicial. Convertimos ideas claras en productos digitales simples y rápidos, listos para crecer desde el primer lanzamiento.',
+      services: [
+        {
+          title: 'Sitios y apps que venden',
+          description: 'Sitios web y aplicaciones con diseño profesional y carga rápida, pensados para convertir visitantes en clientes.',
+        },
+        {
+          title: 'Automatización y sistemas',
+          description: 'Conectamos tus herramientas y automatizamos procesos para que tu operación funcione sola.',
+        },
+        {
+          title: 'Tu negocio siempre en línea',
+          description: 'Infraestructura en la nube de alta disponibilidad, para que tu sitio nunca se caiga.',
+        },
+        {
+          title: 'Ciberseguridad',
+          description: 'Protegemos tus datos y los de tus clientes con seguridad de nivel bancario.',
+        },
+      ],
+      ctaVisit: 'Visitar Symmetrical Code',
+      ctaContact: 'Hablemos',
+    },
     galeria: {
       title: 'Galería',
       stamp: '作品',
@@ -223,6 +261,7 @@ export const translations: Record<Lang, Dict> = {
       proyectos:   'Projects',
       herramientas: 'Tools',
       experiencia: 'Experience',
+      symmetricalCode: 'Studio',
       contacto:    'Contact',
     },
     brand: {
@@ -297,6 +336,33 @@ export const translations: Record<Lang, Dict> = {
       stamp: '工具',
       intro:
         'My digital workbench. These are the tools I use every day to turn ideas into real software — from characterful interfaces to AI agents that accelerate every line of code.',
+    },
+    symmetricalCode: {
+      title: 'Symmetrical Code',
+      stamp: '設計',
+      tagline: 'Real engineering for real problems.',
+      intro:
+        "Alongside my personal projects, I run Symmetrical Code, an early-stage software development studio. We turn clear ideas into simple, fast digital products, ready to grow from the first launch.",
+      services: [
+        {
+          title: 'Pages & apps that sell',
+          description: 'Professionally designed, fast-loading websites and apps built to turn visitors into customers.',
+        },
+        {
+          title: 'Automation & systems',
+          description: 'We connect your tools and automate processes so your operation runs itself.',
+        },
+        {
+          title: 'Your business, always online',
+          description: 'High-availability cloud infrastructure, so your site never goes down.',
+        },
+        {
+          title: 'Cybersecurity',
+          description: "We protect your data and your customers' with bank-level security.",
+        },
+      ],
+      ctaVisit: 'Visit Symmetrical Code',
+      ctaContact: "Let's talk",
     },
     galeria: {
       title: 'Gallery',
