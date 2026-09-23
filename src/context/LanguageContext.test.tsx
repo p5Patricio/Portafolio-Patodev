@@ -24,6 +24,30 @@ describe('LanguageContext', () => {
     expect(screen.getByTestId('title').textContent).toBe('Contacto')
   })
 
+  it('ignores navigator.language for the initial render (SSR-safety guard)', () => {
+    // The provider's very first render must be identical on the server
+    // (which has no `navigator`) and on the client, or hydrateRoot in
+    // src/main.tsx would throw a hydration mismatch. Simulating a
+    // browser reporting English must not change the initial 'es' default.
+    const originalLanguage = window.navigator.language
+    Object.defineProperty(window.navigator, 'language', {
+      value: 'en-US',
+      configurable: true,
+    })
+
+    render(
+      <LanguageProvider>
+        <TestComponent />
+      </LanguageProvider>
+    )
+    expect(screen.getByTestId('lang').textContent).toBe('es')
+
+    Object.defineProperty(window.navigator, 'language', {
+      value: originalLanguage,
+      configurable: true,
+    })
+  })
+
   it('toggles to English and back', () => {
     render(
       <LanguageProvider>

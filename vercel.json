@@ -1,8 +1,26 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.patodev.com" }],
+      "destination": "https://patodev.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "portafolio-sakura.vercel.app" }],
+      "destination": "https://patodev.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
+    },
+    {
+      "source": "/galeria",
+      "destination": "/galeria/index.html"
     },
     {
       "source": "/(.*)",

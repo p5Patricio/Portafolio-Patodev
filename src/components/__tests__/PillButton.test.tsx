@@ -45,4 +45,21 @@ describe('PillButton', () => {
     )
     expect(screen.getByRole('button')).toBeDisabled()
   })
+
+  it('defaults to the solid variant', () => {
+    renderWithProviders(<PillButton href="https://example.com">Link</PillButton>)
+    const link = screen.getByRole('link', { name: /link/i })
+    expect(link.classList.contains('bg-white')).toBe(true)
+  })
+
+  it('applies the outline variant for secondary CTAs', () => {
+    renderWithProviders(
+      <PillButton href="https://example.com" variant="outline">
+        Secondary
+      </PillButton>
+    )
+    const link = screen.getByRole('link', { name: /secondary/i })
+    expect(link.classList.contains('bg-transparent')).toBe(true)
+    expect(link.classList.contains('bg-white')).toBe(false)
+  })
 })

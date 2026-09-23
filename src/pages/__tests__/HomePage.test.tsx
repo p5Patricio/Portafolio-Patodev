@@ -9,7 +9,7 @@ describe('HomePage', () => {
 
     // Hero
     expect(document.getElementById('inicio')).toBeInTheDocument()
-    expect(screen.getByText('Soy')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /patricio garcía ingeniero de software/i })).toBeInTheDocument()
 
     // Experience
     expect(document.getElementById('experiencia')).toBeInTheDocument()

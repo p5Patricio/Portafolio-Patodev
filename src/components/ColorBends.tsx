@@ -227,6 +227,14 @@ export default function ColorBends({
     }
 
     const loop = () => {
+      // Pause the render loop while the tab is hidden: no dt accumulates
+      // (clock keeps running, but we simply skip frames) and no rAF is
+      // rescheduled until visibilitychange fires again.
+      if (document.hidden) {
+        rafRef.current = null
+        return
+      }
+
       const dt = clock.getDelta()
       const elapsed = clock.elapsedTime
       material.uniforms.uTime.value = elapsed
@@ -247,7 +255,15 @@ export default function ColorBends({
     }
     rafRef.current = requestAnimationFrame(loop)
 
+    const handleVisibilityChange = () => {
+      if (!document.hidden && rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(loop)
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
       if (resizeObserverRef.current) resizeObserverRef.current.disconnect()
       else window.removeEventListener('resize', handleResize)

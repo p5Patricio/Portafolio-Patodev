@@ -19,7 +19,7 @@ describe('App', () => {
   it('renders the home page by default', () => {
     renderWithProviders(<App />)
     expect(document.getElementById('inicio')).toBeInTheDocument()
-    expect(screen.getByText('Soy')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /patricio garcía ingeniero de software/i })).toBeInTheDocument()
   })
 
   it('does not render main navbar on gallery route', async () => {

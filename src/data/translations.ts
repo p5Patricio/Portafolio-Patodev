@@ -28,6 +28,10 @@ type Dict = {
   hero: {
     words: Word[]
     stamp: string
+    ctaContact: string
+    ctaContactAriaLabel: string
+    ctaCv: string
+    ctaCvAriaLabel: string
   }
   sobreMi: {
     title: string
@@ -127,6 +131,10 @@ export const translations: Record<Lang, Dict> = {
         { text: 'Software',  size: 'xl' },
       ],
       stamp: '私',
+      ctaContact: 'Contactar',
+      ctaContactAriaLabel: 'Contactar — ir a la sección de contacto',
+      ctaCv: 'Descargar CV',
+      ctaCvAriaLabel: 'Descargar CV — PDF, se abre en una pestaña nueva',
     },
     sobreMi: {
       title: 'Sobre mí',
@@ -276,6 +284,10 @@ export const translations: Record<Lang, Dict> = {
         { text: 'Engineer', size: 'xl' },
       ],
       stamp: '私',
+      ctaContact: 'Contact me',
+      ctaContactAriaLabel: 'Contact me — go to the contact section',
+      ctaCv: 'Download CV',
+      ctaCvAriaLabel: 'Download CV — PDF, opens in a new tab',
     },
     sobreMi: {
       title: 'About me',

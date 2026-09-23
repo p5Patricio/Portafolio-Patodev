@@ -48,3 +48,6 @@ public/ranks/*.png
 
 # Transpiled API artifacts (keep only .ts sources)
 api/*.js
+
+# CodeGraph local index
+.codegraph

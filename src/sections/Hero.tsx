@@ -3,8 +3,19 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import Logo from '../components/Logo'
 import SplitText from '../components/SplitText'
+import PillButton from '../components/PillButton'
+import { useLanguage } from '../context/LanguageContext'
+import type { Lang } from '../data/translations'
+
+// Published via GitHub Pages from p5Patricio/cv-patricio (es/en résumé PDFs).
+// Verified reachable and served as application/pdf before wiring this up.
+const CV_URLS: Record<Lang, string> = {
+  es: 'https://p5patricio.github.io/cv-patricio/es/cv_es.pdf',
+  en: 'https://p5patricio.github.io/cv-patricio/en/cv_en.pdf',
+}
 
 function Hero() {
+  const { t, lang } = useLanguage()
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -35,13 +46,22 @@ function Hero() {
         className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent flex flex-col justify-between items-center px-4 py-6 md:py-8 2xl:py-12"
       >
         <div className="w-full max-w-[100rem] flex-1 flex flex-col items-center justify-center pt-8 md:pt-4 2xl:pt-6">
-          <h1
-            id="hero-title"
-            className="flex flex-col items-center justify-center text-center font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-tight tracking-tight"
-          >
+          <div className="flex flex-col items-center justify-center text-center font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-tight tracking-tight">
+            {/* Accessible + prerender-friendly heading: the animated letters
+                below are decorative (aria-hidden) and split into one <span>
+                per character with no real space characters between words,
+                so this is the only element that gives screen readers and
+                crawlers the actual heading text/textContent. */}
+            <h1 id="hero-title" className="sr-only">
+              Patricio García Ingeniero de Software
+            </h1>
+
             {/* --- NAME: Patricio García --- */}
             {/* Mobile: 2 lines ("Patricio", "García") | Desktop: 1 line ("Patricio García") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(1.9rem,6.5vw,2.5rem)] md:text-[clamp(1.5rem,2.3vw,2.8rem)] 2xl:text-[clamp(2.4rem,2vw,3.4rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold tracking-tight mb-2 md:mb-3 2xl:mb-4">
+            <div
+              aria-hidden="true"
+              className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(1.9rem,6.5vw,2.5rem)] md:text-[clamp(1.5rem,2.3vw,2.8rem)] 2xl:text-[clamp(2.4rem,2vw,3.4rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold tracking-tight mb-2 md:mb-3 2xl:mb-4"
+            >
               <SplitText
                 text="Patricio"
                 tag="span"
@@ -62,7 +82,10 @@ function Hero() {
 
             {/* --- TITLE: Ingeniero de Software --- */}
             {/* Mobile: 3 lines ("Ingeniero", "de", "Software") | Desktop: 1 line ("Ingeniero de Software") */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,7vw,3.2rem)] md:text-[clamp(2.3rem,3.8vw,4.4rem)] 2xl:text-[clamp(4.2rem,3.6vw,5.2rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-none">
+            <div
+              aria-hidden="true"
+              className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,7vw,3.2rem)] md:text-[clamp(2.3rem,3.8vw,4.4rem)] 2xl:text-[clamp(4.2rem,3.6vw,5.2rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-none"
+            >
               <SplitText
                 text="Ingeniero"
                 tag="span"
@@ -88,13 +111,23 @@ function Hero() {
                 className="text-[#ffe454]"
               />
             </div>
-          </h1>
+          </div>
 
           {/* Logo below title - Fluid scaling for FullHD (1080p), QHD (1440p) & 4K */}
           <Logo
             alt="Logo personal de programador"
             className="mt-6 md:mt-5 2xl:mt-7 w-[clamp(12rem,40vw,17rem)] md:w-[clamp(13rem,18vw,20rem)] 2xl:w-[clamp(20rem,18vw,26rem)] max-w-[75vw] md:max-w-[22rem] 2xl:max-w-[28rem]"
           />
+
+          {/* Primary CTAs */}
+          <div className="mt-7 md:mt-6 2xl:mt-8 flex flex-wrap items-center justify-center gap-3 md:gap-4">
+            <PillButton href="#contacto" external={false} ariaLabel={t.hero.ctaContactAriaLabel}>
+              {t.hero.ctaContact}
+            </PillButton>
+            <PillButton href={CV_URLS[lang]} variant="outline" ariaLabel={t.hero.ctaCvAriaLabel}>
+              {t.hero.ctaCv}
+            </PillButton>
+          </div>
         </div>
 
         {/* --- ANIMATED SCROLL INDICATOR --- */}
