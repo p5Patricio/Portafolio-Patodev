@@ -10,24 +10,23 @@ describe('Hero', () => {
     expect(section).toBeInTheDocument()
   })
 
-  it('renders title text words', () => {
-    renderWithProviders(<Hero />)
-    expect(screen.getByText((content) => content.includes('Patricio'))).toBeInTheDocument()
-    expect(screen.getByText((content) => content.includes('Ingeniero'))).toBeInTheDocument()
-    expect(screen.getByText((content) => content.includes('Software'))).toBeInTheDocument()
-  })
-
-  it('renders the massive integrated logo', () => {
-    renderWithProviders(<Hero />)
-    // Massive logo as background
-    expect(screen.getByRole('img', { name: /logo personal/i })).toBeInTheDocument()
-  })
-
-  it('renders a single accessible h1 with natural (spaced) text content', () => {
+  it('renders a single accessible h1 with the full name', () => {
     renderWithProviders(<Hero />)
     const headings = screen.getAllByRole('heading', { level: 1 })
     expect(headings).toHaveLength(1)
-    expect(headings[0]).toHaveTextContent('Patricio García Ingeniero de Software')
+    expect(headings[0]).toHaveTextContent('Patricio García')
+  })
+
+  it('renders the decorative name lines', () => {
+    renderWithProviders(<Hero />)
+    expect(screen.getByText('Patricio')).toBeInTheDocument()
+    expect(screen.getByText('García')).toBeInTheDocument()
+  })
+
+  it('renders the availability line and positioning statement', () => {
+    renderWithProviders(<Hero />)
+    expect(screen.getByText(/disponible para nuevos proyectos/i)).toBeInTheDocument()
+    expect(screen.getByText(/full-stack/i)).toBeInTheDocument()
   })
 
   it('renders a primary "Contactar" CTA that links to #contacto', () => {

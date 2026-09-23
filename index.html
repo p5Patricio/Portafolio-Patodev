@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Tags <html> with "js" as early as possible so CSS can gate
+         JS-only reveal/animation states behind `.js …` selectors. The
+         prerendered HTML (crawlers, no-JS) never runs this, so it always
+         sees fully visible, readable content by default. -->
+    <script>document.documentElement.classList.add('js')</script>
+
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/LogoDark.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/LogoDark.png" />
@@ -12,10 +18,11 @@
     <link rel="apple-touch-icon" href="/LogoDark.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Archivo (variable, wdth+wght axes) for display/body,
+         JetBrains Mono for metadata (labels, dates, tags, nav, buttons). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&family=Urbanist:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
     <!-- Primary SEO Meta Tags -->
     <title>Patricio García | Ingeniero de Software Full Stack</title>
@@ -24,7 +31,7 @@
     <meta name="keywords" content="Patricio García, Ingeniero de Software, Desarrollador Full Stack, Desarrollador Web, React Developer, TypeScript, Node.js, Frontend Developer, Guanajuato, México, Software Engineer, Programador Web" />
     <meta name="author" content="Patricio García" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="theme-color" content="#0e1014" />
 
     <!-- Geolocation Meta Tags -->
     <meta name="geo.region" content="MX-GUA" />

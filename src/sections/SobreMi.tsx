@@ -1,79 +1,39 @@
-import { Quote } from 'lucide-react'
+import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
-import GamingRanks from '../components/GamingRanks'
+import ScrollWords from '../components/ScrollWords'
+import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
+import { SKILL_CATEGORIES } from '../data/skills'
+import { TECH_LABELS } from '../components/TechIcon'
 
 function SobreMi() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   return (
-    <section
-      id="sobre-mi"
-      className="relative z-10 min-h-screen overflow-hidden flex flex-col items-center"
-    >
-      {/* Content */}
-      <div className="relative z-20 w-full px-6 py-12 md:py-16 lg:py-20 md:px-12 lg:px-24 flex flex-col items-center">
-        <SectionHeader title={t.sobreMi.title} size="lg" />
+    <Section id="sobre-mi" ariaLabelledBy="sobre-mi-heading">
+      <SectionHeader id="sobre-mi-heading" index="03" label={t.nav.sobreMi} title={t.sobreMi.title} />
 
-        <div className="max-w-4xl mt-8 md:mt-12 flex flex-col md:flex-row items-center gap-8 md:gap-12 w-full">
-          {/* Logo container */}
-          <div className="w-36 h-36 md:w-48 md:h-48 shrink-0 relative flex items-center justify-center overflow-hidden p-6 liquid-glass rounded-full shadow-xl">
-            <div className="absolute inset-3 border border-white/10 rounded-full pointer-events-none z-10" />
-            <img
-              src="/LogoDark.png"
-              alt="Logo de Patricio García"
-              className="w-full h-full object-contain relative z-20"
-              loading="lazy"
-              decoding="async"
-              width={192}
-              height={192}
-            />
-          </div>
+      <ScrollWords text={t.sobreMi.para1} className="mt-10 max-w-[65ch] text-base leading-relaxed md:mt-14 md:text-lg" />
 
-          {/* Text container */}
-          <div className="flex-1 text-center md:text-left">
-            <p className="text-color-tinta/90 text-xs md:text-sm leading-relaxed liquid-glass rounded-2xl px-6 py-5 md:px-7 md:py-6 shadow-lg">
-              {t.sobreMi.para1}
-            </p>
-          </div>
-        </div>
-
-        {/* Philosophy / Homage */}
-        <div className="max-w-2xl mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 px-6 py-6 md:px-8 md:py-7 liquid-glass rounded-2xl shadow-xl group border border-white/10 hover:border-color-accent/40 transition-all duration-300">
-          {/* Avatar / Portrait Container */}
-          <div className="relative flex items-center justify-center">
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center bg-color-accent/5 rounded-full overflow-hidden liquid-glass transition-all duration-300 group-hover:border-color-accent group-hover:glow-cyan z-10">
-              <img
-                src="/garou-2.jpg"
-                alt="Garou"
-                className="w-full h-full object-cover object-top mix-blend-luminosity opacity-80 group-hover:opacity-100 group-hover:mix-blend-normal transition-all duration-500 scale-110 group-hover:scale-125"
-                loading="lazy"
-                decoding="async"
-                width={112}
-                height={112}
-              />
+      <Reveal className="mt-12 md:mt-16">
+        <p className="mono-label text-[11px] text-sky">{t.sobreMi.stackLabel}</p>
+        <div className="mt-5 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
+          {SKILL_CATEGORIES.map((category) => (
+            <div key={category.id}>
+              <p className="mono-label text-[11px] text-muted">{category.title[lang]}</p>
+              <p className="mt-3 flex flex-wrap gap-x-1.5 gap-y-1 text-sm text-paper">
+                {category.skills.map((skillId, i) => (
+                  <span key={skillId} className="mono-label text-[11px]">
+                    {TECH_LABELS[skillId]}
+                    {i < category.skills.length - 1 && <span className="text-muted"> /</span>}
+                  </span>
+                ))}
+              </p>
             </div>
-            {/* Mobile Quote Icon */}
-            <Quote className="absolute -right-8 sm:hidden w-6 h-6 text-color-accent/40" />
-          </div>
-
-          {/* Quote Text */}
-          <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-            <Quote className="hidden sm:block w-5 h-5 text-color-accent/40 mb-2" />
-            <blockquote className="font-bold text-lg sm:text-xl text-color-tinta tracking-tight leading-relaxed">
-              {t.sobreMi.philosophyQuote}
-            </blockquote>
-            <span className="mt-2 text-xs sm:text-sm uppercase tracking-[0.3em] text-color-accent font-black">
-              {t.sobreMi.philosophyAuthor}
-            </span>
-          </div>
+          ))}
         </div>
-
-        <div className="max-w-3xl mt-12 text-center">
-          <GamingRanks />
-        </div>
-      </div>
-    </section>
+      </Reveal>
+    </Section>
   )
 }
 

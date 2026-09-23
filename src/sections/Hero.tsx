@@ -1,9 +1,6 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import Logo from '../components/Logo'
-import SplitText from '../components/SplitText'
-import PillButton from '../components/PillButton'
+import Section from '../components/Section'
+import Button from '../components/Button'
 import { useLanguage } from '../context/LanguageContext'
 import type { Lang } from '../data/translations'
 
@@ -16,17 +13,9 @@ const CV_URLS: Record<Lang, string> = {
 
 function Hero() {
   const { t, lang } = useLanguage()
-  const ref = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  })
-
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-20%'])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   const scrollToNext = () => {
-    const el = document.getElementById('experiencia') || document.getElementById('proyectos')
+    const el = document.getElementById('proyectos')
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' })
     } else {
@@ -35,124 +24,59 @@ function Hero() {
   }
 
   return (
-    <section
-      ref={ref}
-      id="inicio"
-      className="relative z-10 min-h-screen overflow-hidden bg-transparent"
-      aria-labelledby="hero-title"
-    >
-      <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
-        className="sticky top-0 z-10 h-screen overflow-hidden bg-transparent flex flex-col justify-between items-center px-4 py-6 md:py-8 2xl:py-12"
-      >
-        <div className="w-full max-w-[100rem] flex-1 flex flex-col items-center justify-center pt-8 md:pt-4 2xl:pt-6">
-          <div className="flex flex-col items-center justify-center text-center font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-tight tracking-tight">
-            {/* Accessible + prerender-friendly heading: the animated letters
-                below are decorative (aria-hidden) and split into one <span>
-                per character with no real space characters between words,
-                so this is the only element that gives screen readers and
-                crawlers the actual heading text/textContent. */}
-            <h1 id="hero-title" className="sr-only">
-              Patricio García Ingeniero de Software
-            </h1>
+    <Section id="inicio" first ariaLabelledBy="hero-title" innerClassName="py-0!">
+      <div className="flex min-h-[78svh] flex-col justify-center gap-8 py-20 md:min-h-[88svh] md:gap-10">
+        {/* Real, always-readable accessible heading — the giant name below is
+            purely decorative (aria-hidden) so its two-line mask-reveal
+            animation doesn't need to be parsed as the page's actual h1 text. */}
+        <h1 id="hero-title" className="sr-only">
+          Patricio García
+        </h1>
 
-            {/* --- NAME: Patricio García --- */}
-            {/* Mobile: 2 lines ("Patricio", "García") | Desktop: 1 line ("Patricio García") */}
-            <div
-              aria-hidden="true"
-              className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.35em] text-[clamp(1.9rem,6.5vw,2.5rem)] md:text-[clamp(1.5rem,2.3vw,2.8rem)] 2xl:text-[clamp(2.4rem,2vw,3.4rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold tracking-tight mb-2 md:mb-3 2xl:mb-4"
-            >
-              <SplitText
-                text="Patricio"
-                tag="span"
-                splitType="chars"
-                delay={25}
-                duration={0.55}
-                className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-              />
-              <SplitText
-                text="García"
-                tag="span"
-                splitType="chars"
-                delay={25}
-                duration={0.55}
-                className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-              />
-            </div>
+        <p className="mono-label flex items-center gap-2.5 text-xs text-muted">
+          <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-beak" />
+          {t.hero.availability}
+        </p>
 
-            {/* --- TITLE: Ingeniero de Software --- */}
-            {/* Mobile: 3 lines ("Ingeniero", "de", "Software") | Desktop: 1 line ("Ingeniero de Software") */}
-            <div
-              aria-hidden="true"
-              className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-[0.25em] text-[clamp(2.1rem,7vw,3.2rem)] md:text-[clamp(2.3rem,3.8vw,4.4rem)] 2xl:text-[clamp(4.2rem,3.6vw,5.2rem)] font-['Plus_Jakarta_Sans',sans-serif] font-extrabold leading-none"
-            >
-              <SplitText
-                text="Ingeniero"
-                tag="span"
-                splitType="chars"
-                delay={30}
-                duration={0.6}
-                className="text-[#08d7f2]"
-              />
-              <SplitText
-                text="de"
-                tag="span"
-                splitType="chars"
-                delay={30}
-                duration={0.6}
-                className="text-white"
-              />
-              <SplitText
-                text="Software"
-                tag="span"
-                splitType="chars"
-                delay={30}
-                duration={0.6}
-                className="text-[#ffe454]"
-              />
-            </div>
+        <div
+          aria-hidden="true"
+          className="text-[clamp(3.75rem,17vw,10rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-paper font-stretch-wide [overflow-wrap:anywhere] md:text-[clamp(3rem,12vw,10rem)]"
+        >
+          <div className="hero-line">
+            <span>Patricio</span>
           </div>
-
-          {/* Logo below title - Fluid scaling for FullHD (1080p), QHD (1440p) & 4K */}
-          <Logo
-            alt="Logo personal de programador"
-            className="mt-6 md:mt-5 2xl:mt-7 w-[clamp(12rem,40vw,17rem)] md:w-[clamp(13rem,18vw,20rem)] 2xl:w-[clamp(20rem,18vw,26rem)] max-w-[75vw] md:max-w-[22rem] 2xl:max-w-[28rem]"
-          />
-
-          {/* Primary CTAs */}
-          <div className="mt-7 md:mt-6 2xl:mt-8 flex flex-wrap items-center justify-center gap-3 md:gap-4">
-            <PillButton href="#contacto" external={false} ariaLabel={t.hero.ctaContactAriaLabel}>
-              {t.hero.ctaContact}
-            </PillButton>
-            <PillButton href={CV_URLS[lang]} variant="outline" ariaLabel={t.hero.ctaCvAriaLabel}>
-              {t.hero.ctaCv}
-            </PillButton>
+          <div className="hero-line">
+            <span>García</span>
           </div>
         </div>
 
-        {/* --- ANIMATED SCROLL INDICATOR --- */}
-        <motion.button
+        <p className="max-w-[42ch] text-base text-muted md:text-lg">
+          {t.hero.positioning.prefix}
+          <span className="text-paper">{t.hero.positioning.highlight}</span>
+          {t.hero.positioning.suffix}
+        </p>
+
+        <div className="flex flex-wrap items-center gap-4">
+          <Button href="#contacto" external={false} ariaLabel={t.hero.ctaContactAriaLabel}>
+            {t.hero.ctaContact}
+          </Button>
+          <Button href={CV_URLS[lang]} variant="secondary" ariaLabel={t.hero.ctaCvAriaLabel}>
+            {t.hero.ctaCv}
+          </Button>
+        </div>
+
+        <button
           type="button"
           onClick={scrollToNext}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          aria-label="Deslizar para explorar"
-          className="group flex flex-col items-center gap-2 cursor-pointer pb-4 md:pb-6 2xl:pb-8 text-white/60 hover:text-white transition-colors"
+          className="group mt-4 inline-flex min-h-11 w-fit items-center gap-2 self-center outline-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2 md:self-start"
         >
-          <span className="text-[0.65rem] 2xl:text-[0.75rem] uppercase tracking-[0.25em] font-semibold text-white/50 group-hover:text-white/80 transition-colors">
-            Desliza para explorar
+          <span className="mono-label text-[11px] text-muted transition-colors group-hover:text-paper">
+            {t.hero.scrollHint}
           </span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-            className="flex items-center justify-center w-8 h-8 2xl:w-10 2xl:h-10 rounded-full liquid-glass-pill group-hover:border-[#08d7f2]/50 group-hover:bg-[#08d7f2]/20 transition-colors"
-          >
-            <ChevronDown className="w-4 h-4 2xl:w-5 2xl:h-5 text-white/80 group-hover:text-[#08d7f2] transition-colors" />
-          </motion.div>
-        </motion.button>
-      </motion.div>
-    </section>
+          <ChevronDown className="h-3.5 w-3.5 animate-bounce text-muted transition-colors group-hover:text-paper" aria-hidden="true" />
+        </button>
+      </div>
+    </Section>
   )
 }
 

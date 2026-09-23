@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test-utils'
 import Experiencia from '../Experiencia'
 
@@ -27,32 +26,20 @@ describe('Experiencia', () => {
     expect(screen.getByText(/2025 — 2026/i)).toBeInTheDocument()
   })
 
-  it('renders timeline images', () => {
+  it('renders each entry as an open list row (no images, no modal)', () => {
     renderWithProviders(<Experiencia />)
-    const images = screen.getAllByRole('img')
-    const ugto = images.find((img) => img.getAttribute('src') === '/titulo.webp')
-    const mazda = images.find((img) => img.getAttribute('src') === '/mazda-new-logo.jpg')
-    expect(ugto).toBeDefined()
-    expect(mazda).toBeDefined()
-  })
-
-  it('opens the university image in a modal above fixed navigation', async () => {
-    const user = userEvent.setup()
-    renderWithProviders(<Experiencia />)
-
-    await user.click(screen.getByRole('img', { name: 'Graduación Universitaria' }))
-
-    expect(screen.getByTestId('image-modal')).toHaveClass('z-[9999]')
-    expect(screen.getByRole('button', { name: /cerrar imagen/i })).toBeInTheDocument()
-  })
-
-  it('does not open the Mazda logo image in a modal', async () => {
-    const user = userEvent.setup()
-    renderWithProviders(<Experiencia />)
-
-    await user.click(screen.getByRole('img', { name: 'Prácticas Profesionales' }))
-
+    expect(screen.queryAllByRole('img')).toHaveLength(0)
     expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /cerrar imagen/i })).not.toBeInTheDocument()
+  })
+
+  it('renders the "Formación" courses list with certificate links opening in a new tab', () => {
+    renderWithProviders(<Experiencia />)
+    const certLinks = screen.getAllByRole('link', { name: /ver certificado/i })
+    expect(certLinks).toHaveLength(3)
+    certLinks.forEach((link) => {
+      expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+    expect(certLinks[0]).toHaveAttribute('href', '/certificacion-ia.webp')
   })
 })

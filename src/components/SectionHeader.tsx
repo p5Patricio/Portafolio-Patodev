@@ -1,75 +1,55 @@
-import { motion } from 'framer-motion'
-import SplitText from './SplitText'
-
-type Size = 'sm' | 'md' | 'lg' | 'xl'
-
-const SIZE_MAP: Record<Size, string> = {
-  sm: 'text-3xl md:text-4xl lg:text-5xl',
-  md: 'text-4xl md:text-5xl lg:text-6xl',
-  lg: 'text-5xl md:text-6xl lg:text-7xl',
-  xl: 'text-5xl md:text-7xl lg:text-8xl',
-}
+import type { ReactNode } from 'react'
+import Reveal from './Reveal'
 
 type SectionHeaderProps = {
+  /** Two-digit section index, e.g. "01". */
+  index: string
+  /** Mono label next to the index, e.g. "TRABAJO". */
+  label: string
+  /** Section title, sentence case. */
   title: string
-  /** Size for the title text */
-  size?: Size
-  /** Optional intro text rendered below the divider */
+  /** Optional right-aligned mono meta — a plain string (e.g. "2 ENTRADAS")
+   *  gets default muted styling, or a custom node (e.g. a TextLink) that
+   *  styles itself. */
+  meta?: ReactNode
+  /** Optional intro paragraph rendered below the title. */
   intro?: string
-  /** Extra delay (seconds) for the intro paragraph animation */
-  introDelay?: number
-  /** Optional id for the heading element (e.g. for aria-labelledby) */
+  /** Optional id for the heading element (e.g. for aria-labelledby). */
   id?: string
+  /** Heading level to render. Defaults to "h2" (home sections, where Hero
+   *  already owns the page's single h1). Pages without their own hero
+   *  (e.g. /galeria) pass "h1" so this becomes the page's real heading. */
+  as?: 'h1' | 'h2'
 }
 
-function SectionHeader({
-  title,
-  size = 'md',
-  intro,
-  introDelay = 0.2,
-  id,
-}: SectionHeaderProps) {
+/**
+ * Swiss-style section header: `01 / LABEL` mono line (index in sky) with
+ * optional right-aligned meta, then the section title in sentence case.
+ */
+function SectionHeader({ index, label, title, meta, intro, id, as: Heading = 'h2' }: SectionHeaderProps) {
   return (
-    <>
-      {/* Title + Elegant Accent */}
-      <div className="relative flex flex-col items-center justify-center">
-        <SplitText
-          id={id}
-          text={title}
-          tag="h2"
-          splitType="chars"
-          delay={25}
-          duration={0.5}
-          className={`font-display text-white ${SIZE_MAP[size]} uppercase leading-[0.95] tracking-tight text-center font-bold`}
-        />
-
-        {/* Tri-color Accent Bar */}
-        <motion.div
-          initial={{ width: 0, opacity: 0 }}
-          whileInView={{ width: '120px', opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
-          className="flex items-center gap-3 mt-6"
-        >
-          <span className="h-0.5 flex-1 tricolor-separator rounded-full" />
-          <div className="w-1.5 h-1.5 rounded-full tricolor-dot" />
-          <span className="h-0.5 flex-1 tricolor-separator rounded-full" />
-        </motion.div>
+    <Reveal className="flex flex-col gap-4 md:gap-5">
+      <div className="flex items-baseline justify-between gap-4">
+        <p className="mono-label text-[11px] text-muted md:text-xs">
+          <span className="text-sky">{index}</span> / {label}
+        </p>
+        {meta &&
+          (typeof meta === 'string' ? (
+            <p className="mono-label text-[11px] text-muted md:text-xs">{meta}</p>
+          ) : (
+            <div className="mono-label text-[11px] md:text-xs">{meta}</div>
+          ))}
       </div>
 
-      {/* Intro paragraph with Liquid Glass */}
-      {intro && (
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: introDelay }}
-          className="max-w-2xl mt-8 text-center text-color-tinta/90 text-sm md:text-base liquid-glass rounded-2xl px-6 py-4 md:px-8 md:py-5 shadow-xl"
-        >
-          {intro}
-        </motion.p>
-      )}
-    </>
+      <Heading
+        id={id}
+        className="font-stretch-wide text-[clamp(1.75rem,4.5vw,3rem)] leading-[0.95] font-extrabold tracking-[-0.03em] text-paper"
+      >
+        {title}
+      </Heading>
+
+      {intro && <p className="max-w-[65ch] text-sm text-muted md:text-base">{intro}</p>}
+    </Reveal>
   )
 }
 

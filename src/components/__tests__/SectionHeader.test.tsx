@@ -4,29 +4,29 @@ import { renderWithProviders } from '../../test-utils'
 import SectionHeader from '../SectionHeader'
 
 describe('SectionHeader', () => {
-  it('renders title', () => {
-    renderWithProviders(<SectionHeader title="Proyectos" />)
+  it('renders the title as a heading', () => {
+    renderWithProviders(<SectionHeader index="01" label="Trabajo" title="Proyectos" />)
     expect(screen.getByRole('heading', { name: /proyectos/i })).toBeInTheDocument()
   })
 
+  it('renders the mono index / label line', () => {
+    renderWithProviders(<SectionHeader index="01" label="Trabajo" title="Proyectos" />)
+    expect(screen.getByText('01')).toBeInTheDocument()
+    expect(screen.getByText(/trabajo/i)).toBeInTheDocument()
+  })
+
+  it('renders optional right-aligned meta', () => {
+    renderWithProviders(<SectionHeader index="01" label="Trabajo" title="Proyectos" meta="3 PROYECTOS" />)
+    expect(screen.getByText('3 PROYECTOS')).toBeInTheDocument()
+  })
+
   it('renders intro when provided', () => {
-    renderWithProviders(
-      <SectionHeader title="Contacto" intro="Hablemos pronto." />
-    )
+    renderWithProviders(<SectionHeader index="05" label="Contacto" title="Contacto" intro="Hablemos pronto." />)
     expect(screen.getByText('Hablemos pronto.')).toBeInTheDocument()
   })
 
   it('does not render intro when omitted', () => {
-    renderWithProviders(<SectionHeader title="Hero" />)
+    renderWithProviders(<SectionHeader index="00" label="Inicio" title="Hero" />)
     expect(screen.queryByText(/hablemos/i)).not.toBeInTheDocument()
-  })
-
-  it('renders elegant divider accent', () => {
-    const { container } = renderWithProviders(
-      <SectionHeader title="Test" />
-    )
-    // The accent bar uses the shared tri-color separator class
-    const accent = container.querySelector('.tricolor-separator')
-    expect(accent).toBeInTheDocument()
   })
 })

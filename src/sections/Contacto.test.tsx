@@ -5,9 +5,17 @@ import { renderWithProviders } from '../test-utils'
 import Contacto from './Contacto'
 
 describe('Contacto', () => {
-  it('renders the contact section', () => {
+  it('renders a single section heading ("¿Construimos algo?"), no duplicate title', () => {
     renderWithProviders(<Contacto />)
-    expect(screen.getByRole('heading', { name: /contacto/i })).toBeInTheDocument()
+    const headings = screen.getAllByRole('heading', { level: 2 })
+    expect(headings).toHaveLength(1)
+    expect(headings[0]).toHaveTextContent(/construimos algo/i)
+  })
+
+  it('renders the "05 / Contacto" mono label', () => {
+    renderWithProviders(<Contacto />)
+    expect(screen.getByText('05')).toBeInTheDocument()
+    expect(screen.getByText(/contacto/i)).toBeInTheDocument()
   })
 
   it('has a submit button', () => {
@@ -25,23 +33,35 @@ describe('Contacto', () => {
     expect(screen.getByLabelText(/^mensaje/i)).toBeInTheDocument()
   })
 
-  it('renders contact info rows', () => {
+  it('renders the email as a mailto link and the location', () => {
     renderWithProviders(<Contacto />)
-    expect(screen.getByText('pa.garciaperezvela@ugto.mx')).toBeInTheDocument()
+    const emailLink = screen.getByRole('link', { name: 'pa.garciaperezvela@ugto.mx' })
+    expect(emailLink).toHaveAttribute('href', 'mailto:pa.garciaperezvela@ugto.mx')
     expect(screen.getByText(/guanajuato/i)).toBeInTheDocument()
   })
 
-  it('renders contact cards in the preferred order', () => {
+  it('copies the email to the clipboard', async () => {
+    const user = userEvent.setup()
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    })
+
     renderWithProviders(<Contacto />)
+    await user.click(screen.getByRole('button', { name: /copiar/i }))
 
-    const github = screen.getByText('github.com/p5Patricio')
-    const linkedin = screen.getByText('linkedin.com/in/patricioagpv')
-    const email = screen.getByText('pa.garciaperezvela@ugto.mx')
-    const location = screen.getByText(/guanajuato/i)
+    expect(writeText).toHaveBeenCalledWith('pa.garciaperezvela@ugto.mx')
+    expect(await screen.findByText(/copiado/i)).toBeInTheDocument()
+  })
 
-    expect(github.compareDocumentPosition(linkedin)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(linkedin.compareDocumentPosition(email)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(email.compareDocumentPosition(location)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+  it('renders social links and a back-to-top link', () => {
+    renderWithProviders(<Contacto />)
+    const github = screen.getByRole('link', { name: 'GitHub' })
+    const linkedin = screen.getByRole('link', { name: 'LinkedIn' })
+    expect(github).toHaveAttribute('href', 'https://github.com/p5Patricio')
+    expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/patricioagpv/')
+    expect(screen.getByRole('link', { name: /volver arriba/i })).toHaveAttribute('href', '#inicio')
   })
 
   it('submits the form and shows success state', async () => {

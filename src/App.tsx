@@ -1,11 +1,9 @@
 import './index.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import MobileNavbar from './components/MobileNavbar'
+import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import GaleriaPage from './pages/GaleriaPage'
 import SEO from './components/SEO'
-import ClickSpark from './components/ClickSpark'
 import { routeSeo } from './data/seo'
 
 // GaleriaPage is imported eagerly (not React.lazy + Suspense) on purpose.
@@ -32,26 +30,18 @@ function App() {
   const isHome = pathname === '/'
 
   return (
-    <ClickSpark
-      sparkColor="#00d8f0"
-      sparkSize={10}
-      sparkRadius={22}
-      sparkCount={10}
-      duration={450}
-    >
+    <>
       {/* Skip-to-content link for keyboard users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-5 focus:py-3 focus:bg-color-tinta focus:text-color-papel focus:rounded-full focus:shadow-lg focus:text-xs focus:uppercase focus:tracking-[0.2em] focus:font-semibold"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded focus:bg-paper focus:px-5 focus:py-3 focus:text-xs focus:font-medium focus:uppercase focus:tracking-[0.08em] focus:text-ink focus:shadow-lg"
       >
         Saltar al contenido
       </a>
 
-      <main id="main-content" className="pb-24 lg:pb-0">
-        {/* Navbar and MobileNavbar mounted at the top */}
-        {isHome && <Navbar />}
-        {isHome && <MobileNavbar />}
+      <Header variant={isHome ? 'home' : 'galeria'} />
 
+      <main id="main-content">
         <Routes>
           <Route
             path="/"
@@ -73,7 +63,7 @@ function App() {
           />
         </Routes>
       </main>
-    </ClickSpark>
+    </>
   )
 }
 

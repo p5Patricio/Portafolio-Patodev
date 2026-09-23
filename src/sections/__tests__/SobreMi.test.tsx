@@ -1,8 +1,8 @@
-import '@testing-library/jest-dom'
 import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
 import { renderWithProviders } from '../../test-utils'
 import SobreMi from '../SobreMi'
+import { SKILL_CATEGORIES } from '../../data/skills'
 
 describe('SobreMi', () => {
   it('renders section with id sobre-mi', () => {
@@ -15,23 +15,24 @@ describe('SobreMi', () => {
     expect(screen.getByRole('heading', { name: /sobre/i })).toBeInTheDocument()
   })
 
-  it('renders personal description without the old videogame paragraph', () => {
+  it('renders the bio paragraph as fully readable text (word-by-word reveal is scroll-driven, client-only)', () => {
     renderWithProviders(<SobreMi />)
-    expect(screen.getByText(/patricio garcía/i)).toBeInTheDocument()
-    expect(screen.queryByText(/videojuegos/i)).not.toBeInTheDocument()
+    expect(screen.getByText(/patricio/i)).toBeInTheDocument()
   })
 
-  it('renders the philosophy homage', () => {
+  it('renders the Stack block with every skill category', () => {
     renderWithProviders(<SobreMi />)
-    expect(screen.getByText(/Tengo que dar un paso/i)).toBeInTheDocument()
-    expect(screen.getByText(/Garou/i)).toBeInTheDocument()
+    expect(screen.getByText('Stack')).toBeInTheDocument()
+    SKILL_CATEGORIES.forEach((cat) => {
+      expect(screen.getByText(cat.title.es)).toBeInTheDocument()
+    })
   })
 
-  it('renders gaming ranks', () => {
+  it('renders skill labels for the frontend category', () => {
     renderWithProviders(<SobreMi />)
-    expect(screen.getByText('Overwatch')).toBeInTheDocument()
-    expect(screen.getByText('Master')).toBeInTheDocument()
-    expect(screen.getByText('Rocket League')).toBeInTheDocument()
-    expect(screen.getByText('Diamante III')).toBeInTheDocument()
+    // Labels are rendered as "React /" etc. (mono, slash-separated inline
+    // list), so match by substring rather than an exact string.
+    expect(screen.getByText(/^React/)).toBeInTheDocument()
+    expect(screen.getByText(/^TypeScript/)).toBeInTheDocument()
   })
 })

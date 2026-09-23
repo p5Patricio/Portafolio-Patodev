@@ -1,7 +1,5 @@
 export type Lang = 'es' | 'en'
 
-type Word = { text: string; size: 'xs' | 'sm' | 'lg' | 'xl' }
-
 type ExperienceItem = {
   period: string
   title: string
@@ -15,18 +13,21 @@ type Dict = {
   nav: {
     inicio: string
     sobreMi: string
-    proyectos: string
-    herramientas: string
+    trabajo: string
     experiencia: string
     symmetricalCode: string
     contacto: string
+    menuOpen: string
+    menuClose: string
   }
   brand: {
     title: string
     subtitle: string
   }
   hero: {
-    words: Word[]
+    availability: string
+    positioning: { prefix: string; highlight: string; suffix: string }
+    scrollHint: string
     stamp: string
     ctaContact: string
     ctaContactAriaLabel: string
@@ -39,6 +40,7 @@ type Dict = {
     para1: string
     philosophyQuote: string
     philosophyAuthor: string
+    stackLabel: string
   }
   proyectos: {
     title: string
@@ -47,6 +49,8 @@ type Dict = {
     viewProject: string
     visitSite: string
     viewAll: string
+    demoLabel: string
+    codeLabel: string
     guias: { title: string; href: string }[]
   }
   experiencia: {
@@ -59,11 +63,6 @@ type Dict = {
     viewCert: string
     certificaciones: { period: string; name: string; institution: string }[]
   }
-  herramientas: {
-    title: string
-    stamp: string
-    intro: string
-  }
   symmetricalCode: {
     title: string
     stamp: string
@@ -74,10 +73,13 @@ type Dict = {
     ctaContact: string
   }
   galeria: {
+    /** Page title, e.g. "Todos los proyectos" / "All projects". */
     title: string
     stamp: string
     intro: string
     backHome: string
+    /** Mono word before the project count, e.g. "Archivo" / "Archive". */
+    archiveLabel: string
     /** Section header for each year group on the gallery page. */
     yearLabel: string
   }
@@ -85,6 +87,10 @@ type Dict = {
     title: string
     stamp: string
     intro: string[]
+    heading: string
+    copy: string
+    copied: string
+    backToTop: string
     info: {
       email: InfoItem
       location: InfoItem
@@ -113,23 +119,25 @@ export const translations: Record<Lang, Dict> = {
     nav: {
       inicio:      'Inicio',
       sobreMi:     'Sobre mí',
-      proyectos:   'Proyectos',
-      herramientas: 'Herramientas',
+      trabajo:     'Trabajo',
       experiencia: 'Experiencia',
       symmetricalCode: 'Estudio',
       contacto:    'Contacto',
+      menuOpen:    'Menú',
+      menuClose:   'Cerrar menú',
     },
     brand: {
       title:    'PORTAFOLIO',
       subtitle: 'patodev · Ingeniero de Software',
     },
     hero: {
-      words: [
-        { text: 'Soy',       size: 'sm' },
-        { text: 'Ingeniero', size: 'xl' },
-        { text: 'de',        size: 'xs' },
-        { text: 'Software',  size: 'xl' },
-      ],
+      availability: 'Disponible para nuevos proyectos · Guanajuato, MX',
+      positioning: {
+        prefix: 'Construyo software ',
+        highlight: 'full-stack',
+        suffix: ' con React y TypeScript.',
+      },
+      scrollHint: 'Desliza',
       stamp: '私',
       ctaContact: 'Contactar',
       ctaContactAriaLabel: 'Contactar — ir a la sección de contacto',
@@ -143,6 +151,7 @@ export const translations: Record<Lang, Dict> = {
         'Hola, soy Patricio García — mis amigos me dicen Pato. Soy ingeniero en sistemas computacionales y hoy en día estoy enfocado en el desarrollo de software. Me apasiona construir herramientas, entender cómo funcionan por dentro y simplificar flujos de trabajo complejos. Últimamente, la inteligencia artificial se ha convertido en un gran compañero de desarrollo: la veo como una herramienta extraordinaria que potencia enormemente lo que podemos crear en este ámbito.',
       philosophyQuote: '«Tengo que dar un paso a la vez, solo uno a la vez.»',
       philosophyAuthor: '— Garou',
+      stackLabel: 'Stack',
     },
     proyectos: {
       title: 'Proyectos',
@@ -152,6 +161,8 @@ export const translations: Record<Lang, Dict> = {
       viewProject: 'Ver proyecto',
       visitSite:   'Visitar sitio',
       viewAll:     'Ver todos los proyectos',
+      demoLabel:   'Demo',
+      codeLabel:   'Código',
       guias: [
         { title: 'Guía Dual Boot Ubuntu - Windows 11', href: 'https://guia-dual-boot-ubuntu-windows11.patodev.com/' },
         { title: 'Guía Dual Boot Fedora 43 - Windows 11', href: 'https://guia-dual-boot-fedora43-windows11.patodev.com/' },
@@ -182,19 +193,13 @@ export const translations: Record<Lang, Dict> = {
             'Desarrollo de un sistema de gestión de documentos para el área de IT que agilizó significativamente los procesos internos. Colaboración en equipo multidisciplinario y aplicación de metodologías ágiles en un entorno industrial.',
         },
       ],
-      certificacionesTitle: 'Certificaciones',
+      certificacionesTitle: 'Formación',
       viewCert: 'Ver certificado',
       certificaciones: [
         { period: '2026', name: 'Desarrollo con IA', institution: 'Certificación Profesional' },
         { period: '23/07/2026', name: 'Formación en Inteligencia Artificial', institution: 'TecNM / SEP / CPFIA' },
         { period: '27/06/2026', name: 'Desarrollo con IA: Programa con Agentes', institution: 'mouredev & BIG school' },
       ],
-    },
-    herramientas: {
-      title: 'Herramientas',
-      stamp: '工具',
-      intro:
-        'Mi mesa de trabajo digital. Estas son las herramientas que uso día a día para transformar ideas en software real — desde interfaces con personalidad hasta agentes de IA que aceleran cada línea de código.',
     },
     symmetricalCode: {
       title: 'Symmetrical Code',
@@ -224,11 +229,12 @@ export const translations: Record<Lang, Dict> = {
       ctaContact: 'Hablemos',
     },
     galeria: {
-      title: 'Galería',
+      title: 'Todos los proyectos',
       stamp: '作品',
       intro:
         'Todos los proyectos en los que he trabajado este año, desde experimentos rápidos hasta plataformas full-stack en producción. Cada tarjeta muestra el stack real que usé.',
       backHome: 'Volver al inicio',
+      archiveLabel: 'Archivo',
       yearLabel: 'Año',
     },
     contacto: {
@@ -240,6 +246,10 @@ export const translations: Record<Lang, Dict> = {
         'colaboraciones o simplemente a charlar.',
         '¡Hablemos!',
       ],
+      heading: '¿Construimos algo?',
+      copy: 'Copiar',
+      copied: '¡Copiado!',
+      backToTop: 'Volver arriba',
       info: {
         email:    { label: 'EMAIL',     value: 'pa.garciaperezvela@ugto.mx',     href: 'mailto:pa.garciaperezvela@ugto.mx' },
         location: { label: 'UBICACIÓN', value: 'Guanajuato, México' },
@@ -266,23 +276,25 @@ export const translations: Record<Lang, Dict> = {
     nav: {
       inicio:      'Home',
       sobreMi:     'About',
-      proyectos:   'Projects',
-      herramientas: 'Tools',
+      trabajo:     'Work',
       experiencia: 'Experience',
       symmetricalCode: 'Studio',
       contacto:    'Contact',
+      menuOpen:    'Menu',
+      menuClose:   'Close menu',
     },
     brand: {
       title:    'PORTFOLIO',
       subtitle: 'patodev · Software Engineer',
     },
     hero: {
-      words: [
-        { text: 'I am',     size: 'sm' },
-        { text: 'a',        size: 'xs' },
-        { text: 'Software', size: 'xl' },
-        { text: 'Engineer', size: 'xl' },
-      ],
+      availability: 'Available for new projects · Guanajuato, MX',
+      positioning: {
+        prefix: 'I build ',
+        highlight: 'full-stack software',
+        suffix: ' with React and TypeScript.',
+      },
+      scrollHint: 'Scroll',
       stamp: '私',
       ctaContact: 'Contact me',
       ctaContactAriaLabel: 'Contact me — go to the contact section',
@@ -296,6 +308,7 @@ export const translations: Record<Lang, Dict> = {
         "Hi, I'm Patricio García — friends call me Pato. I'm a Computer Systems Engineer currently focused on software development. I'm passionate about building tools, understanding how things work under the hood, and simplifying complex workflows. Lately, artificial intelligence has become a great development companion: I see it as an extraordinary tool that tremendously amplifies what we can create in this field.",
       philosophyQuote: '"I have to take one step at a time, just one at a time."',
       philosophyAuthor: '— Garou',
+      stackLabel: 'Stack',
     },
     proyectos: {
       title: 'Projects',
@@ -305,6 +318,8 @@ export const translations: Record<Lang, Dict> = {
       viewProject: 'View project',
       visitSite:   'Visit site',
       viewAll:     'View all projects',
+      demoLabel:   'Demo',
+      codeLabel:   'Code',
       guias: [
         { title: 'Dual Boot Guide: Ubuntu - Windows 11', href: 'https://guia-dual-boot-ubuntu-windows11.patodev.com/' },
         { title: 'Dual Boot Guide: Fedora 43 - Windows 11', href: 'https://guia-dual-boot-fedora43-windows11.patodev.com/' },
@@ -335,19 +350,13 @@ export const translations: Record<Lang, Dict> = {
             'Development of a document management system for the IT department that significantly streamlined internal processes. Collaboration within a multidisciplinary team and application of agile methodologies in an industrial environment.',
         },
       ],
-      certificacionesTitle: 'Certifications',
+      certificacionesTitle: 'Training',
       viewCert: 'View certificate',
       certificaciones: [
         { period: '2026', name: 'AI-Assisted Development', institution: 'Professional Certification' },
         { period: '07/23/2026', name: 'Artificial Intelligence Training Program', institution: 'TecNM / SEP / CPFIA' },
         { period: '06/27/2026', name: 'AI Development: Agentic Programming', institution: 'mouredev & BIG school' },
       ],
-    },
-    herramientas: {
-      title: 'Tools',
-      stamp: '工具',
-      intro:
-        'My digital workbench. These are the tools I use every day to turn ideas into real software — from characterful interfaces to AI agents that accelerate every line of code.',
     },
     symmetricalCode: {
       title: 'Symmetrical Code',
@@ -377,11 +386,12 @@ export const translations: Record<Lang, Dict> = {
       ctaContact: "Let's talk",
     },
     galeria: {
-      title: 'Gallery',
+      title: 'All projects',
       stamp: '作品',
       intro:
         'Every project I have worked on this year — from quick experiments to full-stack platforms in production. Each card shows the actual stack I used.',
       backHome: 'Back to home',
+      archiveLabel: 'Archive',
       yearLabel: 'Year',
     },
     contacto: {
@@ -393,6 +403,10 @@ export const translations: Record<Lang, Dict> = {
         'collaborations or simply a good conversation.',
         'Let’s talk!',
       ],
+      heading: 'Shall we build something?',
+      copy: 'Copy',
+      copied: 'Copied!',
+      backToTop: 'Back to top',
       info: {
         email:    { label: 'EMAIL',    value: 'pa.garciaperezvela@ugto.mx',     href: 'mailto:pa.garciaperezvela@ugto.mx' },
         location: { label: 'LOCATION', value: 'Guanajuato, Mexico' },

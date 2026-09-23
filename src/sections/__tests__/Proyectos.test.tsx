@@ -15,17 +15,23 @@ describe('Proyectos', () => {
     expect(screen.getByRole('heading', { name: /proyect/i })).toBeInTheDocument()
   })
 
-  it('renders all featured project cards', () => {
+  it('renders exactly the first three featured projects', () => {
     renderWithProviders(<Proyectos />)
-    FEATURED_REPOS.forEach((repo) => {
+    const firstThree = FEATURED_REPOS.slice(0, 3)
+    firstThree.forEach((repo) => {
       expect(screen.getByText(repo.name)).toBeInTheDocument()
+    })
+
+    const rest = FEATURED_REPOS.slice(3)
+    rest.forEach((repo) => {
+      expect(screen.queryByText(repo.name)).not.toBeInTheDocument()
     })
   })
 
-  it('renders the "view all projects" CTA link', () => {
+  it('renders the "view all projects" link (in the header meta slot and the mobile-only fallback)', () => {
     renderWithProviders(<Proyectos />)
-    const link = screen.getByRole('link', { name: /ver todos los proyectos/i })
-    expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/galeria')
+    const links = screen.getAllByRole('link', { name: /ver todos los proyectos/i })
+    expect(links.length).toBeGreaterThanOrEqual(1)
+    links.forEach((link) => expect(link).toHaveAttribute('href', '/galeria'))
   })
 })
