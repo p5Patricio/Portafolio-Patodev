@@ -62,9 +62,6 @@ type Dict = {
     intro: string
     placeholderImage: string
     items: ExperienceItem[]
-    certificacionesTitle: string
-    viewCert: string
-    certificaciones: { period: string; name: string; institution: string }[]
   }
   symmetricalCode: {
     title: string
@@ -199,13 +196,6 @@ export const translations: Record<Lang, Dict> = {
           description:
             'Desarrollo de un sistema de gestión de documentos para el área de IT que agilizó significativamente los procesos internos. Colaboración en equipo multidisciplinario y aplicación de metodologías ágiles en un entorno industrial.',
         },
-      ],
-      certificacionesTitle: 'Formación',
-      viewCert: 'Ver certificado',
-      certificaciones: [
-        { period: '2026', name: 'Desarrollo con IA', institution: 'Certificación Profesional' },
-        { period: '23/07/2026', name: 'Formación en Inteligencia Artificial', institution: 'TecNM / SEP / CPFIA' },
-        { period: '27/06/2026', name: 'Desarrollo con IA: Programa con Agentes', institution: 'mouredev & BIG school' },
       ],
     },
     symmetricalCode: {
@@ -360,13 +350,6 @@ export const translations: Record<Lang, Dict> = {
           description:
             'Development of a document management system for the IT department that significantly streamlined internal processes. Collaboration within a multidisciplinary team and application of agile methodologies in an industrial environment.',
         },
-      ],
-      certificacionesTitle: 'Training',
-      viewCert: 'View certificate',
-      certificaciones: [
-        { period: '2026', name: 'AI-Assisted Development', institution: 'Professional Certification' },
-        { period: '07/23/2026', name: 'Artificial Intelligence Training Program', institution: 'TecNM / SEP / CPFIA' },
-        { period: '06/27/2026', name: 'AI Development: Agentic Programming', institution: 'mouredev & BIG school' },
       ],
     },
     symmetricalCode: {

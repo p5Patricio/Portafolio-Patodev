@@ -1,12 +1,9 @@
 import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
-import TextLink from '../components/TextLink'
 import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
 
 const ENTRY_IDS = ['universidad', 'mazda'] as const
-
-const CERTIFICATE_IMAGES = ['/certificacion-ia.webp', '/cert-tecnm-ia.webp', '/cert-mouredev-ia.webp']
 
 /** Splits a single-paragraph description into 2-3 short bullet lines. */
 function toBullets(text: string): string[] {
@@ -62,35 +59,6 @@ function Experiencia() {
           )
         })}
       </div>
-
-      <Reveal className="mt-14 md:mt-20">
-        <p className="mono-label text-[12px] text-sky">{e.certificacionesTitle}</p>
-        <div className="mt-4">
-          {e.certificaciones.map((cert, i) => (
-            <div
-              key={cert.name}
-              className={`flex flex-col gap-1 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${
-                i === 0 ? '' : 'border-t border-line'
-              }`}
-            >
-              <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3">
-                <span className="text-sm font-medium text-paper">{cert.name}</span>
-                <span className="text-sm text-muted">
-                  {cert.institution} · {cert.period}
-                </span>
-              </div>
-              <TextLink
-                href={CERTIFICATE_IMAGES[i] ?? '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mono-label w-fit text-xs"
-              >
-                {e.viewCert} ↗
-              </TextLink>
-            </div>
-          ))}
-        </div>
-      </Reveal>
     </Section>
   )
 }

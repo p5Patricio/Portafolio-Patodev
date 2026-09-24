@@ -11,7 +11,7 @@ Portafolio personal bilingüe para presentar experiencia, proyectos, herramienta
 
 - **Hero cinematográfico** con logo personal y rayos de luz SVG separados para desktop/mobile.
 - **Navegación responsive**: navbar desktop, selector de idioma fijo y navegación inferior en móvil.
-- **Experiencia** con timeline, imágenes ampliables y certificaciones.
+- **Experiencia** con formación universitaria y prácticas profesionales.
 - **Proyectos destacados** en tarjetas con carrusel de miniaturas y CTA a la galería completa.
 - **Galería completa** minimalista agrupada por año.
 - **Herramientas** con categorías técnicas, iconografía y narrativa de stack.
@@ -70,7 +70,6 @@ public/
 ├── LogoDark.*                 # Logo e iconos del sitio
 ├── projects/thumbs/           # Miniaturas usadas por las tarjetas
 ├── ranks/                     # Insignias competitivas en WebP
-├── certificacion-ia.webp      # Certificación mostrada en Experiencia
 ├── garou-2.jpg                # Imagen homenaje en Sobre mí
 ├── mazda-new-logo.jpg         # Logo usado en Experiencia
 ├── titulo.webp                # Imagen de graduación/título
@@ -91,7 +90,7 @@ src/
 | Sección | Propósito |
 | --- | --- |
 | `Hero` | Primera impresión visual con trazos SVG desktop/mobile. |
-| `Experiencia` | Formación, prácticas y certificaciones con modal de imagen. |
+| `Experiencia` | Formación universitaria y prácticas profesionales. |
 | `Proyectos` | Selección principal de proyectos y enlace a `/galeria`. |
 | `Herramientas` | Stack técnico agrupado por frontend, backend, IA y workflow. |
 | `SobreMi` | Bio, filosofía personal y rangos competitivos. |

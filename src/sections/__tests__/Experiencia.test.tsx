@@ -32,14 +32,9 @@ describe('Experiencia', () => {
     expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
   })
 
-  it('renders the "Formación" courses list with certificate links opening in a new tab', () => {
+  it('does not render the certificates list', () => {
     renderWithProviders(<Experiencia />)
-    const certLinks = screen.getAllByRole('link', { name: /ver certificado/i })
-    expect(certLinks).toHaveLength(3)
-    certLinks.forEach((link) => {
-      expect(link).toHaveAttribute('target', '_blank')
-      expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-    })
-    expect(certLinks[0]).toHaveAttribute('href', '/certificacion-ia.webp')
+    expect(screen.queryByText(/^(formación|training)$/i)).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /certificado|certificate/i })).not.toBeInTheDocument()
   })
 })
