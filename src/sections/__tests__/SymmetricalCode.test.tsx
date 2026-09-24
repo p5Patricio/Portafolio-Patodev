@@ -42,4 +42,10 @@ describe('SymmetricalCode', () => {
     const link = screen.getByRole('link', { name: /hablemos/i })
     expect(link).toHaveAttribute('href', '#contacto')
   })
+
+  it('renders the studio logo with a descriptive alt text', () => {
+    renderWithProviders(<SymmetricalCode />)
+    const logo = screen.getByRole('img', { name: /logo de symmetrical code/i })
+    expect(logo).toHaveAttribute('src', '/symmetrical-code-logo.webp')
+  })
 })

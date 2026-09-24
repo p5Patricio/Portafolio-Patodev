@@ -11,8 +11,8 @@ type Props = {
 function Footer({ backToTopLabel, backToTopHref }: Props) {
   return (
     <footer className="mt-14 flex flex-col gap-4 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between md:mt-20">
-      <p className="mono-label text-[11px] text-muted">© {new Date().getFullYear()} Patricio García</p>
-      <TextLink href={backToTopHref} className="mono-label text-[11px]">
+      <p className="mono-label text-[12px] text-muted">© {new Date().getFullYear()} Patricio García</p>
+      <TextLink href={backToTopHref} className="mono-label text-[12px]">
         {backToTopLabel} ↑
       </TextLink>
     </footer>

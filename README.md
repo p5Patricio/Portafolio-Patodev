@@ -134,4 +134,4 @@ La app está preparada para Vercel:
 
 - GitHub: [p5Patricio](https://github.com/p5Patricio)
 - LinkedIn: [patricioagpv](https://www.linkedin.com/in/patricioagpv/)
-- Email: [pa.garciaperezvela@ugto.mx](mailto:pa.garciaperezvela@ugto.mx)
+- Email: [patricio16garcia@gmail.com](mailto:patricio16garcia@gmail.com)

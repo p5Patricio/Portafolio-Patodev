@@ -26,7 +26,12 @@ describe('Hero', () => {
   it('renders the availability line and positioning statement', () => {
     renderWithProviders(<Hero />)
     expect(screen.getByText(/disponible para nuevos proyectos/i)).toBeInTheDocument()
-    expect(screen.getByText(/full-stack/i)).toBeInTheDocument()
+    expect(screen.getByText(/full.?stack/i)).toBeInTheDocument()
+  })
+
+  it('renders the decorative hero logo with a descriptive alt/label', () => {
+    renderWithProviders(<Hero />)
+    expect(screen.getAllByRole('img', { name: /logo de patodev/i }).length).toBeGreaterThan(0)
   })
 
   it('renders a primary "Contactar" CTA that links to #contacto', () => {

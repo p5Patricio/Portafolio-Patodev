@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Copy, Check } from 'lucide-react'
+import { FaGithub, FaLinkedin } from 'react-icons/fa6'
 import { useLanguage } from '../context/LanguageContext'
 import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
@@ -17,7 +18,7 @@ type FieldProps = {
 function Field({ id, label, children }: FieldProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="mono-label text-[11px] text-muted">
+      <label htmlFor={id} className="mono-label text-[12px] text-muted">
         {label}
       </label>
       {children}
@@ -97,7 +98,7 @@ function Contacto() {
             <button
               type="button"
               onClick={copyEmail}
-              className="mono-label relative inline-flex min-h-11 items-center gap-1.5 text-[11px] text-muted outline-none transition-colors hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2"
+              className="mono-label relative inline-flex min-h-11 items-center gap-1.5 text-[12px] text-muted outline-none transition-colors hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2"
             >
               {copied ? (
                 <>
@@ -113,23 +114,25 @@ function Contacto() {
             </button>
           </div>
 
-          <p className="mono-label mt-3 text-[11px] text-muted">{c.info.location.value}</p>
+          <p className="mono-label mt-3 text-[12px] text-muted">{c.info.location.value}</p>
 
           <div className="mt-6 flex items-center gap-6">
             <TextLink
               href={c.info.github.href!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label text-[11px]"
+              className="mono-label inline-flex items-center gap-1.5 text-[12px]"
             >
+              <FaGithub className="h-4 w-4 shrink-0" aria-hidden="true" />
               GitHub
             </TextLink>
             <TextLink
               href={c.info.linkedin.href!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label text-[11px]"
+              className="mono-label inline-flex items-center gap-1.5 text-[12px]"
             >
+              <FaLinkedin className="h-4 w-4 shrink-0" aria-hidden="true" />
               LinkedIn
             </TextLink>
           </div>

@@ -74,16 +74,23 @@ html {
   scroll-padding-top: 5rem;
 }
 
-/* Scale every rem-based size (type, spacing) slightly on large monitors. */
-@media (min-width: 1920px) {
+/* Scale every rem-based size (type, spacing) up slightly on tablet+ so body
+   copy stays comfortable to read, then further on large monitors. */
+@media (min-width: 768px) {
   html {
     font-size: 106.25%;
   }
 }
 
+@media (min-width: 1920px) {
+  html {
+    font-size: 112.5%;
+  }
+}
+
 @media (min-width: 2400px) {
   html {
-    font-size: 118.75%;
+    font-size: 125%;
   }
 }
 
@@ -164,5 +171,45 @@ body {
 
   .animate-bounce {
     animation: none !important;
+  }
+}
+
+/* ---------- Hero logo wobble (hover / tap / keyboard focus) ---------- */
+@keyframes wobble {
+  0% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-8deg);
+  }
+  35% {
+    transform: rotate(6deg);
+  }
+  55% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.hero-logo {
+  transform-origin: 50% 100%;
+}
+
+.hero-logo:hover,
+.hero-logo:active,
+.hero-logo:focus-within {
+  animation: wobble 0.8s ease-in-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo:hover,
+  .hero-logo:active,
+  .hero-logo:focus-within {
+    animation: none;
   }
 }

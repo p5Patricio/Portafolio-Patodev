@@ -34,4 +34,15 @@ describe('Proyectos', () => {
     expect(links.length).toBeGreaterThanOrEqual(1)
     links.forEach((link) => expect(link).toHaveAttribute('href', '/galeria'))
   })
+
+  it('does not render bracketed technology tags anymore', () => {
+    const { container } = renderWithProviders(<Proyectos />)
+    expect(container.textContent).not.toMatch(/\[[A-Z0-9.]+\]/)
+  })
+
+  it('renders demo/code links with accessible names', () => {
+    renderWithProviders(<Proyectos />)
+    expect(screen.getAllByRole('link', { name: /demo/i }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: /código/i }).length).toBeGreaterThan(0)
+  })
 })

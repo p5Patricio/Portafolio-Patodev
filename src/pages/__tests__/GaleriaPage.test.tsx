@@ -49,4 +49,9 @@ describe('GaleriaPage', () => {
     const link = screen.getByRole('link', { name: /volver arriba/i })
     expect(link).toHaveAttribute('href', '#galeria-top')
   })
+
+  it('does not render bracketed technology tags anymore', () => {
+    const { container } = renderWithProviders(<GaleriaPage />)
+    expect(container.textContent).not.toMatch(/\[[A-Z0-9.]+\]/)
+  })
 })

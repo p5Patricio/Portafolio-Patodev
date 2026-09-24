@@ -13,15 +13,31 @@ function SymmetricalCode() {
 
   return (
     <Section id="symmetrical-code" ariaLabelledBy="symmetrical-code-heading">
-      <SectionHeader
-        id="symmetrical-code-heading"
-        index="04"
-        label={t.nav.symmetricalCode}
-        title={s.title}
-        intro={s.intro}
-      />
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        <div className="lg:max-w-[calc(100%-320px)]">
+          <SectionHeader
+            id="symmetrical-code-heading"
+            index="04"
+            label={t.nav.symmetricalCode}
+            title={s.title}
+            intro={s.intro}
+          />
 
-      <p className="mono-label mt-4 text-[11px] text-sky">{s.tagline}</p>
+          <p className="mono-label mt-4 text-[12px] text-sky">{s.tagline}</p>
+        </div>
+
+        <Reveal className="self-center lg:self-auto">
+          <img
+            src="/symmetrical-code-logo.webp"
+            alt={s.logoAlt}
+            width={900}
+            height={761}
+            loading="lazy"
+            decoding="async"
+            className="w-[11.25rem] shrink-0 md:w-[15rem] lg:w-[17.5rem]"
+          />
+        </Reveal>
+      </div>
 
       <div className="mt-10 grid grid-cols-1 border-t border-l border-line md:mt-14 md:grid-cols-2">
         {s.services.map((service, i) => (
@@ -30,7 +46,7 @@ function SymmetricalCode() {
             delay={i * 70}
             className="border-r border-b border-line p-6 md:p-8"
           >
-            <p className="mono-label text-[11px] text-sky">{String(i + 1).padStart(2, '0')}</p>
+            <p className="mono-label text-[12px] text-sky">{String(i + 1).padStart(2, '0')}</p>
             <h3 className="mt-3 text-lg font-semibold text-paper">{service.title}</h3>
             <p className="mt-2 text-sm text-muted">{service.description}</p>
           </Reveal>

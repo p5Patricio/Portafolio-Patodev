@@ -33,6 +33,7 @@ type Dict = {
     ctaContactAriaLabel: string
     ctaCv: string
     ctaCvAriaLabel: string
+    logoAlt: string
   }
   sobreMi: {
     title: string
@@ -51,6 +52,8 @@ type Dict = {
     viewAll: string
     demoLabel: string
     codeLabel: string
+    backendLabel: string
+    privateLabel: string
     guias: { title: string; href: string }[]
   }
   experiencia: {
@@ -68,6 +71,7 @@ type Dict = {
     stamp: string
     tagline: string
     intro: string
+    logoAlt: string
     services: { title: string; description: string }[]
     ctaVisit: string
     ctaContact: string
@@ -133,9 +137,9 @@ export const translations: Record<Lang, Dict> = {
     hero: {
       availability: 'Disponible para nuevos proyectos · Guanajuato, MX',
       positioning: {
-        prefix: 'Construyo software ',
-        highlight: 'full-stack',
-        suffix: ' con React y TypeScript.',
+        prefix: 'Soy ingeniero de software ',
+        highlight: 'full stack',
+        suffix: '.',
       },
       scrollHint: 'Desliza',
       stamp: '私',
@@ -143,6 +147,7 @@ export const translations: Record<Lang, Dict> = {
       ctaContactAriaLabel: 'Contactar — ir a la sección de contacto',
       ctaCv: 'Descargar CV',
       ctaCvAriaLabel: 'Descargar CV — PDF, se abre en una pestaña nueva',
+      logoAlt: 'Logo de PatoDev',
     },
     sobreMi: {
       title: 'Sobre mí',
@@ -163,6 +168,8 @@ export const translations: Record<Lang, Dict> = {
       viewAll:     'Ver todos los proyectos',
       demoLabel:   'Demo',
       codeLabel:   'Código',
+      backendLabel: 'Backend',
+      privateLabel: 'Privado',
       guias: [
         { title: 'Guía Dual Boot Ubuntu - Windows 11', href: 'https://guia-dual-boot-ubuntu-windows11.patodev.com/' },
         { title: 'Guía Dual Boot Fedora 43 - Windows 11', href: 'https://guia-dual-boot-fedora43-windows11.patodev.com/' },
@@ -207,6 +214,7 @@ export const translations: Record<Lang, Dict> = {
       tagline: 'Ingeniería real para problemas reales.',
       intro:
         'Además de mis proyectos personales, dirijo Symmetrical Code, un estudio de desarrollo de software en etapa inicial. Convertimos ideas claras en productos digitales simples y rápidos, listos para crecer desde el primer lanzamiento.',
+      logoAlt: 'Logo de Symmetrical Code',
       services: [
         {
           title: 'Sitios y apps que venden',
@@ -251,7 +259,7 @@ export const translations: Record<Lang, Dict> = {
       copied: '¡Copiado!',
       backToTop: 'Volver arriba',
       info: {
-        email:    { label: 'EMAIL',     value: 'pa.garciaperezvela@ugto.mx',     href: 'mailto:pa.garciaperezvela@ugto.mx' },
+        email:    { label: 'EMAIL',     value: 'patricio16garcia@gmail.com',     href: 'mailto:patricio16garcia@gmail.com' },
         location: { label: 'UBICACIÓN', value: 'Guanajuato, México' },
         linkedin: { label: 'LINKEDIN',  value: 'linkedin.com/in/patricioagpv',   href: 'https://www.linkedin.com/in/patricioagpv/' },
         github:   { label: 'GITHUB',    value: 'github.com/p5Patricio',          href: 'https://github.com/p5Patricio' },
@@ -290,9 +298,9 @@ export const translations: Record<Lang, Dict> = {
     hero: {
       availability: 'Available for new projects · Guanajuato, MX',
       positioning: {
-        prefix: 'I build ',
-        highlight: 'full-stack software',
-        suffix: ' with React and TypeScript.',
+        prefix: "I'm a ",
+        highlight: 'full-stack',
+        suffix: ' software engineer.',
       },
       scrollHint: 'Scroll',
       stamp: '私',
@@ -300,6 +308,7 @@ export const translations: Record<Lang, Dict> = {
       ctaContactAriaLabel: 'Contact me — go to the contact section',
       ctaCv: 'Download CV',
       ctaCvAriaLabel: 'Download CV — PDF, opens in a new tab',
+      logoAlt: 'PatoDev logo',
     },
     sobreMi: {
       title: 'About me',
@@ -320,6 +329,8 @@ export const translations: Record<Lang, Dict> = {
       viewAll:     'View all projects',
       demoLabel:   'Demo',
       codeLabel:   'Code',
+      backendLabel: 'Backend',
+      privateLabel: 'Private',
       guias: [
         { title: 'Dual Boot Guide: Ubuntu - Windows 11', href: 'https://guia-dual-boot-ubuntu-windows11.patodev.com/' },
         { title: 'Dual Boot Guide: Fedora 43 - Windows 11', href: 'https://guia-dual-boot-fedora43-windows11.patodev.com/' },
@@ -364,6 +375,7 @@ export const translations: Record<Lang, Dict> = {
       tagline: 'Real engineering for real problems.',
       intro:
         "Alongside my personal projects, I run Symmetrical Code, an early-stage software development studio. We turn clear ideas into simple, fast digital products, ready to grow from the first launch.",
+      logoAlt: 'Symmetrical Code logo',
       services: [
         {
           title: 'Pages & apps that sell',
@@ -408,7 +420,7 @@ export const translations: Record<Lang, Dict> = {
       copied: 'Copied!',
       backToTop: 'Back to top',
       info: {
-        email:    { label: 'EMAIL',    value: 'pa.garciaperezvela@ugto.mx',     href: 'mailto:pa.garciaperezvela@ugto.mx' },
+        email:    { label: 'EMAIL',    value: 'patricio16garcia@gmail.com',     href: 'mailto:patricio16garcia@gmail.com' },
         location: { label: 'LOCATION', value: 'Guanajuato, Mexico' },
         linkedin: { label: 'LINKEDIN', value: 'linkedin.com/in/patricioagpv',   href: 'https://www.linkedin.com/in/patricioagpv/' },
         github:   { label: 'GITHUB',   value: 'github.com/p5Patricio',          href: 'https://github.com/p5Patricio' },

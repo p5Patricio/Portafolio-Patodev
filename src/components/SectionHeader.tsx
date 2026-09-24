@@ -30,14 +30,14 @@ function SectionHeader({ index, label, title, meta, intro, id, as: Heading = 'h2
   return (
     <Reveal className="flex flex-col gap-4 md:gap-5">
       <div className="flex items-baseline justify-between gap-4">
-        <p className="mono-label text-[11px] text-muted md:text-xs">
+        <p className="mono-label text-[12px] text-muted md:text-xs">
           <span className="text-sky">{index}</span> / {label}
         </p>
         {meta &&
           (typeof meta === 'string' ? (
-            <p className="mono-label text-[11px] text-muted md:text-xs">{meta}</p>
+            <p className="mono-label text-[12px] text-muted md:text-xs">{meta}</p>
           ) : (
-            <div className="mono-label text-[11px] md:text-xs">{meta}</div>
+            <div className="mono-label text-[12px] md:text-xs">{meta}</div>
           ))}
       </div>
 

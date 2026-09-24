@@ -35,8 +35,8 @@ describe('Contacto', () => {
 
   it('renders the email as a mailto link and the location', () => {
     renderWithProviders(<Contacto />)
-    const emailLink = screen.getByRole('link', { name: 'pa.garciaperezvela@ugto.mx' })
-    expect(emailLink).toHaveAttribute('href', 'mailto:pa.garciaperezvela@ugto.mx')
+    const emailLink = screen.getByRole('link', { name: 'patricio16garcia@gmail.com' })
+    expect(emailLink).toHaveAttribute('href', 'mailto:patricio16garcia@gmail.com')
     expect(screen.getByText(/guanajuato/i)).toBeInTheDocument()
   })
 
@@ -51,7 +51,7 @@ describe('Contacto', () => {
     renderWithProviders(<Contacto />)
     await user.click(screen.getByRole('button', { name: /copiar/i }))
 
-    expect(writeText).toHaveBeenCalledWith('pa.garciaperezvela@ugto.mx')
+    expect(writeText).toHaveBeenCalledWith('patricio16garcia@gmail.com')
     expect(await screen.findByText(/copiado/i)).toBeInTheDocument()
   })
 

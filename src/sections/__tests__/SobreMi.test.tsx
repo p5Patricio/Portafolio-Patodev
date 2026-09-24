@@ -30,9 +30,14 @@ describe('SobreMi', () => {
 
   it('renders skill labels for the frontend category', () => {
     renderWithProviders(<SobreMi />)
-    // Labels are rendered as "React /" etc. (mono, slash-separated inline
-    // list), so match by substring rather than an exact string.
-    expect(screen.getByText(/^React/)).toBeInTheDocument()
-    expect(screen.getByText(/^TypeScript/)).toBeInTheDocument()
+    expect(screen.getByText('React')).toBeInTheDocument()
+    expect(screen.getByText('TypeScript')).toBeInTheDocument()
+  })
+
+  it('renders a brand icon for every skill', () => {
+    renderWithProviders(<SobreMi />)
+    const totalSkills = SKILL_CATEGORIES.reduce((sum, cat) => sum + cat.skills.length, 0)
+    const icons = screen.getAllByRole('img')
+    expect(icons.length).toBe(totalSkills)
   })
 })

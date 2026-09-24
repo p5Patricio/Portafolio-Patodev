@@ -26,7 +26,7 @@ function LanguageSelector({ className = '' }: Props) {
     <div
       role="group"
       aria-label="Language selector"
-      className={`mono-label flex items-center gap-1.5 text-[11px] ${className}`}
+      className={`mono-label flex items-center gap-1.5 text-[12px] ${className}`}
     >
       <button type="button" aria-pressed={lang === 'es'} onClick={() => setLang('es')} className={optionClass('es')}>
         ES

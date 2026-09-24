@@ -1,28 +1,34 @@
+import { Globe, Lock } from 'lucide-react'
+import { FaGithub } from 'react-icons/fa6'
 import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
 import TextLink from '../components/TextLink'
 import Reveal from '../components/Reveal'
 import { useLanguage } from '../context/LanguageContext'
 import { FEATURED_REPOS } from '../data/repos'
-import { TECH_LABELS } from '../components/TechIcon'
 import type { Repo } from '../data/repos'
 import type { Lang } from '../data/translations'
 
 // First three featured repos, in the existing landing order.
 const HOME_PROJECTS: Repo[] = FEATURED_REPOS.slice(0, 3)
 
+const LINK_ICON = 'h-4 w-4 shrink-0'
+
 type ProjectRowProps = {
   repo: Repo
   lang: Lang
   demoLabel: string
   codeLabel: string
+  backendLabel: string
+  privateLabel: string
   first: boolean
 }
 
-function ProjectRow({ repo, lang, demoLabel, codeLabel, first }: ProjectRowProps) {
+function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLabel, first }: ProjectRowProps) {
   const image = repo.images?.[0]
   const showDemo = !!repo.liveUrl
   const showCode = !repo.isPrivate && !!repo.repoUrl
+  const showCompanion = !repo.isPrivate && !!repo.companionUrl
   const isPrivateNoDemo = repo.isPrivate && !repo.liveUrl
 
   return (
@@ -46,13 +52,13 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, first }: ProjectRowProps
           </div>
         ) : (
           <div className="flex aspect-[16/10] items-center justify-center rounded border border-line bg-surface">
-            <span className="mono-label text-[11px] text-muted">{repo.name}</span>
+            <span className="mono-label text-[12px] text-muted">{repo.name}</span>
           </div>
         )}
       </div>
 
-      <div className="order-2 flex flex-col gap-3 lg:order-none lg:col-span-5 lg:col-start-1 lg:row-start-1">
-        <p className="mono-label text-[11px] text-muted">
+      <div className="order-2 flex flex-col gap-4 lg:order-none lg:col-span-5 lg:col-start-1 lg:row-start-1">
+        <p className="mono-label text-[12px] text-muted">
           {repo.year} · {repo.subtitle[lang]}
         </p>
 
@@ -62,24 +68,44 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, first }: ProjectRowProps
 
         <p className="line-clamp-4 text-sm text-muted lg:line-clamp-3 md:text-base">{repo.description[lang]}</p>
 
-        <p className="mono-label text-[11px] text-muted">
-          {repo.technologies.map((techId) => `[${TECH_LABELS[techId]}]`).join(' — ')}
-        </p>
-
         <div className="mt-1 flex flex-wrap items-center gap-5">
           {showDemo && (
-            <TextLink href={repo.liveUrl!} target="_blank" rel="noopener noreferrer" className="mono-label text-xs">
+            <TextLink
+              href={repo.liveUrl!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono-label inline-flex items-center gap-1.5 text-xs"
+            >
+              <Globe className={LINK_ICON} aria-hidden="true" />
               {demoLabel}
             </TextLink>
           )}
           {showCode && (
-            <TextLink href={repo.repoUrl} target="_blank" rel="noopener noreferrer" className="mono-label text-xs">
+            <TextLink
+              href={repo.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono-label inline-flex items-center gap-1.5 text-xs"
+            >
+              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {codeLabel}
             </TextLink>
           )}
+          {showCompanion && (
+            <TextLink
+              href={repo.companionUrl!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono-label inline-flex items-center gap-1.5 text-xs"
+            >
+              <FaGithub className={LINK_ICON} aria-hidden="true" />
+              {backendLabel}
+            </TextLink>
+          )}
           {isPrivateNoDemo && (
-            <span className="mono-label text-[11px] text-muted">
-              [{lang === 'es' ? 'PRIVADO' : 'PRIVATE'}]
+            <span className="mono-label inline-flex items-center gap-1.5 text-[12px] text-muted">
+              <Lock className={LINK_ICON} aria-hidden="true" />
+              {privateLabel}
             </span>
           )}
         </div>
@@ -99,7 +125,7 @@ function Proyectos() {
         label={t.nav.trabajo}
         title={t.proyectos.title}
         meta={
-          <TextLink to="/galeria" className="mono-label hidden text-[11px] md:inline">
+          <TextLink to="/galeria" className="mono-label hidden text-[12px] md:inline">
             {t.proyectos.viewAll} →
           </TextLink>
         }
@@ -114,6 +140,8 @@ function Proyectos() {
             lang={lang}
             demoLabel={t.proyectos.demoLabel}
             codeLabel={t.proyectos.codeLabel}
+            backendLabel={t.proyectos.backendLabel}
+            privateLabel={t.proyectos.privateLabel}
             first={i === 0}
           />
         ))}

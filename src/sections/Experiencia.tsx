@@ -43,7 +43,7 @@ function Experiencia() {
                 i === 0 ? '' : 'border-t border-line'
               }`}
             >
-              <p className="mono-label text-[11px] text-muted md:col-span-3">{item.period}</p>
+              <p className="mono-label text-[12px] text-muted md:col-span-3">{item.period}</p>
               <div className="md:col-span-9">
                 <h3 className="text-lg font-semibold text-paper md:text-xl">{item.title}</h3>
                 <p className="mt-1 text-sm text-muted">{item.institution}</p>
@@ -64,7 +64,7 @@ function Experiencia() {
       </div>
 
       <Reveal className="mt-14 md:mt-20">
-        <p className="mono-label text-[11px] text-sky">{e.certificacionesTitle}</p>
+        <p className="mono-label text-[12px] text-sky">{e.certificacionesTitle}</p>
         <div className="mt-4">
           {e.certificaciones.map((cert, i) => (
             <div

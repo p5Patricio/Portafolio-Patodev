@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react'
+import { Globe, Lock } from 'lucide-react'
+import { FaGithub } from 'react-icons/fa6'
 import { useLanguage } from '../context/LanguageContext'
 import { ALL_REPOS_BY_YEAR, type Repo } from '../data/repos'
-import { TECH_LABELS } from '../components/TechIcon'
 import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
 import Crosshair from '../components/Crosshair'
@@ -10,8 +11,8 @@ import Reveal from '../components/Reveal'
 import Footer from '../components/Footer'
 import type { Lang } from '../data/translations'
 
-const MAX_TAGS = 5
 const TOP_ANCHOR_ID = 'galeria-top'
+const LINK_ICON = 'h-4 w-4 shrink-0'
 
 /** "Rey Asesino" -> "RA", "Faro" -> "FA" (single-word names have no gap to split on). */
 function getInitials(name: string): string {
@@ -25,16 +26,17 @@ type ProjectCellProps = {
   lang: Lang
   demoLabel: string
   codeLabel: string
+  backendLabel: string
+  privateLabel: string
   delay: number
 }
 
-function ProjectCell({ repo, lang, demoLabel, codeLabel, delay }: ProjectCellProps) {
+function ProjectCell({ repo, lang, demoLabel, codeLabel, backendLabel, privateLabel, delay }: ProjectCellProps) {
   const image = repo.images?.[0]
   const showDemo = !!repo.liveUrl
   const showCode = !repo.isPrivate && !!repo.repoUrl
+  const showCompanion = !repo.isPrivate && !!repo.companionUrl
   const isPrivateNoDemo = repo.isPrivate && !repo.liveUrl
-  const tags = repo.technologies.slice(0, MAX_TAGS)
-  const extraTags = repo.technologies.length - tags.length
 
   return (
     <Reveal delay={delay} className="group flex flex-col border-r border-b border-line p-5 transition-colors duration-300 hover:bg-surface md:p-6">
@@ -58,28 +60,49 @@ function ProjectCell({ repo, lang, demoLabel, codeLabel, delay }: ProjectCellPro
         )}
       </div>
 
-      <p className="mono-label mt-4 text-[11px] text-muted">{repo.subtitle[lang]}</p>
+      <p className="mono-label mt-4 text-[12px] text-muted">{repo.subtitle[lang]}</p>
       <h3 className="mt-1 text-lg font-semibold text-paper">{repo.name}</h3>
       <p className="mt-2 line-clamp-3 text-sm text-muted">{repo.description[lang]}</p>
 
-      <p className="mono-label mt-3 text-[11px] text-muted">
-        {tags.map((id) => `[${TECH_LABELS[id]}]`).join(' — ')}
-        {extraTags > 0 && ` +${extraTags}`}
-      </p>
-
-      <div className="mt-auto flex flex-wrap items-center gap-5 pt-4">
+      <div className="mt-auto flex flex-wrap items-center gap-5 pt-5">
         {showDemo && (
-          <TextLink href={repo.liveUrl!} target="_blank" rel="noopener noreferrer" className="mono-label text-xs">
+          <TextLink
+            href={repo.liveUrl!}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mono-label inline-flex items-center gap-1.5 text-xs"
+          >
+            <Globe className={LINK_ICON} aria-hidden="true" />
             {demoLabel}
           </TextLink>
         )}
         {showCode && (
-          <TextLink href={repo.repoUrl} target="_blank" rel="noopener noreferrer" className="mono-label text-xs">
+          <TextLink
+            href={repo.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mono-label inline-flex items-center gap-1.5 text-xs"
+          >
+            <FaGithub className={LINK_ICON} aria-hidden="true" />
             {codeLabel}
           </TextLink>
         )}
+        {showCompanion && (
+          <TextLink
+            href={repo.companionUrl!}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mono-label inline-flex items-center gap-1.5 text-xs"
+          >
+            <FaGithub className={LINK_ICON} aria-hidden="true" />
+            {backendLabel}
+          </TextLink>
+        )}
         {isPrivateNoDemo && (
-          <span className="mono-label text-[11px] text-muted">[{lang === 'es' ? 'PRIVADO' : 'PRIVATE'}]</span>
+          <span className="mono-label inline-flex items-center gap-1.5 text-[12px] text-muted">
+            <Lock className={LINK_ICON} aria-hidden="true" />
+            {privateLabel}
+          </span>
         )}
       </div>
     </Reveal>
@@ -126,7 +149,7 @@ function GaleriaPage() {
       <div className="mt-14 flex flex-col gap-16 md:mt-20">
         {byYear.map(([year, repos]) => (
           <div key={year}>
-            <p className="mono-label border-b border-line pb-3 text-[11px] text-sky">
+            <p className="mono-label border-b border-line pb-3 text-[12px] text-sky">
               {g.yearLabel} {year}
             </p>
             <div className="grid grid-cols-1 border-l border-line md:grid-cols-2 lg:grid-cols-3">
@@ -137,6 +160,8 @@ function GaleriaPage() {
                   lang={lang}
                   demoLabel={t.proyectos.demoLabel}
                   codeLabel={t.proyectos.codeLabel}
+                  backendLabel={t.proyectos.backendLabel}
+                  privateLabel={t.proyectos.privateLabel}
                   delay={(i % 3) * 70}
                 />
               ))}
