@@ -8,25 +8,26 @@ type Props = {
 /**
  * Personal "duck developer" logo.
  *
- * Behavior: tries to load the user's real PNG from `/public/logo.png` first.
- * If that file is missing (404 / decode error), falls back to a hand-crafted
- * SVG inspired by the user's pixel-art duck logo so the UI never looks broken
- * during development.
- *
- * → To use the real artwork, drop your file at: `public/logo.png`
- *   (256x256 transparent PNG recommended).
+ * Behavior: loads the trimmed artwork from `/public/logo-mark.webp`, then
+ * `/public/logo-mark.png`. If both fail (404 / decode error), falls back to a
+ * hand-crafted SVG inspired by the duck logo so the UI never looks broken.
  */
 function Logo({ className = 'w-10 h-10', alt = 'Logo personal' }: Props) {
-  const [errorStage, setErrorStage] = useState(0) // 0: PNG, 1: SVG, 2: Fallback
+  const [errorStage, setErrorStage] = useState(0) // 0: WebP, 1: PNG, 2: Fallback
 
   if (errorStage === 2) {
     return <DuckFallback className={className} ariaLabel={alt} />
   }
 
+  // logo-mark.* is LogoDark.png trimmed to the duck's bounding box (the
+  // original is a 1024x1024 canvas that is mostly transparent padding), so
+  // it renders at a legible size in compact spots like the header.
   return (
     <img
-      src={errorStage === 0 ? "/LogoDark.png" : "/LogoDark.svg"}
+      src={errorStage === 0 ? '/logo-mark.webp' : '/logo-mark.png'}
       alt={alt}
+      width={317}
+      height={192}
       onError={() => setErrorStage(prev => prev + 1)}
       className={`${className} object-contain select-none shrink-0`}
       draggable={false}

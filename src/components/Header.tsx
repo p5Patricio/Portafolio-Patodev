@@ -66,16 +66,16 @@ function Header({ variant = 'home' }: Props) {
           scrolled ? 'h-14 border-line bg-ink' : 'h-20 border-transparent bg-transparent'
         }`}
       >
-        <div className="mx-auto h-full max-w-[1280px] px-4 md:px-6 lg:px-10">
+        <div className="mx-auto h-full frame-width px-4 md:px-6 lg:px-10">
           <div className="flex h-full items-center justify-between md:px-[clamp(1.5rem,3vw,3rem)]">
             {isHome ? (
-              <a href="#inicio" className={`inline-flex items-center gap-2.5 ${FOCUS_RING}`} aria-label={t.brand.title}>
-                <Logo alt="" className="h-6 w-6 shrink-0" />
+              <a href="#inicio" className={`inline-flex items-center gap-3 ${FOCUS_RING}`} aria-label={t.brand.title}>
+                <Logo alt="" className="h-8 w-auto shrink-0 md:h-9" />
                 <span className="mono-label text-xs text-paper">PATODEV</span>
               </a>
             ) : (
-              <Link to="/" className={`inline-flex items-center gap-2.5 ${FOCUS_RING}`} aria-label={t.brand.title}>
-                <Logo alt="" className="h-6 w-6 shrink-0" />
+              <Link to="/" className={`inline-flex items-center gap-3 ${FOCUS_RING}`} aria-label={t.brand.title}>
+                <Logo alt="" className="h-8 w-auto shrink-0 md:h-9" />
                 <span className="mono-label text-xs text-paper">PATODEV</span>
               </Link>
             )}
