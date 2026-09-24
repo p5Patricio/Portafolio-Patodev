@@ -1,5 +1,7 @@
 import './index.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import GaleriaPage from './pages/GaleriaPage'
@@ -63,6 +65,10 @@ function App() {
           />
         </Routes>
       </main>
+
+      {/* Vercel Web Analytics + Speed Insights: client-only scripts, render nothing in SSR. */}
+      <Analytics />
+      <SpeedInsights />
     </>
   )
 }
