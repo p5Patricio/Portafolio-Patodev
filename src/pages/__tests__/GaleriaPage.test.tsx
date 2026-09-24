@@ -38,10 +38,11 @@ describe('GaleriaPage', () => {
     })
   })
 
-  it('renders a fallback initials block (no colorful illustration) for projects without images', () => {
+  it('renders project cover images for every repository', () => {
     renderWithProviders(<GaleriaPage />)
-    // "Faro" has no `images` in data/repos.ts, so it falls back to initials.
-    expect(screen.getByText('FA')).toBeInTheDocument()
+    ALL_REPOS_BY_YEAR.forEach((repo) => {
+      expect(screen.getByAltText(repo.name)).toBeInTheDocument()
+    })
   })
 
   it('renders the back-to-top footer link', () => {

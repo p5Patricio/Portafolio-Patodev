@@ -80,6 +80,7 @@ export const REPOS: Repo[] = [
     technologies: ['python', 'fastapi', 'postgres', 'gemini', 'groq', 'next', 'ts', 'tailwind', 'docker'],
     repoUrl: 'https://github.com/p5Patricio/Demox-Frontend',
     companionUrl: 'https://github.com/p5Patricio/Demox-Backend',
+    liveUrl: 'https://demox.patodev.com/',
     period: '2026',
     year: 2026,
     isPrivate: true,
@@ -100,11 +101,12 @@ export const REPOS: Repo[] = [
     },
     technologies: ['python', 'whisper', 'windows'],
     repoUrl: 'https://github.com/p5Patricio/WhisperKey',
+    liveUrl: 'https://whisperkey.symmetricalcode.com/',
     period: '2026',
     year: 2026,
     isPrivate: false,
-    featured: false,
-    images: ['/projects/thumbs/wisprlocal.webp'],
+    featured: true,
+    images: ['/projects/thumbs/whisperkey.webp'],
   },
   {
     id: 'garou',
@@ -160,7 +162,7 @@ export const REPOS: Repo[] = [
     period: '2026',
     year: 2026,
     isPrivate: false,
-    featured: true,
+    featured: false,
     illustration: 'torii',
     images: ['/projects/thumbs/eclipse-desktop-agent.webp'],
   },
@@ -220,7 +222,7 @@ export const REPOS: Repo[] = [
     year: 2025,
     isPrivate: false,
     featured: true,
-    images: ['/projects/thumbs/clasificador-nba.webp'],
+    images: ['/projects/thumbs/archetype-nba.webp'],
   },
   {
     id: 'infinite-tic-tac-toe',
@@ -277,7 +279,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    illustration: 'torii',
+    images: ['/projects/thumbs/faro.webp'],
   },
   {
     id: 'cocheravecina',
@@ -296,7 +298,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    illustration: 'pagoda',
+    images: ['/projects/thumbs/cocheravecina.webp'],
   },
   {
     id: 'cv-patricio',
@@ -316,7 +318,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    illustration: 'mountain',
+    images: ['/projects/thumbs/cv-patricio.webp'],
   },
   {
     id: 'ocean-depths',
@@ -336,7 +338,7 @@ export const REPOS: Repo[] = [
     year: 2026,
     isPrivate: false,
     featured: false,
-    illustration: 'torii',
+    images: ['/projects/thumbs/ocean-depths.webp'],
   },
   // ---- 2025 ----
   {
