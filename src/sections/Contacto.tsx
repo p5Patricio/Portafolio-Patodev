@@ -88,27 +88,27 @@ function Contacto() {
         <Reveal className="lg:col-span-5">
           <p className="max-w-[42ch] text-sm text-muted md:text-base">{c.intro.join(' ')}</p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-4">
+          <div className="mt-6 flex items-center gap-1 sm:flex-wrap sm:gap-4">
             <a
               href={c.info.email.href}
-              className="break-all text-lg text-paper underline decoration-line underline-offset-4 transition-colors hover:text-sky hover:decoration-sky outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2 md:text-xl"
+              className="min-w-0 break-all text-lg text-paper underline decoration-line underline-offset-4 transition-colors hover:text-sky hover:decoration-sky outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2 md:text-xl"
             >
               {c.info.email.value}
             </a>
             <button
               type="button"
               onClick={copyEmail}
-              className="mono-label relative inline-flex min-h-11 items-center gap-1.5 text-[12px] text-muted outline-none transition-colors hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2"
+              className="mono-label relative inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1.5 text-[12px] text-muted sm:min-w-0 sm:justify-start outline-none transition-colors hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2"
             >
               {copied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-sky" aria-hidden="true" />
-                  {c.copied}
+                  <Check className="h-4 w-4 text-sky sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+                  <span className="sr-only sm:not-sr-only">{c.copied}</span>
                 </>
               ) : (
                 <>
-                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                  {c.copy}
+                  <Copy className="h-4 w-4 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+                  <span className="sr-only sm:not-sr-only">{c.copy}</span>
                 </>
               )}
             </button>

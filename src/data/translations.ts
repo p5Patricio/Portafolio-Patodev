@@ -132,7 +132,7 @@ export const translations: Record<Lang, Dict> = {
       subtitle: 'patodev · Ingeniero de Software',
     },
     hero: {
-      availability: 'Disponible para nuevos proyectos · Guanajuato, MX',
+      availability: 'Disponible para nuevos proyectos · Guanajuato, MX · Remoto',
       positioning: {
         prefix: 'Soy ingeniero de software ',
         highlight: 'full stack',
@@ -286,7 +286,7 @@ export const translations: Record<Lang, Dict> = {
       subtitle: 'patodev · Software Engineer',
     },
     hero: {
-      availability: 'Available for new projects · Guanajuato, MX',
+      availability: 'Available for new projects · Guanajuato, MX · Remote',
       positioning: {
         prefix: "I'm a ",
         highlight: 'full-stack',

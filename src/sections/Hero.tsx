@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react'
 import Section from '../components/Section'
 import Button from '../components/Button'
+import TiltCard from '../components/TiltCard'
 import { useLanguage } from '../context/LanguageContext'
 import type { Lang } from '../data/translations'
 
@@ -25,33 +26,31 @@ function Hero() {
 
   return (
     <Section id="inicio" first ariaLabelledBy="hero-title" innerClassName="py-0!">
-      <div className="flex min-h-[78svh] flex-col justify-center py-20 md:min-h-[88svh] lg:grid lg:grid-cols-12 lg:items-center lg:gap-10">
-        {/* Logo — mobile/tablet: above the availability line, left-aligned.
-            lg+: moves into the right column, vertically centered next to
-            the name. Single <img>, repositioned via order/grid utilities
-            (no duplicate element, no duplicate request). */}
-        <div className="order-1 mb-6 flex justify-start lg:order-none lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:mb-0 lg:justify-center">
-          <span
-            tabIndex={0}
-            role="img"
-            aria-label={t.hero.logoAlt}
-            className="hero-logo inline-block w-[clamp(9rem,40vw,14rem)] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-4 lg:w-full lg:max-w-[440px]"
-          >
-            <img
-              src="/logo-mark-lg.webp"
-              alt=""
-              aria-hidden="true"
-              width={872}
-              height={535}
-              loading="eager"
-              fetchPriority="high"
-              draggable={false}
-              className="h-auto w-full select-none"
-            />
-          </span>
+      <div className="flex min-h-[78svh] flex-col justify-center gap-8 py-20 md:min-h-[88svh] lg:grid lg:grid-cols-12 lg:items-center lg:gap-10">
+        {/* Logo — <lg: centered between the tagline and the CTAs. The text
+            column below uses `display: contents` there, so its children and
+            this logo share one flex column ordered with `order-*`.
+            lg+: right grid column, vertically centered next to the name.
+            Single <img> (no duplicate element, no duplicate request). */}
+        <div className="order-4 flex justify-center lg:order-none lg:col-span-5 lg:col-start-8 lg:row-start-1">
+          <TiltCard className="w-[clamp(9rem,40vw,14rem)] lg:w-full lg:max-w-[440px]">
+            <span role="img" aria-label={t.hero.logoAlt} className="block">
+              <img
+                src="/logo-mark-lg.webp"
+                alt=""
+                aria-hidden="true"
+                width={872}
+                height={535}
+                loading="eager"
+                fetchPriority="high"
+                draggable={false}
+                className="h-auto w-full select-none"
+              />
+            </span>
+          </TiltCard>
         </div>
 
-        <div className="order-2 flex flex-col gap-8 lg:order-none lg:col-span-7 lg:col-start-1 lg:row-start-1 lg:gap-10">
+        <div className="contents lg:col-span-7 lg:col-start-1 lg:row-start-1 lg:flex lg:flex-col lg:gap-10">
           {/* Real, always-readable accessible heading — the giant name below is
               purely decorative (aria-hidden) so its two-line mask-reveal
               animation doesn't need to be parsed as the page's actual h1 text. */}
@@ -59,14 +58,14 @@ function Hero() {
             Patricio García
           </h1>
 
-          <p className="mono-label flex items-center gap-2.5 text-xs text-muted">
-            <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-beak" />
+          <p className="mono-label order-1 flex items-center gap-2.5 text-xs text-muted lg:order-none">
+            <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky" />
             {t.hero.availability}
           </p>
 
           <div
             aria-hidden="true"
-            className="text-[clamp(3.75rem,17vw,10rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-paper font-stretch-wide [overflow-wrap:anywhere] md:text-[clamp(3rem,12vw,10rem)] lg:text-[clamp(3rem,8.5vw,9rem)] min-[1920px]:text-[clamp(10rem,9vw,14rem)]"
+            className="order-2 text-[clamp(3.75rem,17vw,10rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-paper font-stretch-wide [overflow-wrap:anywhere] md:text-[clamp(3rem,12vw,10rem)] lg:text-[clamp(3rem,8.5vw,9rem)] min-[1920px]:text-[clamp(10rem,9vw,14rem)] lg:order-none"
           >
             <div className="hero-line">
               <span>Patricio</span>
@@ -76,13 +75,13 @@ function Hero() {
             </div>
           </div>
 
-          <p className="max-w-[30ch] text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.3] text-muted">
+          <p className="order-3 max-w-[30ch] text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.3] text-muted lg:order-none">
             {t.hero.positioning.prefix}
             <span className="text-paper">{t.hero.positioning.highlight}</span>
             {t.hero.positioning.suffix}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="order-5 flex flex-wrap items-center gap-4 lg:order-none">
             <Button href="#contacto" external={false} ariaLabel={t.hero.ctaContactAriaLabel}>
               {t.hero.ctaContact}
             </Button>
@@ -94,7 +93,7 @@ function Hero() {
           <button
             type="button"
             onClick={scrollToNext}
-            className="group mt-4 inline-flex min-h-11 w-fit items-center gap-2 self-center outline-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2 md:self-start"
+            className="group order-6 mt-4 inline-flex min-h-11 w-fit items-center gap-2 self-center outline-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2 md:self-start lg:order-none"
           >
             <span className="mono-label text-[12px] text-muted transition-colors group-hover:text-paper">
               {t.hero.scrollHint}
