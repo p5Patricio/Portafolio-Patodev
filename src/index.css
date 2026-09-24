@@ -32,6 +32,24 @@
   letter-spacing: 0.1em;
 }
 
+/* Shared max width for the blueprint frame and the header, stepping up on
+   large monitors so the layout does not float in a narrow column. */
+@utility frame-width {
+  max-width: 1280px;
+
+  @media (min-width: 1536px) {
+    max-width: 1440px;
+  }
+
+  @media (min-width: 1920px) {
+    max-width: 1680px;
+  }
+
+  @media (min-width: 2400px) {
+    max-width: 1920px;
+  }
+}
+
 @layer base {
   *,
   *::before,
@@ -54,6 +72,19 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+}
+
+/* Scale every rem-based size (type, spacing) slightly on large monitors. */
+@media (min-width: 1920px) {
+  html {
+    font-size: 106.25%;
+  }
+}
+
+@media (min-width: 2400px) {
+  html {
+    font-size: 118.75%;
+  }
 }
 
 body {

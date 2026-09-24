@@ -40,7 +40,7 @@ function Hero() {
 
         <div
           aria-hidden="true"
-          className="text-[clamp(3.75rem,17vw,10rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-paper font-stretch-wide [overflow-wrap:anywhere] md:text-[clamp(3rem,12vw,10rem)]"
+          className="text-[clamp(3.75rem,17vw,10rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-paper font-stretch-wide [overflow-wrap:anywhere] md:text-[clamp(3rem,12vw,10rem)] min-[1920px]:text-[clamp(10rem,9vw,14rem)]"
         >
           <div className="hero-line">
             <span>Patricio</span>

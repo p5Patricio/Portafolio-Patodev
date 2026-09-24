@@ -33,7 +33,7 @@ function Section({ id, children, className = '', innerClassName = '', ariaLabell
       aria-labelledby={ariaLabelledBy}
       className={`relative ${first ? '' : 'border-t border-line'} ${className}`}
     >
-      <div className="relative mx-auto max-w-[1280px]">
+      <div className="relative mx-auto frame-width">
         {/* Vertical rails — md+ only */}
         <div
           aria-hidden="true"
