@@ -173,3 +173,19 @@ body {
     animation: none !important;
   }
 }
+
+/* ---------- Stack categories: native <details> disclosure (mobile/tablet) ----------
+   Below lg every category is a real <details>, collapsed by default — this
+   is native browser behavior, so the toggle works with no JS at all. (lg+
+   renders a separate, always-expanded, non-collapsible markup instead of
+   forcing a closed <details> open via CSS — Chromium's internal layout for
+   a closed <details>'s content collapses its inline size regardless of an
+   author `display` override, so that approach silently breaks the grid
+   columns. See SobreMi.tsx / useIsCompactViewport.) */
+.skill-category > summary {
+  list-style: none;
+}
+
+.skill-category > summary::-webkit-details-marker {
+  display: none;
+}
