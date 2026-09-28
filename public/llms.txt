@@ -1,0 +1,17 @@
+# Patricio García — Software Engineer & Full Stack Developer
+
+> Portafolio profesional de Patricio García, Ingeniero de Software y Desarrollador Full Stack especializado en React, TypeScript, Node.js e Inteligencia Artificial en México. Co-fundador técnico en Symmetrical Code.
+
+## Core Information
+- [Home](https://patodev.com/): Perfil profesional, stack tecnológico, experiencia y contacto.
+- [Galería de Proyectos](https://patodev.com/galeria): Catálogo exhaustivo de desarrollos de software, arquitectura web y casos de estudio.
+
+## Professional Affiliations
+- [Symmetrical Code](https://www.symmetricalcode.com/): Estudio de desarrollo de soluciones de software y consultoría a medida.
+- [GitHub](https://github.com/p5Patricio): Repositorios de código abierto, contribuciones y arquitectura de sistemas.
+- [LinkedIn](https://www.linkedin.com/in/patricio-garcia-perez-vela-78631b351/): Trayectoria profesional, formación académica y certificaciones.
+
+## Primary Tech Stack & Specialties
+- Frontend: React, TypeScript, Vite, Tailwind CSS, Framer Motion, Three.js, Static Pre-rendering.
+- Backend & Cloud: Node.js, Cloudflare Workers/D1, Vercel, REST APIs, Microservicios.
+- AI & Search: Generative Engine Optimization (GEO), Schema.org Graph Modeling, Agentic Systems.
