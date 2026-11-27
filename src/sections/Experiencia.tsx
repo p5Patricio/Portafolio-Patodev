@@ -1,6 +1,8 @@
+import { useRef } from 'react'
 import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
 import Reveal from '../components/Reveal'
+import TimelineProgress, { TimelineNode } from '../components/TimelineProgress'
 import { useLanguage } from '../context/LanguageContext'
 
 const ENTRY_IDS = ['universidad', 'mazda'] as const
@@ -17,6 +19,7 @@ function toBullets(text: string): string[] {
 function Experiencia() {
   const { t, lang } = useLanguage()
   const e = t.experiencia
+  const listRef = useRef<HTMLDivElement>(null)
 
   return (
     <Section id="experiencia" ariaLabelledBy="experiencia-heading">
@@ -29,18 +32,28 @@ function Experiencia() {
         intro={e.intro}
       />
 
-      <div className="mt-10 md:mt-14">
+      <div ref={listRef} className="relative mt-10 md:mt-14">
+        {/* Timeline sits in existing whitespace, never in the content flow:
+            mobile → centered in the 16px page gutter (-0.5rem); md+ → centered
+            in the 2rem gap between the period (3/12) and content (9/12)
+            columns, i.e. 25% − ¼·gap. Nodes use the same x (− 3px to center
+            the 7px square on the 1px line). */}
+        <TimelineProgress target={listRef} className="-left-2 md:left-[calc(25%-0.5rem)]" />
         {ENTRY_IDS.map((id, i) => {
           const item = e.items[i]
           if (!item) return null
           return (
             <Reveal
               key={id}
-              className={`grid grid-cols-1 gap-3 py-10 first:pt-0 md:grid-cols-12 md:gap-8 ${
-                i === 0 ? '' : 'border-t border-line'
+              // `pt-0` by index, not `first:` — the timeline track is the list's first child.
+              className={`grid grid-cols-1 gap-3 py-10 md:grid-cols-12 md:gap-8 ${
+                i === 0 ? 'pt-0' : 'border-t border-line'
               }`}
             >
-              <p className="mono-label text-[12px] text-muted md:col-span-3">{item.period}</p>
+              <p className="relative mono-label text-[12px] text-muted md:col-span-3">
+                {item.period}
+                <TimelineNode className="top-[0.5lh] left-[calc(-0.5rem-3px)] -translate-y-1/2 md:left-[calc(100%+1rem-3px)]" />
+              </p>
               <div className="md:col-span-9">
                 <h3 className="text-lg font-semibold text-paper md:text-xl">{item.title}</h3>
                 <p className="mt-1 text-sm text-muted">{item.institution}</p>

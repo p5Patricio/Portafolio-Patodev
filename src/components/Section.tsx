@@ -46,8 +46,11 @@ function Section({ id, children, className = '', innerClassName = '', ariaLabell
 
         {!first && (
           <>
-            <Crosshair className="absolute left-4 top-0 hidden -translate-x-1/2 -translate-y-1/2 md:left-6 md:block lg:left-10" />
-            <Crosshair className="absolute right-4 top-0 hidden translate-x-1/2 -translate-y-1/2 md:right-6 md:block lg:right-10" />
+            {/* The rails are 1px wide (centre at +0.5px) and the top hairline sits
+                above this frame (centre at -0.5px); the half-pixel margins centre
+                each mark on its intersection instead of on the rails' edges. */}
+            <Crosshair className="absolute left-4 top-0 -mt-[0.5px] ml-[0.5px] hidden -translate-x-1/2 -translate-y-1/2 md:left-6 md:block lg:left-10" />
+            <Crosshair className="absolute right-4 top-0 -mt-[0.5px] mr-[0.5px] hidden translate-x-1/2 -translate-y-1/2 md:right-6 md:block lg:right-10" />
           </>
         )}
 

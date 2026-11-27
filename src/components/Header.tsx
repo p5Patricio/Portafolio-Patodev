@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from 'react'
+import { m, useReducedMotion, useSpring, type MotionValue } from 'framer-motion'
 import { Menu } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
 import LanguageSelector from './LanguageSelector'
 import MobileMenu from './MobileMenu'
+import ScrollProgress from './ScrollProgress'
 import { useLanguage } from '../context/LanguageContext'
 import useActiveSection from '../hooks/useActiveSection'
+import { SPRING } from '../lib/motion'
+import { HEADER_TRANSITION_NAME, useViewTransitionClick } from '../lib/viewTransition'
 
 const NAV_LINKS = [
   { id: 'proyectos', href: '#proyectos', labelKey: 'trabajo' },
@@ -18,6 +22,9 @@ const NAV_LINKS = [
 // 'inicio' is tracked too (but not rendered as a nav link) so that while the
 // hero is in view, none of the nav links are incorrectly highlighted.
 const SECTION_IDS = ['inicio', ...NAV_LINKS.map((l) => l.id)]
+
+/** Height in px of the active-link underline (matches its `h-px` class and the links' 1px border). */
+const INDICATOR_THICKNESS = 1
 
 const FOCUS_RING =
   'outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2'
@@ -42,6 +49,23 @@ function Header({ variant = 'home' }: Props) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const linkRefs = useRef(new Map<string, HTMLAnchorElement>())
+  const placeIndicatorRef = useRef<(animate: boolean) => void>(() => {})
+  const indicatorPlacedRef = useRef(false)
+  const reduceMotion = useReducedMotion()
+  // Off home, the brand and nav links leave the route: run them as view
+  // transitions where supported (otherwise they keep their plain navigation).
+  const transitionTo = useViewTransitionClick()
+
+  // Active-link underline: one shared hairline that glides between links.
+  // Motion values (not state) so moving it never re-renders the header.
+  // `domAnimation` has no layout animations (`layoutId` needs `domMax`), so
+  // the line is positioned with transforms measured from the active link.
+  const indicatorX = useSpring(0, SPRING.snappy)
+  const indicatorY = useSpring(0, SPRING.snappy)
+  const indicatorWidth = useSpring(0, SPRING.snappy)
+  const indicatorOpacity = useSpring(0, SPRING.snappy)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -51,7 +75,46 @@ function Header({ variant = 'home' }: Props) {
   }, [])
 
   const linkHref = (href: string) => (isHome ? href : `/${href}`)
+  const onRouteLinkClick = (to: string) =>
+    isHome ? undefined : (event: MouseEvent<HTMLAnchorElement>) => transitionTo(event, to)
   const isLinkActive = (id: string) => (isHome ? active === id : id === 'proyectos')
+  const activeLinkId = NAV_LINKS.find(({ id }) => isLinkActive(id))?.id
+
+  useLayoutEffect(() => {
+    placeIndicatorRef.current = (animate) => {
+      const glide = animate && !reduceMotion
+      const to = (value: MotionValue<number>, target: number, smooth: boolean) =>
+        smooth ? value.set(target) : value.jump(target)
+
+      const link = activeLinkId ? linkRefs.current.get(activeLinkId) : undefined
+      if (!link) {
+        to(indicatorOpacity, 0, glide)
+        return
+      }
+
+      // Slide only between two real positions; the first placement appears in place.
+      const slide = glide && indicatorPlacedRef.current
+      to(indicatorX, link.offsetLeft, slide)
+      to(indicatorY, link.offsetTop + link.offsetHeight - INDICATOR_THICKNESS, slide)
+      to(indicatorWidth, link.offsetWidth, slide)
+      to(indicatorOpacity, 1, glide)
+      indicatorPlacedRef.current = true
+    }
+
+    placeIndicatorRef.current(true)
+    // From now on the shared line marks the active link, so the per-link
+    // underline (the prerender / no-JS fallback) steps aside.
+    navRef.current?.setAttribute('data-indicator', 'ready')
+  }, [activeLinkId, reduceMotion, indicatorX, indicatorY, indicatorWidth, indicatorOpacity])
+
+  // Link widths change with the language, web-font loading and the lg breakpoint.
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => placeIndicatorRef.current(false))
+    observer.observe(nav)
+    return () => observer.disconnect()
+  }, [])
 
   const mobileMenuItems = NAV_LINKS.map((link) => ({
     id: link.id,
@@ -62,7 +125,8 @@ function Header({ variant = 'home' }: Props) {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b transition-[height,background-color,border-color] duration-300 ${
+        style={{ viewTransitionName: HEADER_TRANSITION_NAME }}
+        className={`fixed inset-x-0 top-0 z-40 border-b transition-[height,background-color,border-color] duration-(--motion-duration-base) ease-in-out-quart ${
           scrolled ? 'h-14 border-line bg-ink' : 'h-20 border-transparent bg-transparent'
         }`}
       >
@@ -74,22 +138,32 @@ function Header({ variant = 'home' }: Props) {
                 <span className="mono-label text-xs text-paper">PATODEV</span>
               </a>
             ) : (
-              <Link to="/" className={`inline-flex items-center gap-3 ${FOCUS_RING}`} aria-label={t.brand.title}>
+              <Link
+                to="/"
+                onClick={onRouteLinkClick('/')}
+                className={`inline-flex items-center gap-3 ${FOCUS_RING}`}
+                aria-label={t.brand.title}
+              >
                 <Logo alt="" className="h-8 w-auto shrink-0 md:h-9" />
                 <span className="mono-label text-xs text-paper">PATODEV</span>
               </Link>
             )}
 
-            <nav aria-label="Primary" className="hidden lg:block">
+            <nav ref={navRef} aria-label="Primary" className="group/nav relative hidden lg:block">
               <ul className="flex items-center gap-8">
                 {NAV_LINKS.map(({ id, href, labelKey }) => {
                   const isActive = isLinkActive(id)
                   return (
                     <li key={id}>
                       <a
+                        ref={(el) => {
+                          if (el) linkRefs.current.set(id, el)
+                          else linkRefs.current.delete(id)
+                        }}
                         href={linkHref(href)}
+                        onClick={onRouteLinkClick(linkHref(href))}
                         aria-current={isActive ? 'page' : undefined}
-                        className={`mono-label border-b pb-0.5 text-xs transition-colors ${FOCUS_RING} ${
+                        className={`mono-label border-b pb-0.5 text-xs transition-colors duration-(--motion-duration-base) ease-out-quart group-data-[indicator=ready]/nav:border-transparent ${FOCUS_RING} ${
                           isActive ? 'border-sky text-paper' : 'border-transparent text-muted hover:text-paper'
                         }`}
                       >
@@ -99,6 +173,12 @@ function Header({ variant = 'home' }: Props) {
                   )
                 })}
               </ul>
+              <m.span
+                data-testid="nav-indicator"
+                aria-hidden="true"
+                style={{ x: indicatorX, y: indicatorY, scaleX: indicatorWidth, opacity: indicatorOpacity }}
+                className="pointer-events-none absolute left-0 top-0 h-px w-px origin-left bg-sky"
+              />
             </nav>
 
             <div className="flex items-center gap-6">
@@ -118,6 +198,7 @@ function Header({ variant = 'home' }: Props) {
             </div>
           </div>
         </div>
+        {isHome && <ScrollProgress className="absolute inset-x-0 -bottom-px" />}
       </header>
 
       <MobileMenu

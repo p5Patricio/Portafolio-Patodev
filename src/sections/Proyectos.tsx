@@ -4,6 +4,7 @@ import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
 import TextLink from '../components/TextLink'
 import Reveal from '../components/Reveal'
+import ParallaxMedia from '../components/ParallaxMedia'
 import { useLanguage } from '../context/LanguageContext'
 import { FEATURED_REPOS } from '../data/repos'
 import type { Repo } from '../data/repos'
@@ -33,13 +34,13 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
 
   return (
     <Reveal
-      className={`grid grid-cols-1 gap-6 pt-[clamp(2rem,4vw,3.5rem)] pb-[clamp(2rem,4vw,3.5rem)] first:pt-0 lg:grid-cols-12 lg:items-center ${
+      className={`group/project grid grid-cols-1 gap-6 pt-[clamp(2rem,4vw,3.5rem)] pb-[clamp(2rem,4vw,3.5rem)] first:pt-0 lg:grid-cols-12 lg:items-center ${
         first ? '' : 'border-t border-line'
       }`}
     >
       <div className="order-1 lg:order-none lg:col-span-6 lg:col-start-7 lg:row-start-1">
         {image ? (
-          <div className="group aspect-[16/10] overflow-hidden rounded">
+          <ParallaxMedia className="aspect-[16/10] rounded">
             <img
               src={image}
               alt={repo.name}
@@ -47,9 +48,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               height={563}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="h-full w-full object-cover transition-transform duration-(--motion-duration-slow) ease-out-expo motion-safe:group-hover/project:scale-[1.03] motion-safe:group-focus-within/project:scale-[1.03]"
             />
-          </div>
+          </ParallaxMedia>
         ) : (
           <div className="flex aspect-[16/10] items-center justify-center rounded border border-line bg-surface">
             <span className="mono-label text-[12px] text-muted">{repo.name}</span>
@@ -62,7 +63,7 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
           {repo.year} · {repo.subtitle[lang]}
         </p>
 
-        <h3 className="font-stretch-wide text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-paper">
+        <h3 className="font-stretch-wide text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-paper transition-colors duration-(--motion-duration-fast) ease-out-quart group-hover/project:text-sky group-focus-within/project:text-sky">
           {repo.name}
         </h3>
 
@@ -74,9 +75,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               href={repo.liveUrl!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<Globe className={LINK_ICON} aria-hidden="true" />}
             >
-              <Globe className={LINK_ICON} aria-hidden="true" />
               {demoLabel}
             </TextLink>
           )}
@@ -85,9 +86,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               href={repo.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<FaGithub className={LINK_ICON} aria-hidden="true" />}
             >
-              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {codeLabel}
             </TextLink>
           )}
@@ -96,9 +97,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               href={repo.companionUrl!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<FaGithub className={LINK_ICON} aria-hidden="true" />}
             >
-              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {backendLabel}
             </TextLink>
           )}
@@ -125,7 +126,7 @@ function Proyectos() {
         label={t.nav.trabajo}
         title={t.proyectos.title}
         meta={
-          <TextLink to="/galeria" className="mono-label hidden text-[12px] md:inline">
+          <TextLink to="/galeria" viewTransition className="mono-label hidden text-[12px] md:inline">
             {t.proyectos.viewAll} →
           </TextLink>
         }
@@ -148,7 +149,7 @@ function Proyectos() {
       </div>
 
       <Reveal className="mt-8 md:hidden">
-        <TextLink to="/galeria" className="mono-label text-xs">
+        <TextLink to="/galeria" viewTransition className="mono-label text-xs">
           {t.proyectos.viewAll} →
         </TextLink>
       </Reveal>

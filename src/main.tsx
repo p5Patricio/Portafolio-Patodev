@@ -1,8 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { MotionConfig } from 'framer-motion'
 import App from './App.tsx'
+import MotionProvider from './components/MotionProvider'
 import { LanguageProvider } from './context/LanguageContext'
 
 const rootElement = document.getElementById('root')!
@@ -11,9 +11,9 @@ const app = (
   <StrictMode>
     <BrowserRouter>
       <LanguageProvider>
-        <MotionConfig reducedMotion="user">
+        <MotionProvider>
           <App />
-        </MotionConfig>
+        </MotionProvider>
       </LanguageProvider>
     </BrowserRouter>
   </StrictMode>

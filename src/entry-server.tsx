@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { StaticRouter } from 'react-router-dom'
-import { MotionConfig } from 'framer-motion'
 import App from './App.tsx'
+import MotionProvider from './components/MotionProvider'
 import { LanguageProvider } from './context/LanguageContext'
 
 /**
@@ -15,9 +15,9 @@ export function render(url: string) {
     <StrictMode>
       <StaticRouter location={url}>
         <LanguageProvider>
-          <MotionConfig reducedMotion="user">
+          <MotionProvider>
             <App />
-          </MotionConfig>
+          </MotionProvider>
         </LanguageProvider>
       </StaticRouter>
     </StrictMode>

@@ -19,6 +19,42 @@
   --font-sans: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* Motion easings (Tailwind `--ease-*` namespace → `ease-out-expo`,
+     `ease-in-out-quart`, `ease-out-quart` utilities). See the motion
+     vocabulary note in :root below. */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ==========================================================================
+   Motion vocabulary — one shared rhythm for every animation on the site.
+   Mirrored in TypeScript for Framer Motion; keep both in sync.
+
+   Durations (use in Tailwind as `duration-(--motion-duration-base)`):
+   - fast   (160ms): micro-feedback — color/opacity on hover, focus, active.
+   - base   (320ms): small UI state changes — toggles, chevrons, header,
+                     button affordances, card hover backgrounds.
+   - slow   (650ms): content entering the viewport (reveal-on-scroll) and
+                     large image hover zooms.
+   - slower (900ms): hero / page-level choreography, used sparingly.
+   - stagger (70ms): delay step between siblings of one group.
+
+   Easings:
+   - ease-out-expo:     things ENTERING or responding to the pointer
+                        (reveals, hero, zooms, arrows) — fast start, long settle.
+   - ease-out-quart:    gentle feedback where expo would feel too snappy
+                        (color and background changes).
+   - ease-in-out-quart: things MOVING between two on-screen states
+                        (rotations, size changes, layout shifts).
+   ========================================================================== */
+:root {
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 320ms;
+  --motion-duration-slow: 650ms;
+  --motion-duration-slower: 900ms;
+  --motion-stagger: 70ms;
 }
 
 @utility font-stretch-wide {
@@ -131,8 +167,8 @@ body {
   opacity: 0;
   transform: translateY(16px);
   transition:
-    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--motion-duration-slow) var(--ease-out-expo),
+    transform var(--motion-duration-slow) var(--ease-out-expo);
 }
 
 .js .reveal.is-visible {
@@ -140,7 +176,22 @@ body {
   transform: none;
 }
 
-/* ---------- Hero name mask-reveal (JS-gated, SSR/no-JS safe) ---------- */
+/* ---------- Hero entrance choreography (JS-gated, SSR/no-JS safe) ----------
+   One ~1.2s sequence that plays once per page load: availability label →
+   "Patricio" → "García" (mask reveal) → positioning → CTAs → logo → scroll
+   hint. Each element carries `--hero-order` (set in Hero.tsx); its delay is
+   that many `--motion-stagger` steps, so the whole timeline derives from the
+   shared motion tokens.
+
+   Default (no JS / prerendered HTML): everything is fully visible. Only with
+   `.js` on <html> AND `data-hero-intro="play"` (first hero mount of the page
+   load) do elements start hidden. `hero-enter` uses `backwards` fill: it is
+   hidden only while waiting for its delay and leaves no styles behind once
+   it finishes. Only `transform`/`opacity` animate, so nothing shifts layout.
+
+   TechTitle waits for every animation inside the name to finish
+   (`getAnimations({ subtree: true })`) before measuring glyphs, so the
+   delayed `.hero-line` reveal still lands before its canvas mounts. */
 .hero-line {
   overflow: hidden;
 }
@@ -149,9 +200,10 @@ body {
   display: block;
 }
 
-.js .hero-line > span {
+.js [data-hero-intro='play'] .hero-line > span {
   transform: translateY(100%);
-  animation: hero-line-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-line-in var(--motion-duration-slower) var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--hero-order, 0) * var(--motion-stagger));
 }
 
 @keyframes hero-line-in {
@@ -160,9 +212,103 @@ body {
   }
 }
 
+.js [data-hero-intro='play'] .hero-enter {
+  animation: hero-enter var(--motion-duration-slow) var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--hero-order, 0) * var(--motion-stagger));
+}
+
+.js [data-hero-intro='play'] .hero-enter-scale {
+  animation-name: hero-enter-scale;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes hero-enter-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* ---------- Section header sequence (JS-gated, SSR/no-JS safe) ----------
+   SectionHeader wraps itself in `<Reveal variant="sequence">` (`.reveal-seq`,
+   which never animates itself) and orchestrates its children once ~15% of it
+   is visible: `01` → `/ LABEL` (+ meta) rise/fade on the mono line, then the
+   title rises word by word through per-word masks, then the intro fades up.
+   Each piece carries `--seq-order` (set in TSX); its delay is that many
+   `--motion-stagger` steps, so the timeline derives from the shared tokens.
+
+   Per-word masks (SplitWords): `.split-mask` is an `overflow: hidden`
+   inline-block around an inline-block `.split-word`. The word is padded by
+   the bleed and the mask pulls it back with an equal negative margin, so the
+   clip box is larger than the line box (accents, descenders and tight
+   tracking are not cut) while the margin box — and thus layout — is exactly
+   what plain inline text would occupy. `vertical-align: top` because an
+   `overflow: hidden` inline-block's baseline becomes its bottom margin edge;
+   top-aligning a box exactly one line-height tall keeps the text baseline
+   where it was.
+
+   Default (no JS / prerendered HTML): everything is fully visible. Hidden
+   states only exist under `.js`. Only `transform`/`opacity` animate. */
+.split-mask {
+  --mask-bleed-y: 0.25em;
+  --mask-bleed-x: 0.08em;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  margin: calc(var(--mask-bleed-y) * -1) calc(var(--mask-bleed-x) * -1);
+}
+
+.split-word {
+  display: inline-block;
+  padding: var(--mask-bleed-y) var(--mask-bleed-x);
+}
+
+/* The mono line is small: it settles faster so it lands before the title. */
+.seq-label {
+  --seq-duration: var(--motion-duration-base);
+}
+
+.js .reveal-seq .seq-rise {
+  transform: translateY(100%);
+  transition: transform var(--seq-duration, var(--motion-duration-slower)) var(--ease-out-expo);
+  transition-delay: calc(var(--seq-order, 0) * var(--motion-stagger));
+}
+
+.js .reveal-seq .seq-fade {
+  opacity: 0;
+  transition: opacity var(--seq-duration, var(--motion-duration-slow)) var(--ease-out-expo);
+  transition-delay: calc(var(--seq-order, 0) * var(--motion-stagger));
+}
+
+.js .reveal-seq .seq-fade-up {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--motion-duration-slow) var(--ease-out-expo),
+    transform var(--motion-duration-slow) var(--ease-out-expo);
+  transition-delay: calc(var(--seq-order, 0) * var(--motion-stagger));
+}
+
+.js .reveal-seq.is-visible .seq-rise,
+.js .reveal-seq.is-visible .seq-fade,
+.js .reveal-seq.is-visible .seq-fade-up {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .js .reveal-seq .seq-rise,
+  .js .reveal-seq .seq-fade,
+  .js .reveal-seq .seq-fade-up,
   .js .reveal,
-  .js .hero-line > span {
+  .js .hero-line > span,
+  .js .hero-enter {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -171,6 +317,83 @@ body {
 
   .animate-bounce {
     animation: none !important;
+  }
+
+  /* Micro-interactions: the underline still appears on hover/focus, instantly. */
+  .link-underline::after {
+    transition: none !important;
+  }
+}
+
+/* ---------- Micro-interactions ----------
+   TextLink underline (`.link-underline`): a hairline in `--color-line` marks
+   the link at rest (`::before`). On hover or keyboard focus a sky line
+   (`::after`) sweeps in from the left (`scaleX` 0 → 1 with a left origin);
+   on leave the origin swaps to the right before it shrinks, so the line keeps
+   travelling and exits to the right. Both lines share one position, so the
+   sky line always covers the hairline exactly, and only `transform` animates.
+
+   Hover applies only on hover-capable pointers (no sticky underline after a
+   tap); `:focus-visible` applies everywhere for keyboard parity. In forced
+   colors mode the pseudo-element backgrounds are not reliable, so links fall
+   back to a native underline. In `@layer components` so utilities passed via
+   `className` still win. Button micro-interactions live in Button.tsx /
+   Magnetic.tsx (Tailwind variants + motion values). */
+@layer components {
+  .link-underline {
+    /* Distance below the link box; close to the previous `underline-offset-4`. */
+    --link-underline-offset: 0.15em;
+    position: relative;
+  }
+
+  .link-underline::before,
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--link-underline-offset) * -1);
+    height: 1px;
+    pointer-events: none;
+  }
+
+  .link-underline::before {
+    background: var(--color-line);
+  }
+
+  .link-underline::after {
+    background: var(--color-sky);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--motion-duration-base) var(--ease-out-expo);
+  }
+
+  /* `a > .link-underline` covers icon links, where the label span carries the
+     underline but the whole anchor is the hover/focus target. */
+  .link-underline:focus-visible::after,
+  a:focus-visible > .link-underline::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (hover: hover) {
+    .link-underline:hover::after,
+    a:hover > .link-underline::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .link-underline {
+      text-decoration-line: underline;
+      text-underline-offset: 4px;
+    }
+
+    .link-underline::before,
+    .link-underline::after {
+      display: none;
+    }
   }
 }
 
@@ -188,4 +411,49 @@ body {
 
 .skill-category > summary::-webkit-details-marker {
   display: none;
+}
+
+/* ---------- Route transitions (View Transitions API) ----------
+   src/lib/viewTransition.ts runs "/" <-> "/galeria" navigations inside
+   `document.startViewTransition`. The page cross-fades: the old page fades
+   out quickly (base, ease-out-quart) while the new one fades in and rises
+   12px into place (slow, ease-out-expo). Only the fixed chrome shared by both
+   routes is named (`site-header`, `like-capsule`): it holds its position and
+   cross-fades its own contents (e.g. the header's height/background change)
+   on the "moving between on-screen states" curve. Browsers without the API
+   navigate normally and never reach these rules. */
+::view-transition-group(*) {
+  animation-duration: var(--motion-duration-slow);
+  animation-timing-function: var(--ease-in-out-quart);
+}
+
+::view-transition-old(root) {
+  animation: vt-page-out var(--motion-duration-base) var(--ease-out-quart) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-page-in var(--motion-duration-slow) var(--ease-out-expo) both;
+}
+
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Reduced motion: the route still changes inside the transition, but with no
+   animation the new page simply replaces the old one. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

@@ -1,5 +1,6 @@
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
+import { m, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
 import type { PointerEvent, ReactNode } from 'react'
+import { SPRING as MOTION_SPRING } from '../lib/motion'
 
 type Props = {
   children: ReactNode
@@ -10,7 +11,7 @@ type Props = {
   hoverScale?: number
 }
 
-const SPRING = { stiffness: 160, damping: 16, mass: 0.6 }
+const SPRING = MOTION_SPRING.soft
 
 /**
  * 3D "tilted card": the content rotates toward the pointer as if it were a
@@ -53,9 +54,9 @@ function TiltCard({ children, className = '', maxTilt = 14, hoverScale = 1.05 }:
       onPointerLeave={handleLeave}
       onPointerCancel={handleLeave}
     >
-      <motion.div style={{ rotateX, rotateY, scale, transformStyle: 'preserve-3d' }} className="will-change-transform">
+      <m.div style={{ rotateX, rotateY, scale, transformStyle: 'preserve-3d' }} className="will-change-transform">
         {children}
-      </motion.div>
+      </m.div>
     </div>
   )
 }
