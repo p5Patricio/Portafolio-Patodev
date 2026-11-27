@@ -39,7 +39,7 @@ function ProjectCell({ repo, lang, demoLabel, codeLabel, backendLabel, privateLa
   const isPrivateNoDemo = repo.isPrivate && !repo.liveUrl
 
   return (
-    <Reveal delay={delay} className="group flex flex-col border-r border-b border-line p-5 transition-colors duration-300 hover:bg-surface md:p-6">
+    <Reveal delay={delay} className="group flex flex-col border-r border-b border-line p-5 transition-colors duration-(--motion-duration-base) ease-out-quart hover:bg-surface md:p-6">
       <div className="aspect-[16/10] overflow-hidden rounded">
         {image ? (
           <img
@@ -49,7 +49,7 @@ function ProjectCell({ repo, lang, demoLabel, codeLabel, backendLabel, privateLa
             height={400}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            className="h-full w-full object-cover transition-transform duration-(--motion-duration-slow) ease-out-expo group-hover:scale-[1.03]"
           />
         ) : (
           <div className="relative flex h-full w-full items-center justify-center border border-line bg-ink">

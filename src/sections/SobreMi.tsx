@@ -39,7 +39,7 @@ function CollapsibleCategory({ category, lang }: { category: SkillCategory; lang
       >
         <h3 className={CATEGORY_TITLE_CLASS}>{category.title[lang]}</h3>
         <ChevronDown
-          className="h-5 w-5 shrink-0 text-muted transition-transform duration-300 group-open:rotate-180"
+          className="h-5 w-5 shrink-0 text-muted transition-transform duration-(--motion-duration-base) ease-in-out-quart group-open:rotate-180"
           aria-hidden="true"
         />
       </summary>

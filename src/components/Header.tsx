@@ -62,7 +62,7 @@ function Header({ variant = 'home' }: Props) {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b transition-[height,background-color,border-color] duration-300 ${
+        className={`fixed inset-x-0 top-0 z-40 border-b transition-[height,background-color,border-color] duration-(--motion-duration-base) ease-in-out-quart ${
           scrolled ? 'h-14 border-line bg-ink' : 'h-20 border-transparent bg-transparent'
         }`}
       >

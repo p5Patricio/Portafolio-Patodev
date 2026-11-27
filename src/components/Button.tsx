@@ -43,7 +43,7 @@ type Props =
 function Button({ children, ariaLabel, variant = 'primary', arrow = true, className = '', ...props }: Props) {
   const classes = `${BASE} ${VARIANT_CLASSES[variant]} ${FOCUS_RING} ${className}`
   const arrowEl = arrow && (
-    <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+    <span aria-hidden="true" className="inline-block transition-transform duration-(--motion-duration-base) ease-out-expo group-hover:translate-x-1">
       →
     </span>
   )

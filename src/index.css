@@ -19,6 +19,42 @@
   --font-sans: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* Motion easings (Tailwind `--ease-*` namespace → `ease-out-expo`,
+     `ease-in-out-quart`, `ease-out-quart` utilities). See the motion
+     vocabulary note in :root below. */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ==========================================================================
+   Motion vocabulary — one shared rhythm for every animation on the site.
+   Mirrored in TypeScript for Framer Motion; keep both in sync.
+
+   Durations (use in Tailwind as `duration-(--motion-duration-base)`):
+   - fast   (160ms): micro-feedback — color/opacity on hover, focus, active.
+   - base   (320ms): small UI state changes — toggles, chevrons, header,
+                     button affordances, card hover backgrounds.
+   - slow   (650ms): content entering the viewport (reveal-on-scroll) and
+                     large image hover zooms.
+   - slower (900ms): hero / page-level choreography, used sparingly.
+   - stagger (70ms): delay step between siblings of one group.
+
+   Easings:
+   - ease-out-expo:     things ENTERING or responding to the pointer
+                        (reveals, hero, zooms, arrows) — fast start, long settle.
+   - ease-out-quart:    gentle feedback where expo would feel too snappy
+                        (color and background changes).
+   - ease-in-out-quart: things MOVING between two on-screen states
+                        (rotations, size changes, layout shifts).
+   ========================================================================== */
+:root {
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 320ms;
+  --motion-duration-slow: 650ms;
+  --motion-duration-slower: 900ms;
+  --motion-stagger: 70ms;
 }
 
 @utility font-stretch-wide {
@@ -131,8 +167,8 @@ body {
   opacity: 0;
   transform: translateY(16px);
   transition:
-    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--motion-duration-slow) var(--ease-out-expo),
+    transform var(--motion-duration-slow) var(--ease-out-expo);
 }
 
 .js .reveal.is-visible {
@@ -151,7 +187,7 @@ body {
 
 .js .hero-line > span {
   transform: translateY(100%);
-  animation: hero-line-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-line-in var(--motion-duration-slower) var(--ease-out-expo) forwards;
 }
 
 @keyframes hero-line-in {

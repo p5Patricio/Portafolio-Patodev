@@ -47,7 +47,7 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               height={563}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="h-full w-full object-cover transition-transform duration-(--motion-duration-slow) ease-out-expo group-hover:scale-[1.03]"
             />
           </div>
         ) : (

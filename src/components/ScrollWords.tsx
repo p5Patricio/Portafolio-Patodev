@@ -64,7 +64,7 @@ function ScrollWords({ text, className = '' }: Props) {
   return (
     <p ref={containerRef} className={className}>
       {words.map((word, i) => (
-        <span key={i} data-word className="text-paper transition-colors duration-150">
+        <span key={i} data-word className="text-paper transition-colors duration-(--motion-duration-fast) ease-out-quart">
           {word}
           {i < words.length - 1 ? ' ' : ''}
         </span>
