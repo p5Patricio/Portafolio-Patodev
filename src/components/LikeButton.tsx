@@ -1,8 +1,36 @@
 import { useEffect, useState } from 'react'
 import PulseHeart from './PulseHeart'
 import { useLanguage } from '../context/LanguageContext'
+import { DURATION, STAGGER } from '../lib/motion'
 
 const STORAGE_KEY = 'portfolio:liked'
+
+/**
+ * The hero choreography's last step (`scrollHint`, order 8 in
+ * `src/sections/Hero.tsx`) starts at 8 × `STAGGER` and runs `DURATION.slow`,
+ * so the page is settled ~1.2s after load. The capsule waits for that so it
+ * never competes with the hero entrance.
+ */
+const HERO_LAST_STEP = 8
+const ENTRANCE_DELAY_MS = Math.round((HERO_LAST_STEP * STAGGER + DURATION.slow) * 1000)
+
+/**
+ * Pulse tuned down from PulseHeart's defaults (dotSize 0.3, overshoot 1.7,
+ * beat 3) so the like feedback stays a quiet, tactile tick rather than a pop.
+ */
+const PULSE = { dotSize: 0.55, overshoot: 1.2, beat: 2 } as const
+
+/**
+ * JS-gated entrance: the hidden state only applies under `html.js` (set by the
+ * inline bootstrap in index.html) and before `data-entered`, so the prerendered
+ * HTML and no-JS visitors always see the capsule. It fades/rises 8px once.
+ * `:focus-within` keeps it visible if a keyboard user reaches it early.
+ */
+const ENTRANCE_CLASSES =
+  'transition-[opacity,transform] duration-(--motion-duration-slow) ease-out-expo motion-reduce:transition-none [.js_&:not([data-entered]):not(:focus-within)]:opacity-0 [.js_&:not([data-entered]):not(:focus-within)]:translate-y-2'
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 /**
  * Public like button backed by `/api/likes` and Upstash Redis.
@@ -19,6 +47,19 @@ function LikeButton() {
     if (typeof window === 'undefined') return false
     return localStorage.getItem(STORAGE_KEY) === '1'
   })
+
+  // `false` on the server and the first client render so hydration matches.
+  const [entered, setEntered] = useState(false)
+
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot reveal after hydration
+      setEntered(true)
+      return
+    }
+    const timer = setTimeout(() => setEntered(true), ENTRANCE_DELAY_MS)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     fetch('/api/likes')
@@ -56,7 +97,10 @@ function LikeButton() {
   const message = liked ? t.likeButton.thanks : t.likeButton.question
 
   return (
-    <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-30">
+    <div
+      data-entered={entered ? '' : undefined}
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-30 ${ENTRANCE_CLASSES}`}
+    >
     <PulseHeart
       liked={liked}
       count={count ?? 0}
@@ -74,6 +118,9 @@ function LikeButton() {
       pillColor="#15181d"
       textColor="#edeae2"
       size={32}
+      dotSize={PULSE.dotSize}
+      overshoot={PULSE.overshoot}
+      beat={PULSE.beat}
       corner={999}
       pillClassName="rounded-full border border-line shadow-lg shadow-black/20"
     />

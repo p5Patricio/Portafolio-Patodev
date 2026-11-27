@@ -1,6 +1,7 @@
 'use client';
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, type CSSProperties, type ReactNode } from 'react';
+import { DURATION } from '../lib/motion';
 
 export type ClickSparkShape = 'line' | 'streak' | 'dot' | 'star';
 
@@ -86,7 +87,8 @@ const EASINGS: Record<string, (t: number) => number> = {
 const SHAPES: ClickSparkShape[] = ['line', 'streak', 'dot', 'star'];
 const MAX_BURSTS = 32;
 const GRAVITY = 500;
-const REDUCED_MS = 320;
+/** Reduced-motion bursts skip travel and only fade in place over the base UI duration. */
+const REDUCED_MS = Math.round(DURATION.base * 1000);
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const smoothstep = (a: number, b: number, x: number) => {

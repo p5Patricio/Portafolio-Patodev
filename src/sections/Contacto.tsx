@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
-import { Copy, Check } from 'lucide-react'
+import { AnimatePresence, m } from 'framer-motion'
+import { Copy, Check, CircleAlert } from 'lucide-react'
 import { FaGithub, FaLinkedin } from 'react-icons/fa6'
 import { useLanguage } from '../context/LanguageContext'
 import Section from '../components/Section'
@@ -8,6 +9,7 @@ import Button from '../components/Button'
 import TextLink from '../components/TextLink'
 import Reveal from '../components/Reveal'
 import Footer from '../components/Footer'
+import { DURATION, EASE, TRANSITION } from '../lib/motion'
 
 type FieldProps = {
   id: string
@@ -17,17 +19,43 @@ type FieldProps = {
 
 function Field({ id, label, children }: FieldProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="mono-label text-[12px] text-muted">
+    <div className="group/field flex flex-col gap-2">
+      <label
+        htmlFor={id}
+        className="mono-label text-[12px] text-muted transition-colors duration-(--motion-duration-fast) ease-out-quart group-focus-within/field:text-paper"
+      >
         {label}
       </label>
-      {children}
+      <div className="relative">
+        {children}
+        {/* Focus underline: draws left-to-right over the hairline border.
+            Driven by :focus-within, so mouse and keyboard focus look the same. */}
+        <span
+          data-focus-line
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-sky transition-transform duration-(--motion-duration-base) ease-out-expo group-focus-within/field:scale-x-100 motion-reduce:transition-none"
+        />
+      </div>
     </div>
   )
 }
 
 const inputClass =
-  'w-full border-b border-line bg-transparent py-2.5 text-sm text-paper placeholder:text-muted/60 outline-none transition-colors focus:border-sky disabled:opacity-60'
+  'block w-full border-b border-line bg-transparent py-2.5 text-sm text-paper placeholder:text-muted/60 outline-none transition-colors duration-(--motion-duration-fast) ease-out-quart hover:border-muted disabled:opacity-60'
+
+/** Distance, as a share of its own height, the status message rises from behind its mask. */
+const STATUS_MASK_OFFSET = '100%'
+
+/** Status message entrance: rises out of an overflow mask while fading in. */
+const statusMotion = {
+  initial: { opacity: 0, y: STATUS_MASK_OFFSET },
+  animate: { opacity: 1, y: 0, transition: TRANSITION.base },
+  exit: { opacity: 0, transition: { duration: DURATION.fast, ease: EASE.outQuart } },
+}
+
+/** Cross-fade shared by the stacked submit labels (idle / sending). */
+const LABEL_SWAP =
+  '[grid-area:1/1] inline-flex items-center justify-center gap-2 transition-[opacity,transform] duration-(--motion-duration-fast) ease-out-quart motion-reduce:transition-none'
 
 function Contacto() {
   const { t } = useLanguage()
@@ -42,6 +70,7 @@ function Contacto() {
   })
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [copied, setCopied] = useState(false)
+  const sending = status === 'sending'
 
   const copyEmail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -139,7 +168,7 @@ function Contacto() {
         </Reveal>
 
         <Reveal className="lg:col-span-7">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <form onSubmit={handleSubmit} aria-busy={sending} className="flex flex-col gap-6">
             <input
               type="text"
               name="website"
@@ -161,7 +190,7 @@ function Contacto() {
                   className={inputClass}
                   autoComplete="name"
                   maxLength={120}
-                  disabled={status === 'sending'}
+                  disabled={sending}
                   required
                 />
               </Field>
@@ -175,7 +204,7 @@ function Contacto() {
                   className={inputClass}
                   autoComplete="email"
                   maxLength={254}
-                  disabled={status === 'sending'}
+                  disabled={sending}
                   required
                 />
               </Field>
@@ -190,7 +219,7 @@ function Contacto() {
                 placeholder={c.form.subjectPlaceholder}
                 className={inputClass}
                 maxLength={160}
-                disabled={status === 'sending'}
+                disabled={sending}
                 required
               />
             </Field>
@@ -205,7 +234,7 @@ function Contacto() {
                 className={`${inputClass} resize-none`}
                 minLength={10}
                 maxLength={2000}
-                disabled={status === 'sending'}
+                disabled={sending}
                 required
               />
             </Field>
@@ -213,14 +242,53 @@ function Contacto() {
             <div className="mt-2 flex flex-col items-start gap-3">
               <Button
                 type="submit"
-                disabled={status === 'sending' || status === 'success'}
-                ariaLabel={status === 'sending' ? c.form.sending : c.form.submit}
+                disabled={sending || status === 'success'}
+                ariaLabel={sending ? c.form.sending : c.form.submit}
               >
-                {status === 'sending' ? c.form.sending : c.form.submit}
+                {/* Both labels share one grid cell, so the button keeps the
+                    width of the longer one and never shifts while sending. */}
+                <span className="grid">
+                  <span
+                    aria-hidden={sending || undefined}
+                    className={`${LABEL_SWAP} ${sending ? '-translate-y-1 opacity-0' : ''}`}
+                  >
+                    {c.form.submit}
+                  </span>
+                  <span
+                    aria-hidden={!sending || undefined}
+                    className={`${LABEL_SWAP} ${sending ? '' : 'translate-y-1 opacity-0'}`}
+                  >
+                    <svg
+                      data-testid="submit-spinner"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      aria-hidden="true"
+                      className="h-3.5 w-3.5 shrink-0 animate-spin [animation-duration:var(--motion-duration-slower)] motion-reduce:animate-none"
+                    >
+                      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1.5" />
+                      <path d="M14.5 8A6.5 6.5 0 0 0 8 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                    <span>{c.form.sending}</span>
+                  </span>
+                </span>
               </Button>
-              <div aria-live="polite">
-                {status === 'success' && <p className="text-xs font-medium text-paper">{c.form.success}</p>}
-                {status === 'error' && <p className="text-xs font-medium text-coral">{c.form.error}</p>}
+              {/* Always mounted so assistive tech announces each new status.
+                  min-h reserves one line so the first message adds no shift. */}
+              <div aria-live="polite" aria-atomic="true" className="min-h-4 overflow-hidden">
+                <AnimatePresence mode="wait" initial={false}>
+                  {status === 'success' && (
+                    <m.p key="success" {...statusMotion} className="flex items-start gap-1.5 text-xs font-medium text-paper">
+                      <Check className="mt-px h-3.5 w-3.5 shrink-0 text-sky" aria-hidden="true" />
+                      {c.form.success}
+                    </m.p>
+                  )}
+                  {status === 'error' && (
+                    <m.p key="error" {...statusMotion} className="flex items-start gap-1.5 text-xs font-medium text-coral">
+                      <CircleAlert className="mt-px h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      {c.form.error}
+                    </m.p>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </form>

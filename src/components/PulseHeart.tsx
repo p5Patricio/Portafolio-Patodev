@@ -4,6 +4,7 @@
 
 import React, { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { FavouriteIcon, StarIcon, ThumbsUpIcon } from '@hugeicons/core-free-icons';
+import { DURATION } from '../lib/motion';
 
 export type PulseHeartIcon = 'heart' | 'star' | 'thumb';
 
@@ -38,6 +39,8 @@ type Roll = { a: string; b: string; at: number; up: boolean };
 type Cell = { ch: string } | { top: string; bottom: string };
 
 const OUT = 0.4;
+/** Seconds (motion tokens) to the milliseconds the rAF pulse and count roll run on. */
+const ms = (seconds: number) => Math.round(seconds * 1000);
 const ICONS: Record<PulseHeartIcon, IconData> = { heart: FavouriteIcon, star: StarIcon, thumb: ThumbsUpIcon };
 
 const back = (k: number, c: number) => {
@@ -64,11 +67,11 @@ const PulseHeart: React.FC<PulseHeartProps> = ({
   idleColor = '#8b8b93',
   pillColor = '#232326',
   textColor = '#f5f5f5',
-  duration = 560,
+  duration = ms(DURATION.slow),
   dotSize = 0.3,
   overshoot = 1.7,
   beat = 3,
-  rollDuration = 350,
+  rollDuration = ms(DURATION.base),
   disabled = false,
   label = 'Like',
   prompt,
@@ -237,7 +240,7 @@ const PulseHeart: React.FC<PulseHeartProps> = ({
       data-liked={String(shown.liked)}
       data-solid={idleOutline ? undefined : ''}
       data-no-count={showCount ? undefined : ''}
-      className={`group relative m-0 inline-flex cursor-pointer touch-manipulation select-none items-center justify-center border-0 bg-transparent p-0 outline-none [font-family:inherit] [color:var(--ph-text)] rounded-[var(--ph-corner)] [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [transition:transform_160ms_var(--ph-ease-out)] data-[pressed]:[transform:scale(0.97)] focus-visible:outline-offset-[3px] focus-visible:[outline:2px_solid_color-mix(in_srgb,var(--ph-liked)_60%,transparent)] disabled:cursor-default disabled:opacity-[0.55] motion-reduce:transition-none [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11${className ? ` ${className}` : ''}`}
+      className={`group relative m-0 inline-flex cursor-pointer touch-manipulation select-none items-center justify-center border-0 bg-transparent p-0 outline-none [font-family:inherit] [color:var(--ph-text)] rounded-[var(--ph-corner)] [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] transition-transform duration-(--motion-duration-fast) ease-(--ph-ease-out) data-[pressed]:[transform:scale(0.97)] focus-visible:outline-offset-[3px] focus-visible:[outline:2px_solid_color-mix(in_srgb,var(--ph-liked)_60%,transparent)] disabled:cursor-default disabled:opacity-[0.55] motion-reduce:transition-none [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:min-w-11${className ? ` ${className}` : ''}`}
       style={
         {
           '--ph-size': `${size}px`,
@@ -248,7 +251,7 @@ const PulseHeart: React.FC<PulseHeartProps> = ({
           '--ph-text': textColor,
           '--ph-roll': `${rollDuration}ms`,
           '--ph-stroke': `${(1.5 * size) / 24}px`,
-          '--ph-ease-out': 'cubic-bezier(0.23, 1, 0.32, 1)'
+          '--ph-ease-out': 'var(--ease-out-expo)'
         } as CSSProperties
       }
       onPointerDown={handlePointerDown}
@@ -264,7 +267,7 @@ const PulseHeart: React.FC<PulseHeartProps> = ({
       >
         <span
           ref={heartRef}
-          className="block h-[var(--ph-size)] w-[var(--ph-size)] origin-center [color:var(--ph-idle)] [transition:color_160ms_ease] group-data-[liked=true]:[color:var(--ph-liked)] group-data-[running]:transition-none group-data-[instant]:transition-none motion-reduce:[transition:color_200ms_ease] [&_svg]:block [&_svg]:h-full [&_svg]:w-full [&_svg]:overflow-visible [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:[stroke-width:var(--ph-stroke)] [&_svg]:[stroke-linecap:round] [&_svg]:[stroke-linejoin:round] group-data-[liked=true]:[&_svg]:fill-current group-data-[solid]:[&_svg]:fill-current [@media(hover:hover)_and_(pointer:fine)]:group-enabled:group-hover:group-data-[liked=false]:[color:color-mix(in_srgb,var(--ph-idle)_45%,var(--ph-liked))]"
+          className="block h-[var(--ph-size)] w-[var(--ph-size)] origin-center [color:var(--ph-idle)] transition-colors duration-(--motion-duration-fast) ease-out-quart group-data-[liked=true]:[color:var(--ph-liked)] group-data-[running]:transition-none group-data-[instant]:transition-none [&_svg]:block [&_svg]:h-full [&_svg]:w-full [&_svg]:overflow-visible [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:[stroke-width:var(--ph-stroke)] [&_svg]:[stroke-linecap:round] [&_svg]:[stroke-linejoin:round] group-data-[liked=true]:[&_svg]:fill-current group-data-[solid]:[&_svg]:fill-current [@media(hover:hover)_and_(pointer:fine)]:group-enabled:group-hover:group-data-[liked=false]:[color:color-mix(in_srgb,var(--ph-idle)_45%,var(--ph-liked))]"
           aria-hidden="true"
         >
           {paths ? (

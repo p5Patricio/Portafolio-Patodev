@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { screen, waitFor } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../test-utils'
 import LikeButton from '../LikeButton'
@@ -109,5 +109,66 @@ describe('LikeButton', () => {
       expect(screen.getByRole('button', { name: /¿te gusta el portafolio\?, 5/i })).toBeInTheDocument()
     })
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull()
+  })
+
+  describe('capsule entrance', () => {
+    const okFetch = () =>
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ count: 1 }) }))
+
+    const originalMatchMedia = window.matchMedia
+
+    afterEach(() => {
+      vi.useRealTimers()
+      window.matchMedia = originalMatchMedia
+    })
+
+    function allowMotion() {
+      window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })) as unknown as typeof window.matchMedia
+    }
+
+    it('is JS-gated: hidden only under the html.js class until it enters', () => {
+      okFetch()
+      renderWithProviders(<LikeButton />)
+      const wrapper = screen.getByRole('button', { name: QUESTION }).parentElement as HTMLElement
+      // Without `.js` on <html> (SSR / no-JS) none of these selectors match, so it stays visible.
+      expect(wrapper.className).toContain('[.js_&:not([data-entered]):not(:focus-within)]:opacity-0')
+      expect(wrapper.className).toContain('duration-(--motion-duration-slow)')
+      expect(wrapper.className).toContain('ease-out-expo')
+      expect(wrapper.className).toContain('motion-reduce:transition-none')
+    })
+
+    it('enters only after the hero entrance has settled', () => {
+      allowMotion()
+      vi.useFakeTimers()
+      okFetch()
+      renderWithProviders(<LikeButton />)
+      const wrapper = screen.getByRole('button', { name: QUESTION }).parentElement as HTMLElement
+
+      expect(wrapper).not.toHaveAttribute('data-entered')
+      act(() => {
+        vi.advanceTimersByTime(1000)
+      })
+      expect(wrapper).not.toHaveAttribute('data-entered')
+      act(() => {
+        vi.advanceTimersByTime(400)
+      })
+      expect(wrapper).toHaveAttribute('data-entered')
+    })
+
+    it('enters immediately under prefers-reduced-motion', () => {
+      okFetch()
+      renderWithProviders(<LikeButton />)
+      const wrapper = screen.getByRole('button', { name: QUESTION }).parentElement as HTMLElement
+      expect(wrapper).toHaveAttribute('data-entered')
+    })
   })
 })
