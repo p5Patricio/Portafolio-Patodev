@@ -176,7 +176,22 @@ body {
   transform: none;
 }
 
-/* ---------- Hero name mask-reveal (JS-gated, SSR/no-JS safe) ---------- */
+/* ---------- Hero entrance choreography (JS-gated, SSR/no-JS safe) ----------
+   One ~1.2s sequence that plays once per page load: availability label →
+   "Patricio" → "García" (mask reveal) → positioning → CTAs → logo → scroll
+   hint. Each element carries `--hero-order` (set in Hero.tsx); its delay is
+   that many `--motion-stagger` steps, so the whole timeline derives from the
+   shared motion tokens.
+
+   Default (no JS / prerendered HTML): everything is fully visible. Only with
+   `.js` on <html> AND `data-hero-intro="play"` (first hero mount of the page
+   load) do elements start hidden. `hero-enter` uses `backwards` fill: it is
+   hidden only while waiting for its delay and leaves no styles behind once
+   it finishes. Only `transform`/`opacity` animate, so nothing shifts layout.
+
+   TechTitle waits for every animation inside the name to finish
+   (`getAnimations({ subtree: true })`) before measuring glyphs, so the
+   delayed `.hero-line` reveal still lands before its canvas mounts. */
 .hero-line {
   overflow: hidden;
 }
@@ -185,9 +200,10 @@ body {
   display: block;
 }
 
-.js .hero-line > span {
+.js [data-hero-intro='play'] .hero-line > span {
   transform: translateY(100%);
   animation: hero-line-in var(--motion-duration-slower) var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--hero-order, 0) * var(--motion-stagger));
 }
 
 @keyframes hero-line-in {
@@ -196,9 +212,33 @@ body {
   }
 }
 
+.js [data-hero-intro='play'] .hero-enter {
+  animation: hero-enter var(--motion-duration-slow) var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--hero-order, 0) * var(--motion-stagger));
+}
+
+.js [data-hero-intro='play'] .hero-enter-scale {
+  animation-name: hero-enter-scale;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes hero-enter-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .js .reveal,
-  .js .hero-line > span {
+  .js .hero-line > span,
+  .js .hero-enter {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
