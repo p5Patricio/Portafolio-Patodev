@@ -2,6 +2,8 @@ import './index.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
+import ClickSpark from './components/ClickSpark'
+import LikeButton from './components/LikeButton'
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import GaleriaPage from './pages/GaleriaPage'
@@ -41,30 +43,33 @@ function App() {
         Saltar al contenido
       </a>
 
-      <Header variant={isHome ? 'home' : 'galeria'} />
+      <ClickSpark sparkColor="#00c6fd" sparkCount={10} sparkRadius={40} sparkSize={10} duration={500}>
+        <Header variant={isHome ? 'home' : 'galeria'} />
 
-      <main id="main-content">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <SEO {...routeSeo['/']} />
-                <HomePage />
-              </>
-            }
-          />
-          <Route
-            path="/galeria"
-            element={
-              <>
-                <SEO {...routeSeo['/galeria']} />
-                <GaleriaPage />
-              </>
-            }
-          />
-        </Routes>
-      </main>
+        <main id="main-content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <SEO {...routeSeo['/']} />
+                  <HomePage />
+                </>
+              }
+            />
+            <Route
+              path="/galeria"
+              element={
+                <>
+                  <SEO {...routeSeo['/galeria']} />
+                  <GaleriaPage />
+                </>
+              }
+            />
+          </Routes>
+        </main>
+        <LikeButton />
+      </ClickSpark>
 
       {/* Vercel Web Analytics + Speed Insights: client-only scripts, render nothing in SSR. */}
       <Analytics />

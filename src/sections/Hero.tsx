@@ -2,6 +2,7 @@ import { ChevronDown } from 'lucide-react'
 import Section from '../components/Section'
 import Button from '../components/Button'
 import TiltCard from '../components/TiltCard'
+import TechTitle from '../components/TechTitle'
 import { useLanguage } from '../context/LanguageContext'
 import type { Lang } from '../data/translations'
 
@@ -63,7 +64,8 @@ function Hero() {
             {t.hero.availability}
           </p>
 
-          <div
+          <TechTitle
+            as="div"
             aria-hidden="true"
             className="order-2 text-[clamp(3.75rem,17vw,10rem)] font-extrabold leading-[0.92] tracking-[-0.03em] text-paper font-stretch-wide [overflow-wrap:anywhere] md:text-[clamp(3rem,12vw,10rem)] lg:text-[clamp(3rem,8.5vw,9rem)] min-[1920px]:text-[clamp(10rem,9vw,14rem)] lg:order-none"
           >
@@ -73,7 +75,7 @@ function Hero() {
             <div className="hero-line">
               <span>García</span>
             </div>
-          </div>
+          </TechTitle>
 
           <p className="order-3 max-w-[30ch] text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.3] text-muted lg:order-none">
             {t.hero.positioning.prefix}

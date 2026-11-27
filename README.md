@@ -18,6 +18,9 @@ Portafolio personal bilingüe para presentar experiencia, proyectos, herramienta
 - **Sobre mí** con presentación personal, homenaje visual y rangos competitivos.
 - **Contacto** con tarjetas ordenadas, formulario y endpoint serverless de Resend.
 - **ES/EN** con traducciones centralizadas en React Context.
+- **TechText** en el título del hero (efecto vectorial ReactBits) con texto real accesible.
+- **ClickSpark** en toda la página: chispas cian en cada clic.
+- **PulseHeart**: botón público de "me gusta" con contador global persistente en Redis.
 
 ## Stack
 
@@ -30,8 +33,10 @@ Portafolio personal bilingüe para presentar experiencia, proyectos, herramienta
 | Routing | React Router DOM v7 |
 | Iconos | Lucide React + React Icons |
 | Email | Vercel Serverless Function + Resend |
+| Redis | Upstash Redis (public like counter) |
 | Tests | Vitest + React Testing Library + jsdom |
 | Package manager | pnpm |
+| Effects | ReactBits (TechText, ClickSpark, PulseHeart) |
 
 ## Inicio rápido
 

@@ -24,6 +24,11 @@ type Dict = {
     title: string
     subtitle: string
   }
+  likeButton: {
+    label: string
+    question: string
+    thanks: string
+  }
   hero: {
     availability: string
     positioning: { prefix: string; highlight: string; suffix: string }
@@ -130,6 +135,11 @@ export const translations: Record<Lang, Dict> = {
     brand: {
       title:    'PORTAFOLIO',
       subtitle: 'patodev · Ingeniero de Software',
+    },
+    likeButton: {
+      label: 'Me gusta',
+      question: '¿Te gusta el portafolio?',
+      thanks: '¡Gracias!',
     },
     hero: {
       availability: 'Disponible para nuevos proyectos · Guanajuato, MX · Remoto',
@@ -284,6 +294,11 @@ export const translations: Record<Lang, Dict> = {
     brand: {
       title:    'PORTFOLIO',
       subtitle: 'patodev · Software Engineer',
+    },
+    likeButton: {
+      label: 'Like',
+      question: 'Do you like the portfolio?',
+      thanks: 'Thanks!',
     },
     hero: {
       availability: 'Available for new projects · Guanajuato, MX · Remote',

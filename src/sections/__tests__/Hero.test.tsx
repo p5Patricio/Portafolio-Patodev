@@ -17,10 +17,15 @@ describe('Hero', () => {
     expect(headings[0]).toHaveTextContent('Patricio García')
   })
 
-  it('renders the decorative name lines', () => {
-    renderWithProviders(<Hero />)
-    expect(screen.getByText('Patricio')).toBeInTheDocument()
-    expect(screen.getByText('García')).toBeInTheDocument()
+  it('restores the two animated decorative hero lines without adding another h1', () => {
+    const { container } = renderWithProviders(<Hero />)
+    const lines = container.querySelectorAll('.hero-line')
+
+    expect(lines).toHaveLength(2)
+    expect(lines[0]).toHaveTextContent('Patricio')
+    expect(lines[1]).toHaveTextContent('García')
+    expect(lines[0].closest('[aria-hidden="true"]')).toBeInTheDocument()
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
   })
 
   it('renders the availability line and positioning statement', () => {
