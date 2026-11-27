@@ -318,6 +318,79 @@ body {
   .animate-bounce {
     animation: none !important;
   }
+
+  /* Micro-interactions: the underline still appears on hover/focus, instantly. */
+  .link-underline::after {
+    transition: none !important;
+  }
+}
+
+/* ---------- Micro-interactions ----------
+   TextLink underline (`.link-underline`): a hairline in `--color-line` marks
+   the link at rest (`::before`). On hover or keyboard focus a sky line
+   (`::after`) sweeps in from the left (`scaleX` 0 → 1 with a left origin);
+   on leave the origin swaps to the right before it shrinks, so the line keeps
+   travelling and exits to the right. Both lines share one position, so the
+   sky line always covers the hairline exactly, and only `transform` animates.
+
+   Hover applies only on hover-capable pointers (no sticky underline after a
+   tap); `:focus-visible` applies everywhere for keyboard parity. In forced
+   colors mode the pseudo-element backgrounds are not reliable, so links fall
+   back to a native underline. In `@layer components` so utilities passed via
+   `className` still win. Button micro-interactions live in Button.tsx /
+   Magnetic.tsx (Tailwind variants + motion values). */
+@layer components {
+  .link-underline {
+    /* Distance below the link box; close to the previous `underline-offset-4`. */
+    --link-underline-offset: 0.15em;
+    position: relative;
+  }
+
+  .link-underline::before,
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--link-underline-offset) * -1);
+    height: 1px;
+    pointer-events: none;
+  }
+
+  .link-underline::before {
+    background: var(--color-line);
+  }
+
+  .link-underline::after {
+    background: var(--color-sky);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--motion-duration-base) var(--ease-out-expo);
+  }
+
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (hover: hover) {
+    .link-underline:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .link-underline {
+      text-decoration-line: underline;
+      text-underline-offset: 4px;
+    }
+
+    .link-underline::before,
+    .link-underline::after {
+      display: none;
+    }
+  }
 }
 
 /* ---------- Stack categories: native <details> disclosure (mobile/tablet) ----------

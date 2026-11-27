@@ -1,0 +1,75 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { describe, expect, it } from 'vitest'
+import { screen } from '@testing-library/react'
+import { renderWithProviders } from '../../test-utils'
+import TextLink from '../TextLink'
+
+// Vitest runs from the project root (where vitest.config.ts lives).
+const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf8')
+
+/** Body of the first `@media <query> { ... }` block whose body mentions `needle` (brace-balanced). */
+function mediaBlockContaining(query: string, needle: string): string | undefined {
+  let from = 0
+  for (;;) {
+    const start = css.indexOf(`@media ${query}`, from)
+    if (start === -1) return undefined
+    let depth = 0
+    let end = start
+    for (let i = css.indexOf('{', start); i < css.length; i++) {
+      if (css[i] === '{') depth++
+      if (css[i] === '}') depth--
+      if (depth === 0) {
+        end = i
+        break
+      }
+    }
+    const body = css.slice(start, end + 1)
+    if (body.includes(needle)) return body
+    from = end
+  }
+}
+
+describe('TextLink', () => {
+  it('renders a plain anchor and forwards anchor attributes', () => {
+    renderWithProviders(
+      <TextLink href="https://github.com/x" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </TextLink>,
+    )
+    const link = screen.getByRole('link', { name: 'GitHub' })
+    expect(link).toHaveAttribute('href', 'https://github.com/x')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('renders a router link when `to` is provided', () => {
+    renderWithProviders(<TextLink to="/galeria">View all</TextLink>)
+    expect(screen.getByRole('link', { name: 'View all' })).toHaveAttribute('href', '/galeria')
+  })
+
+  it('uses the animated underline and keeps the paper/sky color tokens for hover and focus', () => {
+    renderWithProviders(
+      <TextLink href="#contacto" className="mono-label text-xs">
+        Contact
+      </TextLink>,
+    )
+    const link = screen.getByRole('link', { name: 'Contact' })
+    expect(link).toHaveClass('link-underline', 'text-paper', 'hover:text-sky', 'focus-visible:text-sky')
+    expect(link).toHaveClass('mono-label', 'text-xs')
+    expect(link).toHaveClass('focus-visible:outline-2', 'focus-visible:outline-sky')
+  })
+
+  it('sweeps the underline in on hover only for hover-capable pointers, and on keyboard focus everywhere', () => {
+    const hoverBlock = mediaBlockContaining('(hover: hover)', '.link-underline:hover::after')
+    expect(hoverBlock).toBeDefined()
+    expect(css).toMatch(/\.link-underline:focus-visible::after/)
+    expect(css).toMatch(/\.link-underline::after\s*\{[^}]*transform:\s*scaleX\(0\)/)
+    expect(css).toMatch(/\.link-underline::after\s*\{[^}]*var\(--motion-duration-base\)\s+var\(--ease-out-expo\)/)
+  })
+
+  it('drops the sweep transition under prefers-reduced-motion', () => {
+    const reducedBlock = mediaBlockContaining('(prefers-reduced-motion: reduce)', '.link-underline::after')
+    expect(reducedBlock).toMatch(/transition:\s*none/)
+  })
+})
