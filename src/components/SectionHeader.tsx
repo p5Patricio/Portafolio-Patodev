@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import Reveal from './Reveal'
+import SplitWords, { WORD_GAP } from './SplitWords'
 
 type SectionHeaderProps = {
   /** Two-digit section index, e.g. "01". */
@@ -22,22 +23,52 @@ type SectionHeaderProps = {
   as?: 'h1' | 'h2'
 }
 
+/** Sequence positions (in `--motion-stagger` steps): `01` → `/ LABEL` (+ meta)
+ *  → title, word by word → intro. */
+const ORDER_INDEX = 0
+const ORDER_LABEL = 1
+const ORDER_TITLE = 2
+
+const seq = (order: number) => ({ '--seq-order': order }) as CSSProperties
+
 /**
  * Swiss-style section header: `01 / LABEL` mono line (index in sky) with
  * optional right-aligned meta, then the section title in sentence case.
+ *
+ * Scroll entrance (see "Section header sequence" in src/index.css): once
+ * ~15% visible, the mono index and label rise through their masks, then the
+ * title rises word by word through per-word masks, then the intro fades up —
+ * one orchestrated sequence, staggered by `--motion-stagger`. Every piece is
+ * real, readable text in the DOM from the first (prerendered) paint; the
+ * hidden states only apply under `.js`, and reduced motion shows everything.
  */
 function SectionHeader({ index, label, title, meta, intro, id, as: Heading = 'h2' }: SectionHeaderProps) {
+  const titleWords = title.split(WORD_GAP).filter((part) => part && !WORD_GAP.test(part)).length
+
   return (
-    <Reveal className="flex flex-col gap-4 md:gap-5">
-      <div className="flex items-baseline justify-between gap-4">
+    <Reveal variant="sequence" className="flex flex-col gap-4 md:gap-5">
+      <div className="seq-label flex items-baseline justify-between gap-4">
         <p className="mono-label text-[12px] text-muted md:text-xs">
-          <span className="text-sky">{index}</span> / {label}
+          <span className="split-mask">
+            <span className="split-word seq-rise text-sky" style={seq(ORDER_INDEX)}>
+              {index}
+            </span>
+          </span>{' '}
+          <span className="split-mask">
+            <span className="split-word seq-rise" style={seq(ORDER_LABEL)}>
+              / {label}
+            </span>
+          </span>
         </p>
         {meta &&
           (typeof meta === 'string' ? (
-            <p className="mono-label text-[12px] text-muted md:text-xs">{meta}</p>
+            <p className="seq-fade mono-label text-[12px] text-muted md:text-xs" style={seq(ORDER_LABEL)}>
+              {meta}
+            </p>
           ) : (
-            <div className="mono-label text-[12px] md:text-xs">{meta}</div>
+            <div className="seq-fade mono-label text-[12px] md:text-xs" style={seq(ORDER_LABEL)}>
+              {meta}
+            </div>
           ))}
       </div>
 
@@ -45,10 +76,14 @@ function SectionHeader({ index, label, title, meta, intro, id, as: Heading = 'h2
         id={id}
         className="font-stretch-wide text-[clamp(1.75rem,4.5vw,3rem)] leading-[0.95] font-extrabold tracking-[-0.03em] text-paper"
       >
-        {title}
+        <SplitWords text={title} startOrder={ORDER_TITLE} wordClassName="seq-rise" />
       </Heading>
 
-      {intro && <p className="max-w-[65ch] text-sm text-muted md:text-base">{intro}</p>}
+      {intro && (
+        <p className="seq-fade-up max-w-[65ch] text-sm text-muted md:text-base" style={seq(ORDER_TITLE + titleWords)}>
+          {intro}
+        </p>
+      )}
     </Reveal>
   )
 }

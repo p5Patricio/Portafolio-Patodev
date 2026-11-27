@@ -235,7 +235,77 @@ body {
   }
 }
 
+/* ---------- Section header sequence (JS-gated, SSR/no-JS safe) ----------
+   SectionHeader wraps itself in `<Reveal variant="sequence">` (`.reveal-seq`,
+   which never animates itself) and orchestrates its children once ~15% of it
+   is visible: `01` → `/ LABEL` (+ meta) rise/fade on the mono line, then the
+   title rises word by word through per-word masks, then the intro fades up.
+   Each piece carries `--seq-order` (set in TSX); its delay is that many
+   `--motion-stagger` steps, so the timeline derives from the shared tokens.
+
+   Per-word masks (SplitWords): `.split-mask` is an `overflow: hidden`
+   inline-block around an inline-block `.split-word`. The word is padded by
+   the bleed and the mask pulls it back with an equal negative margin, so the
+   clip box is larger than the line box (accents, descenders and tight
+   tracking are not cut) while the margin box — and thus layout — is exactly
+   what plain inline text would occupy. `vertical-align: top` because an
+   `overflow: hidden` inline-block's baseline becomes its bottom margin edge;
+   top-aligning a box exactly one line-height tall keeps the text baseline
+   where it was.
+
+   Default (no JS / prerendered HTML): everything is fully visible. Hidden
+   states only exist under `.js`. Only `transform`/`opacity` animate. */
+.split-mask {
+  --mask-bleed-y: 0.25em;
+  --mask-bleed-x: 0.08em;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  margin: calc(var(--mask-bleed-y) * -1) calc(var(--mask-bleed-x) * -1);
+}
+
+.split-word {
+  display: inline-block;
+  padding: var(--mask-bleed-y) var(--mask-bleed-x);
+}
+
+/* The mono line is small: it settles faster so it lands before the title. */
+.seq-label {
+  --seq-duration: var(--motion-duration-base);
+}
+
+.js .reveal-seq .seq-rise {
+  transform: translateY(100%);
+  transition: transform var(--seq-duration, var(--motion-duration-slower)) var(--ease-out-expo);
+  transition-delay: calc(var(--seq-order, 0) * var(--motion-stagger));
+}
+
+.js .reveal-seq .seq-fade {
+  opacity: 0;
+  transition: opacity var(--seq-duration, var(--motion-duration-slow)) var(--ease-out-expo);
+  transition-delay: calc(var(--seq-order, 0) * var(--motion-stagger));
+}
+
+.js .reveal-seq .seq-fade-up {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--motion-duration-slow) var(--ease-out-expo),
+    transform var(--motion-duration-slow) var(--ease-out-expo);
+  transition-delay: calc(var(--seq-order, 0) * var(--motion-stagger));
+}
+
+.js .reveal-seq.is-visible .seq-rise,
+.js .reveal-seq.is-visible .seq-fade,
+.js .reveal-seq.is-visible .seq-fade-up {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .js .reveal-seq .seq-rise,
+  .js .reveal-seq .seq-fade,
+  .js .reveal-seq .seq-fade-up,
   .js .reveal,
   .js .hero-line > span,
   .js .hero-enter {
