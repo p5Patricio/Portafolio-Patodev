@@ -40,6 +40,29 @@ describe('Proyectos', () => {
     expect(container.textContent).not.toMatch(/\[[A-Z0-9.]+\]/)
   })
 
+  it('keeps each cover lazy, sized and labelled, on a parallax layer separate from the hover zoom', () => {
+    renderWithProviders(<Proyectos />)
+    const withCovers = FEATURED_REPOS.slice(0, 3).filter((repo) => repo.images?.[0])
+    expect(withCovers.length).toBeGreaterThan(0)
+
+    withCovers.forEach((repo) => {
+      const img = screen.getByRole('img', { name: repo.name })
+      expect(img).toHaveAttribute('src', repo.images![0])
+      expect(img).toHaveAttribute('loading', 'lazy')
+      expect(img).toHaveAttribute('decoding', 'async')
+      expect(img).toHaveAttribute('width', '900')
+      expect(img).toHaveAttribute('height', '563')
+      expect(img).toHaveClass('group-hover:scale-[1.03]')
+
+      // The hover zoom lives on the image; the scroll-linked depth lives on
+      // the wrapping layer, so the two transforms never fight.
+      const frame = img.closest('.aspect-\\[16\\/10\\]') as HTMLElement
+      expect(frame).toHaveClass('group', 'overflow-hidden', 'rounded')
+      expect(img.parentElement).not.toBe(frame)
+      expect(frame).toContainElement(img.parentElement)
+    })
+  })
+
   it('renders demo/code links with accessible names', () => {
     renderWithProviders(<Proyectos />)
     expect(screen.getAllByRole('link', { name: /demo/i }).length).toBeGreaterThan(0)

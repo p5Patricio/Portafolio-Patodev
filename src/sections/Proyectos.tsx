@@ -4,6 +4,7 @@ import Section from '../components/Section'
 import SectionHeader from '../components/SectionHeader'
 import TextLink from '../components/TextLink'
 import Reveal from '../components/Reveal'
+import ParallaxMedia from '../components/ParallaxMedia'
 import { useLanguage } from '../context/LanguageContext'
 import { FEATURED_REPOS } from '../data/repos'
 import type { Repo } from '../data/repos'
@@ -39,7 +40,7 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
     >
       <div className="order-1 lg:order-none lg:col-span-6 lg:col-start-7 lg:row-start-1">
         {image ? (
-          <div className="group aspect-[16/10] overflow-hidden rounded">
+          <ParallaxMedia className="group aspect-[16/10] rounded">
             <img
               src={image}
               alt={repo.name}
@@ -49,7 +50,7 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               decoding="async"
               className="h-full w-full object-cover transition-transform duration-(--motion-duration-slow) ease-out-expo group-hover:scale-[1.03]"
             />
-          </div>
+          </ParallaxMedia>
         ) : (
           <div className="flex aspect-[16/10] items-center justify-center rounded border border-line bg-surface">
             <span className="mono-label text-[12px] text-muted">{repo.name}</span>
