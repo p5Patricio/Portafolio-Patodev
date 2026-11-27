@@ -95,9 +95,9 @@ function ProjectCell({ repo, lang, demoLabel, codeLabel, backendLabel, privateLa
               href={repo.liveUrl!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<Globe className={LINK_ICON} aria-hidden="true" />}
             >
-              <Globe className={LINK_ICON} aria-hidden="true" />
               {demoLabel}
             </TextLink>
           )}
@@ -106,9 +106,9 @@ function ProjectCell({ repo, lang, demoLabel, codeLabel, backendLabel, privateLa
               href={repo.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<FaGithub className={LINK_ICON} aria-hidden="true" />}
             >
-              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {codeLabel}
             </TextLink>
           )}
@@ -117,9 +117,9 @@ function ProjectCell({ repo, lang, demoLabel, codeLabel, backendLabel, privateLa
               href={repo.companionUrl!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<FaGithub className={LINK_ICON} aria-hidden="true" />}
             >
-              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {backendLabel}
             </TextLink>
           )}

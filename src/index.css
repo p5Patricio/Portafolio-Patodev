@@ -368,13 +368,17 @@ body {
     transition: transform var(--motion-duration-base) var(--ease-out-expo);
   }
 
-  .link-underline:focus-visible::after {
+  /* `a > .link-underline` covers icon links, where the label span carries the
+     underline but the whole anchor is the hover/focus target. */
+  .link-underline:focus-visible::after,
+  a:focus-visible > .link-underline::after {
     transform: scaleX(1);
     transform-origin: left;
   }
 
   @media (hover: hover) {
-    .link-underline:hover::after {
+    .link-underline:hover::after,
+    a:hover > .link-underline::after {
       transform: scaleX(1);
       transform-origin: left;
     }

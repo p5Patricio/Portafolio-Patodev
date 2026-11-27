@@ -75,9 +75,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               href={repo.liveUrl!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<Globe className={LINK_ICON} aria-hidden="true" />}
             >
-              <Globe className={LINK_ICON} aria-hidden="true" />
               {demoLabel}
             </TextLink>
           )}
@@ -86,9 +86,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               href={repo.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<FaGithub className={LINK_ICON} aria-hidden="true" />}
             >
-              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {codeLabel}
             </TextLink>
           )}
@@ -97,9 +97,9 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               href={repo.companionUrl!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-xs"
+              className="mono-label text-xs"
+            icon={<FaGithub className={LINK_ICON} aria-hidden="true" />}
             >
-              <FaGithub className={LINK_ICON} aria-hidden="true" />
               {backendLabel}
             </TextLink>
           )}

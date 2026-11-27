@@ -150,18 +150,18 @@ function Contacto() {
               href={c.info.github.href!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-[12px]"
+              className="mono-label text-[12px]"
+            icon={<FaGithub className="h-4 w-4 shrink-0" aria-hidden="true" />}
             >
-              <FaGithub className="h-4 w-4 shrink-0" aria-hidden="true" />
               GitHub
             </TextLink>
             <TextLink
               href={c.info.linkedin.href!}
               target="_blank"
               rel="noopener noreferrer"
-              className="mono-label inline-flex items-center gap-1.5 text-[12px]"
+              className="mono-label text-[12px]"
+            icon={<FaLinkedin className="h-4 w-4 shrink-0" aria-hidden="true" />}
             >
-              <FaLinkedin className="h-4 w-4 shrink-0" aria-hidden="true" />
               LinkedIn
             </TextLink>
           </div>

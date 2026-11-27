@@ -60,6 +60,21 @@ describe('TextLink', () => {
     expect(link).toHaveClass('focus-visible:outline-2', 'focus-visible:outline-sky')
   })
 
+  it('underlines only the label, not the icon, when an icon is passed', () => {
+    renderWithProviders(
+      <TextLink href="https://github.com/x" icon={<svg data-testid="icon" aria-hidden="true" />}>
+        GitHub
+      </TextLink>,
+    )
+    const link = screen.getByRole('link', { name: 'GitHub' })
+    expect(link).not.toHaveClass('link-underline')
+    expect(screen.getByTestId('icon').parentElement).toBe(link)
+    expect(screen.getByText('GitHub')).toHaveClass('link-underline')
+    // The label's underline still reacts to hover/focus on the whole link.
+    expect(css).toMatch(/a:focus-visible\s*>\s*\.link-underline::after/)
+    expect(mediaBlockContaining('(hover: hover)', 'a:hover > .link-underline::after')).toBeDefined()
+  })
+
   it('sweeps the underline in on hover only for hover-capable pointers, and on keyboard focus everywhere', () => {
     const hoverBlock = mediaBlockContaining('(hover: hover)', '.link-underline:hover::after')
     expect(hoverBlock).toBeDefined()
