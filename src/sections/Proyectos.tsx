@@ -34,13 +34,13 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
 
   return (
     <Reveal
-      className={`grid grid-cols-1 gap-6 pt-[clamp(2rem,4vw,3.5rem)] pb-[clamp(2rem,4vw,3.5rem)] first:pt-0 lg:grid-cols-12 lg:items-center ${
+      className={`group/project grid grid-cols-1 gap-6 pt-[clamp(2rem,4vw,3.5rem)] pb-[clamp(2rem,4vw,3.5rem)] first:pt-0 lg:grid-cols-12 lg:items-center ${
         first ? '' : 'border-t border-line'
       }`}
     >
       <div className="order-1 lg:order-none lg:col-span-6 lg:col-start-7 lg:row-start-1">
         {image ? (
-          <ParallaxMedia className="group aspect-[16/10] rounded">
+          <ParallaxMedia className="aspect-[16/10] rounded">
             <img
               src={image}
               alt={repo.name}
@@ -48,7 +48,7 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
               height={563}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-(--motion-duration-slow) ease-out-expo group-hover:scale-[1.03]"
+              className="h-full w-full object-cover transition-transform duration-(--motion-duration-slow) ease-out-expo motion-safe:group-hover/project:scale-[1.03] motion-safe:group-focus-within/project:scale-[1.03]"
             />
           </ParallaxMedia>
         ) : (
@@ -63,7 +63,7 @@ function ProjectRow({ repo, lang, demoLabel, codeLabel, backendLabel, privateLab
           {repo.year} · {repo.subtitle[lang]}
         </p>
 
-        <h3 className="font-stretch-wide text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-paper">
+        <h3 className="font-stretch-wide text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-paper transition-colors duration-(--motion-duration-fast) ease-out-quart group-hover/project:text-sky group-focus-within/project:text-sky">
           {repo.name}
         </h3>
 

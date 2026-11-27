@@ -52,14 +52,33 @@ describe('Proyectos', () => {
       expect(img).toHaveAttribute('decoding', 'async')
       expect(img).toHaveAttribute('width', '900')
       expect(img).toHaveAttribute('height', '563')
-      expect(img).toHaveClass('group-hover:scale-[1.03]')
+      expect(img).toHaveClass('motion-safe:group-hover/project:scale-[1.03]')
 
       // The hover zoom lives on the image; the scroll-linked depth lives on
       // the wrapping layer, so the two transforms never fight.
       const frame = img.closest('.aspect-\\[16\\/10\\]') as HTMLElement
-      expect(frame).toHaveClass('group', 'overflow-hidden', 'rounded')
+      expect(frame).toHaveClass('overflow-hidden', 'rounded')
       expect(img.parentElement).not.toBe(frame)
       expect(frame).toContainElement(img.parentElement)
+    })
+  })
+
+  it('shares the gallery hover language: the whole row (hover or keyboard focus) tints the title and zooms the cover', () => {
+    renderWithProviders(<Proyectos />)
+
+    FEATURED_REPOS.slice(0, 3).forEach((repo) => {
+      const title = screen.getByRole('heading', { level: 3, name: repo.name })
+      const row = title.closest('.group\\/project') as HTMLElement
+      expect(row).not.toBeNull()
+      expect(title).toHaveClass('group-hover/project:text-sky', 'group-focus-within/project:text-sky')
+
+      const cover = row.querySelector('img')
+      if (cover) {
+        expect(cover).toHaveClass(
+          'motion-safe:group-hover/project:scale-[1.03]',
+          'motion-safe:group-focus-within/project:scale-[1.03]',
+        )
+      }
     })
   })
 
