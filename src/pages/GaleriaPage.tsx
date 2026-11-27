@@ -157,7 +157,7 @@ function GaleriaPage() {
 
   return (
     <Section id={TOP_ANCHOR_ID} first ariaLabelledBy="galeria-heading">
-      <TextLink to="/" className="mono-label inline-flex items-center gap-2 text-xs">
+      <TextLink to="/" viewTransition className="mono-label inline-flex items-center gap-2 text-xs">
         ← {g.backHome}
       </TextLink>
 

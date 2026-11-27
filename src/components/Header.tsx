@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from 'react'
 import { m, useReducedMotion, useSpring, type MotionValue } from 'framer-motion'
 import { Menu } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,7 @@ import ScrollProgress from './ScrollProgress'
 import { useLanguage } from '../context/LanguageContext'
 import useActiveSection from '../hooks/useActiveSection'
 import { SPRING } from '../lib/motion'
+import { HEADER_TRANSITION_NAME, useViewTransitionClick } from '../lib/viewTransition'
 
 const NAV_LINKS = [
   { id: 'proyectos', href: '#proyectos', labelKey: 'trabajo' },
@@ -53,6 +54,9 @@ function Header({ variant = 'home' }: Props) {
   const placeIndicatorRef = useRef<(animate: boolean) => void>(() => {})
   const indicatorPlacedRef = useRef(false)
   const reduceMotion = useReducedMotion()
+  // Off home, the brand and nav links leave the route: run them as view
+  // transitions where supported (otherwise they keep their plain navigation).
+  const transitionTo = useViewTransitionClick()
 
   // Active-link underline: one shared hairline that glides between links.
   // Motion values (not state) so moving it never re-renders the header.
@@ -71,6 +75,8 @@ function Header({ variant = 'home' }: Props) {
   }, [])
 
   const linkHref = (href: string) => (isHome ? href : `/${href}`)
+  const onRouteLinkClick = (to: string) =>
+    isHome ? undefined : (event: MouseEvent<HTMLAnchorElement>) => transitionTo(event, to)
   const isLinkActive = (id: string) => (isHome ? active === id : id === 'proyectos')
   const activeLinkId = NAV_LINKS.find(({ id }) => isLinkActive(id))?.id
 
@@ -119,6 +125,7 @@ function Header({ variant = 'home' }: Props) {
   return (
     <>
       <header
+        style={{ viewTransitionName: HEADER_TRANSITION_NAME }}
         className={`fixed inset-x-0 top-0 z-40 border-b transition-[height,background-color,border-color] duration-(--motion-duration-base) ease-in-out-quart ${
           scrolled ? 'h-14 border-line bg-ink' : 'h-20 border-transparent bg-transparent'
         }`}
@@ -131,7 +138,12 @@ function Header({ variant = 'home' }: Props) {
                 <span className="mono-label text-xs text-paper">PATODEV</span>
               </a>
             ) : (
-              <Link to="/" className={`inline-flex items-center gap-3 ${FOCUS_RING}`} aria-label={t.brand.title}>
+              <Link
+                to="/"
+                onClick={onRouteLinkClick('/')}
+                className={`inline-flex items-center gap-3 ${FOCUS_RING}`}
+                aria-label={t.brand.title}
+              >
                 <Logo alt="" className="h-8 w-auto shrink-0 md:h-9" />
                 <span className="mono-label text-xs text-paper">PATODEV</span>
               </Link>
@@ -149,6 +161,7 @@ function Header({ variant = 'home' }: Props) {
                           else linkRefs.current.delete(id)
                         }}
                         href={linkHref(href)}
+                        onClick={onRouteLinkClick(linkHref(href))}
                         aria-current={isActive ? 'page' : undefined}
                         className={`mono-label border-b pb-0.5 text-xs transition-colors duration-(--motion-duration-base) ease-out-quart group-data-[indicator=ready]/nav:border-transparent ${FOCUS_RING} ${
                           isActive ? 'border-sky text-paper' : 'border-transparent text-muted hover:text-paper'

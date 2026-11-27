@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { describe, expect, it } from 'vitest'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { renderWithProviders } from '../../test-utils'
 import TextLink from '../TextLink'
 
@@ -86,5 +87,60 @@ describe('TextLink', () => {
   it('drops the sweep transition under prefers-reduced-motion', () => {
     const reducedBlock = mediaBlockContaining('(prefers-reduced-motion: reduce)', '.link-underline::after')
     expect(reducedBlock).toMatch(/transition:\s*none/)
+  })
+
+  describe('view transitions', () => {
+    afterEach(() => {
+      Reflect.deleteProperty(document, 'startViewTransition')
+    })
+
+    function renderRoutes() {
+      return render(
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <TextLink to="/galeria" viewTransition>
+                  View all
+                </TextLink>
+              }
+            />
+            <Route path="/galeria" element={<h1>Gallery</h1>} />
+          </Routes>
+        </MemoryRouter>,
+      )
+    }
+
+    it('navigates inside document.startViewTransition when the link opts in', async () => {
+      const start = vi.fn((update: () => unknown) => {
+        const done = Promise.resolve(update())
+        return { finished: done, ready: done, updateCallbackDone: done }
+      })
+      Object.defineProperty(document, 'startViewTransition', { configurable: true, writable: true, value: start })
+      vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+
+      renderRoutes()
+      fireEvent.click(screen.getByRole('link', { name: 'View all' }))
+
+      expect(start).toHaveBeenCalledTimes(1)
+      expect(await screen.findByRole('heading', { name: 'Gallery' })).toBeInTheDocument()
+    })
+
+    it('falls back to a normal client navigation without the View Transitions API', async () => {
+      renderRoutes()
+      fireEvent.click(screen.getByRole('link', { name: 'View all' }))
+      expect(await screen.findByRole('heading', { name: 'Gallery' })).toBeInTheDocument()
+    })
+
+    it('leaves modified clicks (new tab / window) to the browser', () => {
+      const start = vi.fn()
+      Object.defineProperty(document, 'startViewTransition', { configurable: true, writable: true, value: start })
+
+      renderRoutes()
+      fireEvent.click(screen.getByRole('link', { name: 'View all' }), { ctrlKey: true })
+
+      expect(start).not.toHaveBeenCalled()
+    })
   })
 })

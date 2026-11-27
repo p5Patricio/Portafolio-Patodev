@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { screen } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
+import { fireEvent, screen } from '@testing-library/react'
 import { renderWithProviders } from '../../test-utils'
 import GaleriaPage from '../GaleriaPage'
 import { ALL_REPOS_BY_YEAR } from '../../data/repos'
@@ -92,5 +92,24 @@ describe('GaleriaPage', () => {
   it('does not render bracketed technology tags anymore', () => {
     const { container } = renderWithProviders(<GaleriaPage />)
     expect(container.textContent).not.toMatch(/\[[A-Z0-9.]+\]/)
+  })
+
+  it('renders no per-cover view transition names (the route change is a plain cross-fade)', () => {
+    const { container } = renderWithProviders(<GaleriaPage />)
+    expect(container.innerHTML).not.toMatch(/project-cover-/)
+    const named = [...container.querySelectorAll<HTMLElement>('*')].filter((el) => el.style.viewTransitionName)
+    expect(named).toEqual([])
+  })
+
+  it('opts the back-to-home link into the view transition', () => {
+    const start = vi.fn(() => ({ finished: Promise.resolve(), ready: Promise.resolve(), updateCallbackDone: Promise.resolve() }))
+    Object.defineProperty(document, 'startViewTransition', { configurable: true, writable: true, value: start })
+    try {
+      renderWithProviders(<GaleriaPage />, { route: '/galeria' })
+      fireEvent.click(screen.getByRole('link', { name: /volver al inicio/i }))
+      expect(start).toHaveBeenCalledTimes(1)
+    } finally {
+      Reflect.deleteProperty(document, 'startViewTransition')
+    }
   })
 })

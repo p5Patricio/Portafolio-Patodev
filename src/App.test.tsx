@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { renderWithProviders } from './test-utils'
 import App from './App'
 
@@ -47,5 +47,27 @@ describe('App', () => {
     expect(buttons).toHaveLength(1)
     expect(buttons[0].parentElement).toHaveClass('fixed', 'z-30')
     expect(buttons[0]).not.toHaveClass('fixed')
+  })
+
+  it('runs the "view all" navigation as a view transition and captures the gallery at the top once it commits', async () => {
+    const start = vi.fn((update: () => unknown) => {
+      const done = Promise.resolve(update())
+      return { finished: done, ready: done, updateCallbackDone: done }
+    })
+    Object.defineProperty(document, 'startViewTransition', { configurable: true, writable: true, value: start })
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+    try {
+      renderWithProviders(<App />)
+      fireEvent.click(screen.getAllByRole('link', { name: /ver todos los proyectos/i })[0])
+
+      expect(start).toHaveBeenCalledTimes(1)
+      expect(await screen.findByRole('heading', { level: 1, name: /todos los proyectos/i })).toBeInTheDocument()
+      // The route commit (not the 1s fallback) releases the transition.
+      expect(scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'instant' })
+      expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    } finally {
+      Reflect.deleteProperty(document, 'startViewTransition')
+      scrollTo.mockRestore()
+    }
   })
 })

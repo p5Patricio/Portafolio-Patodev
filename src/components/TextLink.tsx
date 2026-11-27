@@ -1,5 +1,6 @@
-import type { AnchorHTMLAttributes, ReactNode } from 'react'
+import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { useViewTransitionClick } from '../lib/viewTransition'
 
 type CommonProps = {
   children: ReactNode
@@ -9,8 +10,28 @@ type CommonProps = {
 }
 
 type Props =
-  | (CommonProps & { to: string; href?: never } & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>)
-  | (CommonProps & { href: string; to?: never } & AnchorHTMLAttributes<HTMLAnchorElement>)
+  | (CommonProps & {
+      to: string
+      href?: never
+      /** Run the route change inside a view transition (src/lib/viewTransition.ts) when supported. */
+      viewTransition?: boolean
+    } & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>)
+  | (CommonProps & { href: string; to?: never; viewTransition?: never } & AnchorHTMLAttributes<HTMLAnchorElement>)
+
+type RouteLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
+  to: string
+  viewTransition?: boolean
+}
+
+/** Router link; with `viewTransition`, plain clicks navigate inside `document.startViewTransition`. */
+function RouteLink({ to, viewTransition = false, onClick, ...rest }: RouteLinkProps) {
+  const transitionTo = useViewTransitionClick()
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(event)
+    if (viewTransition) transitionTo(event, to)
+  }
+  return <Link to={to} onClick={handleClick} {...rest} />
+}
 
 // `link-underline` (src/index.css, "Micro-interactions") draws the resting
 // hairline and the sky underline that sweeps in on hover/focus.
@@ -36,11 +57,11 @@ function TextLink({ children, className = '', icon, ...props }: Props) {
   )
 
   if ('to' in props && props.to) {
-    const { to, ...rest } = props
+    const { to, viewTransition, ...rest } = props
     return (
-      <Link to={to} className={classes} {...rest}>
+      <RouteLink to={to} viewTransition={viewTransition} className={classes} {...rest}>
         {content}
-      </Link>
+      </RouteLink>
     )
   }
 

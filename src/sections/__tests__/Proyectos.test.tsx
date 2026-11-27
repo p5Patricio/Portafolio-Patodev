@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { screen } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
+import { fireEvent, screen } from '@testing-library/react'
 import { renderWithProviders } from '../../test-utils'
 import Proyectos from '../Proyectos'
 import { FEATURED_REPOS } from '../../data/repos'
@@ -86,5 +86,25 @@ describe('Proyectos', () => {
     renderWithProviders(<Proyectos />)
     expect(screen.getAllByRole('link', { name: /demo/i }).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('link', { name: /código/i }).length).toBeGreaterThan(0)
+  })
+
+  it('renders no per-cover view transition names (the route change is a plain cross-fade)', () => {
+    const { container } = renderWithProviders(<Proyectos />)
+    expect(container.innerHTML).not.toMatch(/project-cover-/)
+    const named = [...container.querySelectorAll<HTMLElement>('*')].filter((el) => el.style.viewTransitionName)
+    expect(named).toEqual([])
+  })
+
+  it('opts the "view all" links into the view transition', () => {
+    const start = vi.fn(() => ({ finished: Promise.resolve(), ready: Promise.resolve(), updateCallbackDone: Promise.resolve() }))
+    Object.defineProperty(document, 'startViewTransition', { configurable: true, writable: true, value: start })
+    try {
+      renderWithProviders(<Proyectos />)
+      const links = screen.getAllByRole('link', { name: /ver todos los proyectos/i })
+      links.forEach((link) => fireEvent.click(link))
+      expect(start).toHaveBeenCalledTimes(links.length)
+    } finally {
+      Reflect.deleteProperty(document, 'startViewTransition')
+    }
   })
 })

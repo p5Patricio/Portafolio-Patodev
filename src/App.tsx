@@ -1,4 +1,5 @@
 import './index.css'
+import { useLayoutEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
@@ -9,6 +10,7 @@ import HomePage from './pages/HomePage'
 import GaleriaPage from './pages/GaleriaPage'
 import SEO from './components/SEO'
 import { routeSeo } from './data/seo'
+import { notifyRouteCommitted } from './lib/viewTransition'
 
 // GaleriaPage is imported eagerly (not React.lazy + Suspense) on purpose.
 // react-dom's server renderer emits *any* <Suspense> boundary's content
@@ -30,8 +32,15 @@ import { routeSeo } from './data/seo'
 // lazy chunk on the client.
 
 function App() {
-  const { pathname } = useLocation()
-  const isHome = pathname === '/'
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
+  // Every route commit releases a pending route view transition (see
+  // src/lib/viewTransition.ts) so the browser captures the new page. A layout
+  // effect: App's runs after every child's, with the new route's DOM in place.
+  useLayoutEffect(() => {
+    notifyRouteCommitted()
+  }, [location])
 
   return (
     <>

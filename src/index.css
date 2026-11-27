@@ -412,3 +412,48 @@ body {
 .skill-category > summary::-webkit-details-marker {
   display: none;
 }
+
+/* ---------- Route transitions (View Transitions API) ----------
+   src/lib/viewTransition.ts runs "/" <-> "/galeria" navigations inside
+   `document.startViewTransition`. The page cross-fades: the old page fades
+   out quickly (base, ease-out-quart) while the new one fades in and rises
+   12px into place (slow, ease-out-expo). Only the fixed chrome shared by both
+   routes is named (`site-header`, `like-capsule`): it holds its position and
+   cross-fades its own contents (e.g. the header's height/background change)
+   on the "moving between on-screen states" curve. Browsers without the API
+   navigate normally and never reach these rules. */
+::view-transition-group(*) {
+  animation-duration: var(--motion-duration-slow);
+  animation-timing-function: var(--ease-in-out-quart);
+}
+
+::view-transition-old(root) {
+  animation: vt-page-out var(--motion-duration-base) var(--ease-out-quart) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-page-in var(--motion-duration-slow) var(--ease-out-expo) both;
+}
+
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Reduced motion: the route still changes inside the transition, but with no
+   animation the new page simply replaces the old one. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

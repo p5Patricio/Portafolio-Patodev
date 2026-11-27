@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import PulseHeart from './PulseHeart'
 import { useLanguage } from '../context/LanguageContext'
 import { DURATION, STAGGER } from '../lib/motion'
+import { LIKE_CAPSULE_TRANSITION_NAME } from '../lib/viewTransition'
 
 const STORAGE_KEY = 'portfolio:liked'
 
@@ -99,6 +100,8 @@ function LikeButton() {
   return (
     <div
       data-entered={entered ? '' : undefined}
+      // Own snapshot in route view transitions, so the fixed capsule holds still while the page cross-fades.
+      style={{ viewTransitionName: LIKE_CAPSULE_TRANSITION_NAME }}
       className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-30 ${ENTRANCE_CLASSES}`}
     >
     <PulseHeart

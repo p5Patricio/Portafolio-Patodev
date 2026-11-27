@@ -126,7 +126,7 @@ function Proyectos() {
         label={t.nav.trabajo}
         title={t.proyectos.title}
         meta={
-          <TextLink to="/galeria" className="mono-label hidden text-[12px] md:inline">
+          <TextLink to="/galeria" viewTransition className="mono-label hidden text-[12px] md:inline">
             {t.proyectos.viewAll} →
           </TextLink>
         }
@@ -149,7 +149,7 @@ function Proyectos() {
       </div>
 
       <Reveal className="mt-8 md:hidden">
-        <TextLink to="/galeria" className="mono-label text-xs">
+        <TextLink to="/galeria" viewTransition className="mono-label text-xs">
           {t.proyectos.viewAll} →
         </TextLink>
       </Reveal>

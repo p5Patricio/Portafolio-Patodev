@@ -171,4 +171,11 @@ describe('LikeButton', () => {
       expect(wrapper).toHaveAttribute('data-entered')
     })
   })
+
+  it('names the fixed capsule so it stays in place during route view transitions', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ count: 1 }) }))
+    renderWithProviders(<LikeButton />)
+    const wrapper = (await screen.findByRole('button', { name: QUESTION })).parentElement as HTMLElement
+    expect(wrapper.style.viewTransitionName).toBe('like-capsule')
+  })
 })

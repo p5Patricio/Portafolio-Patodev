@@ -195,5 +195,48 @@ describe('Header', () => {
       expect(screen.getByRole('link', { name: 'Trabajo' })).toHaveAttribute('aria-current', 'page')
       expect(screen.getByRole('link', { name: 'Contacto' })).not.toHaveAttribute('aria-current')
     })
+
+    describe('route view transitions', () => {
+      afterEach(() => {
+        Reflect.deleteProperty(document, 'startViewTransition')
+      })
+
+      function mockStartViewTransition() {
+        const start = vi.fn(() => ({
+          finished: Promise.resolve(),
+          ready: Promise.resolve(),
+          updateCallbackDone: Promise.resolve(),
+        }))
+        Object.defineProperty(document, 'startViewTransition', { configurable: true, writable: true, value: start })
+        return start
+      }
+
+      it('runs nav links and the brand link back home inside a view transition', () => {
+        const start = mockStartViewTransition()
+        renderWithProviders(<Header variant="galeria" />, { route: '/galeria' })
+
+        expect(fireEvent.click(screen.getByRole('link', { name: 'Experiencia' }))).toBe(false)
+        expect(fireEvent.click(screen.getByRole('link', { name: /portafolio/i }))).toBe(false)
+        expect(start).toHaveBeenCalledTimes(2)
+      })
+
+      it('keeps the plain full-page navigation when the API is missing', () => {
+        renderWithProviders(<Header variant="galeria" />, { route: '/galeria' })
+        // Not default-prevented: the browser follows /#experiencia as before.
+        expect(fireEvent.click(screen.getByRole('link', { name: 'Experiencia' }))).toBe(true)
+      })
+
+      it('leaves in-page anchors on home alone', () => {
+        const start = mockStartViewTransition()
+        renderWithProviders(<Header />)
+        fireEvent.click(screen.getByRole('link', { name: 'Experiencia' }))
+        expect(start).not.toHaveBeenCalled()
+      })
+
+      it('names the header so it stays in place while the page cross-fades', () => {
+        const { container } = renderWithProviders(<Header variant="galeria" />)
+        expect(container.querySelector('header')!.style.viewTransitionName).toBe('site-header')
+      })
+    })
   })
 })
