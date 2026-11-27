@@ -89,6 +89,8 @@ describe('Crosshair', () => {
     vi.mocked(useInView).mockReturnValue(false)
     const { svg, rerender } = renderMark()
 
+    // Armed on mount while still out of view (useInView never changed). Framer
+    // writes styles on its frame loop, hence waitFor.
     await waitFor(() => {
       expect(svg.style.transform).toMatch(/rotate\(-45deg\)/)
       expect(svg.style.transform).toMatch(/scale\(0\.5\)/)

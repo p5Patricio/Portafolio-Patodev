@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react'
-import { m, useInView, useReducedMotion, useSpring, useTransform } from 'framer-motion'
-import { SPRING } from '../lib/motion'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { m, useInView, useReducedMotion, type Variants } from 'framer-motion'
+import { spring } from '../lib/motion'
 
 type Props = {
   className?: string
@@ -19,6 +19,12 @@ const ARMED_SCALE = 0.5
 /** Shrinks the viewport bottom so the snap plays inside the view, not at its very edge. */
 const IN_VIEW_MARGIN = '0px 0px -10% 0px'
 
+/** Armed pose applies instantly; the snap into register uses `SPRING.snappy`. */
+const POSES: Variants = {
+  armed: { rotate: ARMED_ROTATE, scale: ARMED_SCALE, transition: { duration: 0 } },
+  rest: { rotate: 0, scale: 1, transition: spring('snappy') },
+}
+
 function isOnScreen(el: Element): boolean {
   const rect = el.getBoundingClientRect()
   return rect.bottom > 0 && rect.top < window.innerHeight && rect.width > 0
@@ -29,7 +35,7 @@ function isOnScreen(el: Element): boolean {
  * intersections in the blueprint frame and on cover placeholders. Decorative
  * and click-through.
  *
- * Motion (transform only, motion values, no per-frame React state):
+ * Motion (transform only, Framer variants, no per-frame React state):
  * - A mark that starts off-screen is armed (rotated to an "x", half size) and
  *   springs into register with `SPRING.snappy` the first time it scrolls into
  *   view. Marks already on screen at mount, the prerendered HTML and
@@ -44,26 +50,20 @@ function Crosshair({ className = '' }: Props) {
   const ref = useRef<SVGSVGElement>(null)
   const reduceMotion = useReducedMotion()
   const inView = useInView(ref, { once: true, margin: IN_VIEW_MARGIN })
+  // React state (not a motion value) drives the armed pose: a motion value
+  // jumped before Framer subscribes to it is never written to the DOM, so the
+  // mark stayed a plain "+" until it scrolled into view.
+  const [armed, setArmed] = useState(false)
 
-  // 0 = in register (neutral), 1 = armed.
-  const armed = useSpring(0, SPRING.snappy)
-  const rotate = useTransform(armed, (a) => a * ARMED_ROTATE)
-  const scale = useTransform(armed, (a) => 1 - (1 - ARMED_SCALE) * a)
-
-  useEffect(() => {
+  // Layout effect: decide before the first paint, so nothing flashes.
+  useLayoutEffect(() => {
     const el = ref.current
-    if (!el) return
-    if (reduceMotion) {
-      armed.jump(0)
-      return
-    }
-    // Only marks the user cannot see yet are armed, so nothing flashes on load.
-    if (!isOnScreen(el)) armed.jump(1)
-  }, [armed, reduceMotion])
+    // Only marks the user cannot see yet are armed.
+    if (!el || reduceMotion || isOnScreen(el)) return
+    setArmed(true)
+  }, [reduceMotion])
 
-  useEffect(() => {
-    if (inView) armed.set(0)
-  }, [armed, inView])
+  const pose = armed && !inView ? 'armed' : 'rest'
 
   return (
     <m.svg
@@ -73,7 +73,9 @@ function Crosshair({ className = '' }: Props) {
       width="10"
       height="10"
       className={`pointer-events-none text-sky ${className}`}
-      style={{ rotate, scale }}
+      initial={false}
+      animate={pose}
+      variants={POSES}
     >
       <path d="M5 0V10M0 5H10" stroke="currentColor" strokeWidth="1" />
       <rect
